@@ -1,0 +1,182 @@
+<div class="w-full h-full"  >
+  <eg-details-container [config]="config" [(data)]="data" [topic]="'profile'" [(selectedIndex)]="activeIndex">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngSwitch]="activeIndex">
+        <ng-container *ngSwitchCase="0" [ngTemplateOutlet]="profileContent"></ng-container>
+        <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="passwordContent"></ng-container>
+        <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="emailContent"></ng-container>
+        <ng-container *ngSwitchCase="3" [ngTemplateOutlet]="otpContent"></ng-container>
+        <ng-container *ngSwitchCase="4" [ngTemplateOutlet]="preferencesContent"></ng-container>
+      </ng-container>
+    </div>
+  </eg-details-container>
+</div>
+
+
+
+<!-- Content Holders -->
+<ng-template #profileContent>
+  <div class="grid grid-nogutter">
+    <div class="col-3 p-2">
+      <h2 class="mt-0" [innerHTML]="'translations.update_profile' | translate"></h2>
+      <p [innerHTML]="'translations.update_profile_desc' | translate"></p>
+    </div>
+    <div class="col-8  p-2">
+      <ng-container *ngFor="let i of detailsConfig.objArray | keyvalue; trackBy: trackByFn">
+        <div class="list-item" *ngIf="detailsConfig.inPlaceConf && !detailsConfig.formGroup?.get(i.value['formControlName'])?.disabled">
+          <ng-container [ngTemplateOutlet]="actionItem" [ngTemplateOutletContext]="{$implicit:{data:i.key, label:i.key}}"></ng-container>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #passwordContent>
+  <div class="grid grid-nogutter">
+    <div class="col-3 p-2">
+      <h2 class="mt-0" [innerHTML]="'translations.update_password' | translate"></h2>
+      <p [innerHTML]="'translations.update_password_desc' | translate"></p>
+    </div>
+    <div class="col-8  gap-2 p-2">
+      <form [formGroup]="passwordForm" (ngSubmit)="updateUser(passwordForm)">
+        <div class="flex flex-column gap-2">
+          <label htmlFor="password_1" class="font-semibold" [innerHTML]="'translations.password' | translate"></label>
+          <span class="p-input-icon-right">
+            <i class="pi pi-eye" (click)="togglePassword()"></i>
+            <input class="p-inputtext-lg w-full" [type]="showText?'text':'password'" pInputText id="password_1" formControlName="password_1"/>
+          </span>
+          <ng-container [ngTemplateOutlet]="pwdFormErrorTpl" [ngTemplateOutletContext]="{$implicit:passwordForm.get('password_1')}"></ng-container>
+        </div>
+        <div class="flex flex-column gap-2 mt-4">
+          <label htmlFor="password_2" class="font-semibold" [innerHTML]="'translations.confirm_password' | translate"></label>
+          <span class="p-input-icon-right w-full">
+            <i class="pi pi-eye" (click)="togglePassword()"></i>
+            <input class="p-inputtext-lg  w-full" [type]="showText?'text':'password'" pInputText id="password_2" formControlName="password"/>
+          </span>
+          <ng-container [ngTemplateOutlet]="pwdFormErrorTpl" [ngTemplateOutletContext]="{$implicit:passwordForm.get('password')}"></ng-container>
+          <!-- <small id="password_2-help" class="p-error block" *ngIf="msg != null"><span [innerHTML]="msg"></span></small> -->
+        </div>
+        <div class="flex flex-column mt-4 w-full ">
+          <p-button [disabled]="passwordForm.invalid" pRipple
+                    [label]="'translations.change_password' | translate"
+                    icon="pi pi-user"
+                    styleClass="p-button-lg w-full p-button-rounded"
+                    type="submit">
+          </p-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #emailContent>
+  <div class="grid grid-nogutter">
+    <div class="col-3 p-2">
+      <h2 class="mt-0" [innerHTML]="'translations.update_email' | translate"></h2>
+      <p [innerHTML]="'translations.update_email_desc' | translate"></p>
+    </div>
+    <div class="col-8  gap-2 p-2">
+      <form [formGroup]="emailForm" (ngSubmit)="updateUser(emailForm)">
+        <div class="flex flex-column gap-2">
+          <label htmlFor="email_1" class="font-semibold" [innerHTML]="'translations.email' | translate"></label>
+          <input [email]="true"  class="p-inputtext-lg w-full" pInputText formControlName="email_1"/>
+          <ng-container [ngTemplateOutlet]="pwdFormErrorTpl" [ngTemplateOutletContext]="{$implicit:emailForm.get('email_1')}"></ng-container>
+        </div>
+        <div class="flex flex-column gap-2  mt-4">
+          <label htmlFor="email" class="font-semibold" [innerHTML]="'translations.confirm_email' | translate"></label>
+          <input [email]="true" class="p-inputtext-lg w-full" pInputText formControlName="email"/>
+          <ng-container [ngTemplateOutlet]="pwdFormErrorTpl" [ngTemplateOutletContext]="{$implicit:emailForm.get('email')}"></ng-container>
+          <!-- <small id="password_2-help" class="p-error block" *ngIf="msg != null"><span [innerHTML]="msg"></span></small> -->
+        </div>
+        <div class="flex flex-column  mt-4 w-full ">
+          <p-button [disabled]="emailForm.invalid" pRipple
+                    [label]="'translations.change_email' | translate"
+                    icon="pi pi-user"
+                    styleClass="p-button-lg w-full p-button-rounded"
+                    type="submit">
+          </p-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #otpContent>
+  <div class="grid grid-nogutter">
+    <div class="col-3 p-2">
+      <h2 class="mt-0" [innerHTML]="'translations.provision_uri_mfa' | translate"></h2>
+      <p [innerHTML]="'translations.provision_uri_mfa_desc2' | translate"></p>
+    </div>
+    <div class="col-8  gap-2 p-2">
+    </div>
+  </div>
+</ng-template>
+<ng-template #preferencesContent>
+  <eg-preferences></eg-preferences>
+</ng-template>
+
+<!-- Error Template -->
+<ng-template #pwdFormErrorTpl let-formCtrl>
+  <small class="p-error block font-semibold text-sm" *ngIf="
+  formCtrl.invalid &&
+  (formCtrl.dirty || formCtrl.touched)
+">
+    <span *ngIf="formCtrl.errors?.['required']" [innerHTML]="msg['required']"></span>
+    <span *ngIf="formCtrl.errors?.['confirmedValidator']" [innerHTML]="msg['confirmedValidator']"></span>
+    <span *ngIf="formCtrl.errors?.['pattern']" [innerHTML]="msg['pattern']"></span>
+  </small>
+</ng-template>
+
+
+<!-- Inplace Editors -->
+
+<ng-template #item let-content>
+  <div class="w-full" *ngIf="detailsConfig.inPlaceConf && !detailsConfig.formGroup?.get(detailsConfig.objArray[content.data]['formControlName'])?.disabled">
+    <span class="bold text-lg text-gray" [innerHTML]="content.label | capitalizeFirst"></span>
+    <br/>
+    <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:detailsConfig.objArray[content.data], label:content.data}"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #gridItem let-content>
+  <div class="grid" *ngIf="detailsConfig.inPlaceConf && !detailsConfig.formGroup?.get(detailsConfig.objArray[content.data]['formControlName'])?.disabled">
+    <div class="col-2 bold text-lg text-gray pt-3">
+    <span [innerHTML]="content.label | capitalizeFirst"></span>
+    </div>
+    <div class="col-10">
+      <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:detailsConfig.objArray[content.data], label:content.data}"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #actionItem let-content>
+  <div class="grid grid-nogutter ml-2" *ngIf="detailsConfig.inPlaceConf && !detailsConfig.formGroup?.get(detailsConfig.objArray[content.data]['formControlName'])?.disabled">
+    <div class="col-2 bold text-lg font-semibold pt-2">
+    <span [innerHTML]="content.label | capitalizeFirst"></span>
+    </div>
+    <div class="col-8" [ngClass]="{'border-circle w-6rem h-6rem overflow-hidden': content.data=='picture'}">
+      <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:detailsConfig.objArray[content.data], label:content.data}"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #inPlace let-data="data" let-label="label">
+  <ng-container [formGroup]="detailsConfig.formGroup">
+    <eg-inplace [styleClass]="'text-lg ' + (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-full' : 'white-space-prewrap') "
+      [isDisabled]="false"
+      class="text-lg"
+      [isEditable]="editingField == label"
+      [type]="data['type']"
+      [topic]="data['autoConfig']?.extraKey || label"
+      [displayVal]="data['displayVal']"
+      [formControlName]="data['formControlName']"
+      [placeholder]="data['placeholder']"
+      [(config)]="detailsConfig.inPlaceConf"
+      [autoConfig]="data['autoConfig']"
+      [(isChanged)]="isChanged"
+      (isChangedChange)="afterSaved($event)">
+    </eg-inplace>
+  </ng-container>
+
+</ng-template>

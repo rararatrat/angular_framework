@@ -1,0 +1,202 @@
+<div class="w-full h-full"  *apploading="isConfiguring || detailsConfig?.isLoading">
+  <eg-details-container [config]="config" [data]="detailsConfig.data" [topic]="'project'" [(selectedIndex)]="activeIndex">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngSwitch]="activeIndex">
+        <ng-container *ngSwitchCase="0">
+            <!-- {{activeIndex}} {{dataType}} {{projectId}} -->
+            <!-- <ng-container *ngIf="activeIndex == 0" [ngTemplateOutlet]="dashboard"></ng-container> -->
+            <eg-task #egSubItem [initValue]="{type: 'milestone'}" [param]="config.params" ></eg-task>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="1">
+            <eg-task #egSubItem [initValue]="{type: 'work package'}" [param]="config.params" ></eg-task>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="2">
+            <eg-task #egSubItem [initValue]="{type: 'task'}" [param]="config.params" ></eg-task>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="3">
+            <eg-time-tracking #egSubItem [project]="projectId"></eg-time-tracking>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="4">
+            <eg-project-teams #egSubItem [param]="config.params"></eg-project-teams>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="5">
+            <eg-activities #egSubItem [param]="config.params"></eg-activities>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="6">
+            <eg-conditions-detail [param]="config.params" *ngIf="activeIndex == 6"></eg-conditions-detail>
+            <!-- <eg-conditions #egSubItem [param]="config.params"></eg-conditions> -->
+          </ng-container>
+
+          <!-- <ng-container *ngSwitchCase="7">
+            <eg-expenses #egSubItem [param]="config.params"></eg-expenses>
+          </ng-container> -->
+          <!-- <ng-container *ngSwitchCase="7">
+            <eg-expenses-project #egSubItem [param]="config.params"></eg-expenses-project>
+          </ng-container> -->
+
+          <!-- <ng-container *ngSwitchCase="7">
+            <eg-gantt-chart #egSubItem [project]="projectId"></eg-gantt-chart>
+          </ng-container> -->
+          <!--
+
+          <ng-container *ngSwitchCase="8">
+            <eg-expenses [showHeader]="true" [project]="projectId"></eg-expenses>
+          </ng-container> -->
+
+          <ng-container *ngSwitchCase="7">
+            <eg-document-flow *apploading="!relatedDocs" [relatedDocs]="relatedDocs"></eg-document-flow>
+          </ng-container>
+        </ng-container>
+    </div>
+
+    <div class="w-full h-full flex flex-column" details> <!-- flex flex-nowrap -->
+
+      <ng-container [ngTemplateOutlet]="egTemplate"
+                    [ngTemplateOutletContext]="{$implicit:{field:'status', title:'Project Status', layout:'table', titleClass:' innerborder-grid-bottom'}}">
+      </ng-container>
+      <ng-container [ngTemplateOutlet]="egTemplate"
+                    [ngTemplateOutletContext]="{$implicit:{field:'company', title:'Company', layout:'table'}}">
+      </ng-container>
+    </div>
+    <div *ngIf="detailsConfig?.data?.__data__?.status as stat"
+          [class]="'flex border-round-2xl align-items-center align-content-center h-full p-2 w-full ' + stat.color_class"
+          status>
+      <i [class]="stat.icon + ' mr-2'"></i>
+      <span [class]="stat.color_class" [innerHTML]="stat.name"></span>
+    </div>
+  </eg-details-container>
+</div>
+
+<ng-template #dashboard>
+  <div class="grid grid-nogutter" *ngIf="project != null && project.config != null">
+    <div class="col-12">
+      <div class="card-layout mb-1 p-3  h-30rem">
+        <div class="text-xl fw-600 ">Project</div>
+        <eg-chart-xy [data]="chartData?.project" [id]="'prioritychart'"></eg-chart-xy>
+      </div>
+    </div>
+
+    <div class="col-9 ">
+      <div class="grid">
+        <div class="col-12">
+          <div class="card-layout mb-1 p-3">
+            <div class="text-xl fw-600 ">Tasks by Type and Status</div>
+            <div class="grid">
+              <div class="col-6 h-30rem">
+                <eg-chart-pie [data]="chartData?.type"></eg-chart-pie>
+              </div>
+              <div class="col-6 p-2">
+                <div class="text-md fw-500 pb-2">Overview By Status</div>
+                <div class="grid h-full">
+                  <div class="col-6">
+                    <eg-info-card styleClass="bg-primary-faded text-primary text-center h-full " [display]="'stats'" [config]="visual.config[1]"></eg-info-card>
+                  </div>
+                  <div class="col-6">
+                    <eg-info-card styleClass="bg-success-faded text-success text-center  h-full" [display]="'stats'" [config]="visual.config[3]"></eg-info-card>
+                  </div>
+                  <div class="col-3">
+                    <eg-info-card styleClass="bg-gray-faded  text-gray text-center  h-10rem"  [display]="'stats'" [config]="visual.config[0]"></eg-info-card>
+                  </div>
+                  <div class="col-3">
+                    <eg-info-card styleClass="bg-gray-faded  text-gray text-center  h-10rem"  [display]="'stats'" [config]="visual.config[1]"></eg-info-card>
+                  </div>
+                  <div class="col-3">
+                    <eg-info-card styleClass="bg-gray-faded  text-gray text-center  h-10rem"  [display]="'stats'" [config]="visual.config[2]"></eg-info-card>
+                  </div>
+                  <div class="col-3">
+                    <eg-info-card styleClass="bg-gray-faded  text-gray text-center  h-10rem"  [display]="'stats'" [config]="visual.config[3]"></eg-info-card>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="card-layout mb-1 p-3  h-30rem">
+            <div class="text-xl fw-600 ">Tasks By Priority</div>
+            <eg-chart-xy [data]="chartData?.priority"></eg-chart-xy>
+          </div>
+        </div>
+<!--
+        <div class="col-6 h-full">
+          <div class="card-layout mb-1 h-30rem">
+              <div class="text-xl fw-600 p-3">My Tasks</div>
+              <div class="h-full mt-1">
+                <eg-task-list [showHeader]="false" [project]="null" [taskType]="null" [viewType]="'list'"></eg-task-list>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-6 h-full">
+          <div class="card-layout mb-1 ">
+              <div class="text-xl fw-600 p-3">Notes</div>
+              <div class="h-full mt-1">
+
+              </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="col-3 h-full">
+      <div class="card-layout m-2 p-2">
+        <div class="text-xl fw-600 mb-1 p-2">Overload by Resources</div>
+        <div class="p-2">
+          <div class="flex list-item py-0" *ngFor="let t of chartData.resource; trackBy: trackByFn">
+            <div class="flex-none flex p-2 m-auto">
+              <span class="text-xl font-bold" [innerHTML]="t.value"></span>
+            </div>
+            <div class="flex-grow-1 flex p-2 m-auto">
+              <span [innerHTML]="t.category"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-layout m-2 p-2">
+        <div class="text-xl fw-600 mb-1 p-2">Customers</div>
+        <div class="p-2">
+          <div class="flex list-item py-0" *ngFor="let t of chartData.creator; trackBy: trackByFn">
+            <div class="flex-none flex p-2 m-auto">
+              <span class="text-xl font-bold" [innerHTML]="t.value"></span>
+            </div>
+            <div class="flex-grow-1 flex p-2 m-auto">
+              <span [innerHTML]="t.category"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #egTemplate let-data>
+  <eg-template
+        [detailsConfig]="detailsConfig"
+        [egClass]="'bg-gray-faded border-round p-1 w-full'"
+        [field]="data.field"
+        [title]="data.title"
+        [isTwoLine]="true"
+        [layout]="data?.layout ? data?.layout : 'flex'"
+        [config]="'complete'"
+        [titleClass]="data?.titleClass?data.titleClass:''"
+        [hasTitle]="true"
+        [rendererType]="'icon-name'">
+  </eg-template>
+</ng-template>
+
+<ng-container *ngIf="dataType == 'route'">
+  <p-confirmDialog [id]="'test1'"
+                    [styleClass]="'w-3'"
+                    [class]="'w-3'"
+                    [classList]="'w-3'"
+                    [position]="'top'"
+                    rejectButtonStyleClass="p-button-text">
+  </p-confirmDialog>
+  <p-toast [id]="'test2'"></p-toast>
+</ng-container>

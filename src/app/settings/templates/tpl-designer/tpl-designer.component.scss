@@ -1,0 +1,47 @@
+::ng-deep #doc_tpl .p-colorpicker-preview{
+  height: 3rem;
+  width: 100%;
+  border-radius: var(--eg-border-radius);
+}
+
+::ng-deep #posWrapBtn {
+  .p-inputnumber-button-up{
+      padding: 0rem !important;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+  .p-inputnumber-button-down{
+      padding: 0rem !important;
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+  .p-inputnumber-input{
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+  }
+
+}
+
+::ng-deep #docSplitButton .p-selectbutton  {
+
+  .p-button{
+    border-radius: 0px;
+    padding: 0.55rem !important;
+
+    &:first-child {
+      border-top-left-radius: var(--eg-border-radius); /* Adjust the value as needed */
+      border-bottom-left-radius: var(--eg-border-radius); /* Adjust the value as needed */
+    }
+
+    /* Set border-radius for the last button */
+    &:last-child {
+      border-top-right-radius: var(--eg-border-radius); /* Adjust the value as needed */
+      border-bottom-right-radius: var(--eg-border-radius); /* Adjust the value as needed */
+    }
+  }
+
+}

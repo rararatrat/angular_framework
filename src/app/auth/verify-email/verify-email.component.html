@@ -1,0 +1,71 @@
+<div class="flex flex-column flex-nowrap h-full w-full" *ngIf="!loading">
+  <div class="flex">
+    <ng-container *ngIf="isVerified; then verifiedHeader else notVerifiedHeader"></ng-container>
+  </div>
+  <div class="flex">
+    <ng-container [ngSwitch]="isVerified">
+      <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="notVerified"></ng-container>
+      <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="verified"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<eag-splash-screen [image]="orgDetails.logo || '../assets/img/eg_rd_black.png'" *ngIf="loading"></eag-splash-screen>
+
+<ng-template #notVerifiedHeader>
+  <div class="flex-column">
+    <div class="flex flex-grow-0 align-items-center mb-4">
+      <div class="mr-4">
+        <img class="border-circle w-4rem h-4rem" [src]="'https://cdn.eagna.io/img/4x/eg_rd_black_transparent_4x.webp'">
+      </div>
+      <div class="text-6xl font-bold" [innerHTML]="'translations.error' | translate"></div>
+    </div>
+
+    <div class="text-lg">
+      <span [innerHTML]="'Something Happened We will look into it'"></span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #verifiedHeader>
+  <div class="flex-column">
+    <div class="flex flex-grow-0 align-items-center mb-4">
+      <div class="mr-4">
+        <img class="border-circle w-4rem h-4rem" [src]="'https://cdn.eagna.io/img/4x/eg_rd_black_transparent_4x.webp'">
+      </div>
+      <div class="text-6xl font-bold" [innerHTML]="'translations.verified_user' | translate"></div>
+    </div>
+
+    <div class="text-lg">
+      <span [innerHTML]="'Your Email Address has been Successfull Changed'"></span>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #verified>
+  <div class="flex flex-column card-container yellow-container">
+    <div class="flex align-items-center justify-content-center text-left">
+      <i class="pi pi-check-circle text-green-300" style="font-size: 12rem"></i>
+    </div>
+    <div class="field grid mt-6">
+      <div class="col-12 md:col-12 text-center">
+        <p class="eg-m-t-0" [innerHTML]="msg.detail"></p>
+        <p class="eg-m-t-0">You can now close this Window.</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #notVerified>
+  <div class="flex flex-column card-container yellow-container">
+    <div class="flex align-items-center justify-content-center text-left">
+      <i class="pi pi-times-circle text-cyan-300" style="font-size: 12rem"></i>
+    </div>
+    <div class="field grid mt-6">
+      <div class="col-12 md:col-12 text-center">
+        <p class="eg-m-t-0">Email was Not Verified, Please try the link from your email in another 5 minutes.</p>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,113 @@
+.container {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+}
+.overlay-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.base {
+  /* Styles for the base div */
+}
+
+.container-info-chart{
+  height: 100%;
+
+  .chart-container{
+    height: 70%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .info-container{
+    height: 30%;
+    width: 100%;
+  }
+
+}
+
+
+.container-chart-only{
+  height: 100%;
+
+  .chart-container{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+}
+
+.container-vertical{
+  height: 100%;
+
+  .chart-container{
+    height: 60%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .info-container{
+    height: 30%;
+    width: 100%;
+
+  }
+}
+
+.container-horizontal{
+  height: 90%;
+  width: 100%;
+  .chart-container{
+    height: 100%;
+    width: 55%;
+    overflow: hidden;
+  }
+
+  .info-container{
+    height: 100%;
+    width: 45%;
+
+  }
+}
+
+.container-overlay{
+  height: 100%;
+  /* position: relative; */
+
+  .chart-container{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    vertical-align: bottom;
+
+  }
+
+  .info-container{
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* position: absolute; */
+    z-index: 1;
+
+    .item {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+
+      margin-right: 2rem;
+      min-width: 10rem;
+      /* background-color: aqua; */
+    }
+
+    .item:last-child {
+      margin-right: 0;
+    }
+  }
+}

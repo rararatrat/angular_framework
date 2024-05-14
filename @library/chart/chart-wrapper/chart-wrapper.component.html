@@ -1,0 +1,207 @@
+
+<div class="flex flex-column h-full w-full" *ngIf="config != null && config?.chart_data?.length > 0; else noData">
+  <div class=" flex-grow-0 flex flex-row"  *ngIf="config?.layout != 'info' && config?.title != null">
+      <div class="flex flex-grow-1  align-items-center">
+        <span class="font-semibold text-lg capitalize" [innerHTML]="config?.title"></span>
+      </div>
+      <div class="flex-grow-0">
+        <p-button label="Success" class="font-medium" styleClass="p-button-rounded p-button-plain text-black-alpha-90 bg-gray-faded p-2 text-base"></p-button>
+      </div>
+  </div>
+  <div class=" flex-grow-1 overflow-hidden ">
+    <ng-container [ngSwitch]="config?.layout">
+
+      <ng-container *ngSwitchCase="'horizontal'"[ngTemplateOutlet]="horizontal"   ></ng-container>
+      <ng-container *ngSwitchCase="'vertical'"  [ngTemplateOutlet]="vertical"     ></ng-container>
+      <ng-container *ngSwitchCase="'overlay'"   [ngTemplateOutlet]="overlay"      ></ng-container>
+      <ng-container *ngSwitchCase="'chart'"     [ngTemplateOutlet]="chartOnly"    ></ng-container>
+      <ng-container *ngSwitchCase="'info'"      [ngTemplateOutlet]="infoOnly"     ></ng-container>
+      <ng-container *ngSwitchCase="'infoChart'" [ngTemplateOutlet]="infoChart"    ></ng-container>
+      <ng-container *ngSwitchCase="'content'"   [ngTemplateOutlet]="statsContent" ></ng-container>
+
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #horizontal>
+  <div class="flex flex-row container-horizontal overflow-hidden ">
+    <div class="chart-container h-full w-full">
+      <ng-container [ngTemplateOutlet]="renderChart" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+    </div>
+    <div class="info-container">
+      <div class="grid h-full">
+        <div class="col-6">
+          <div class="flex flex-column align-items-center justify-content-center font-bold card-layout shadow-1 w-full h-full" >
+            <div class="text-7xl font-semibold" [innerHTML]="'6000'"></div>
+            <div>PrimeFlex</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="flex flex-column align-items-center justify-content-center font-bold card-layout shadow-1 w-full h-full" >
+            <div class="text-7xl font-semibold" [innerHTML]="'6000'"></div>
+            <div>PrimeFlex</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex flex-column align-items-center justify-content-center font-bold card-layout shadow-1 w-full h-full" >
+            <div class="text-5xl text-gray font-semibold" [innerHTML]="'6000'"></div>
+            <div>PrimeFlex</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex flex-column align-items-center justify-content-center font-bold card-layout shadow-1 w-full h-full" >
+            <div class="text-5xl text-gray font-semibold" [innerHTML]="'6000'"></div>
+            <div>PrimeFlex</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex flex-column align-items-center justify-content-center font-bold card-layout shadow-1 w-full h-full" >
+            <div class="text-5xl text-gray font-semibold" [innerHTML]="'6000'"></div>
+            <div>PrimeFlex</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex flex-column align-items-center justify-content-center font-bold card-layout shadow-1 w-full h-full" >
+            <div class="text-5xl text-gray font-semibold" [innerHTML]="'6000'"></div>
+            <div>PrimeFlex</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #vertical>
+  <div class="flex flex-column container-vertical">
+    <div class="chart-container" >
+      <ng-container [ngTemplateOutlet]="renderChart" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+    </div>
+    <div class="info-container border-top-1 ">
+      <table rules="all" class="w-full ">
+        <tr>
+          <td>
+            <div class="flex flex-column align-items-center justify-content-center font-bold card-layout w-full h-full" >
+              <div class="text-5xl font-semibold mb-1" [innerHTML]="'6000'"></div>
+              <div class="text-gray ">PrimeFlex</div>
+            </div>
+          </td>
+          <td>
+            <div class="flex flex-column align-items-center justify-content-center font-bold card-layout w-full h-full" >
+              <div class="text-5xl font-semibold mb-1" [innerHTML]="'6000'"></div>
+              <div class="text-gray ">PrimeFlex</div>
+            </div>
+          </td>
+          <td>
+            <div class="flex flex-column align-items-center justify-content-center font-bold card-layout w-full h-full" >
+              <div class="text-5xl font-semibold mb-1" [innerHTML]="'6000'"></div>
+              <div class="text-gray ">PrimeFlex</div>
+            </div>
+          </td>
+          <td>
+            <div class="flex flex-column align-items-center justify-content-center font-bold card-layout w-full h-full" >
+              <div class="text-5xl font-semibold mb-1" [innerHTML]="'6000'"></div>
+              <div class="text-gray ">PrimeFlex</div>
+            </div>
+          </td>
+
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #overlay>
+  <div class="flex flex-column container-overlay overflow-hidden ">
+    <div class="info-container">
+      <div class="flex flex-row">
+          <div class="flex flex-column item">
+            <div class="">
+              <span class="text-gray font-semibold">Overall Score</span>
+            </div>
+            <div class="">
+              <span class="text-5xl font-semibold">6000</span>
+            </div>
+          </div>
+          <div class="flex flex-column item">
+            <div class="">
+              <span class="text-gray font-semibold">Overall Score</span>
+            </div>
+            <div class="">
+              <span class="text-5xl font-semibold">6000</span>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="chart-container" >
+      <ng-container [ngTemplateOutlet]="renderChart" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #chartOnly>
+  <div class="flex flex-column container-chart-only" style="height: 90%;">
+    <div class="chart-container">
+      <ng-container [ngTemplateOutlet]="renderChart" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #infoOnly>
+  <div class="flex flex-column align-items-center justify-content-center font-bold w-full h-full" >
+    <div class="text-7xl font-semibold" [innerHTML]="config?.chart_data[0]"></div>
+    <div><span class="bold" [innerHTML]="config?.title"></span></div>
+  </div>
+</ng-template>
+
+<ng-template #infoChart>
+  <div class="flex flex-column container-info-chart">
+    <div class="info-container ">
+      <div class="flex flex-column align-items-start justify-content-center font-bold w-full h-full" >
+        <div class="text-7xl font-semibold" [innerHTML]="'6000'"></div>
+      </div>
+    </div>
+    <div class="chart-container" >
+      <ng-container [ngTemplateOutlet]="renderChart" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+      <!-- <p-chart type="line" [data]="data" [options]="options"></p-chart> -->
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #renderChart let-config>
+  <ng-container [ngSwitch]="config?.chart_type">
+    <ng-container *ngSwitchCase="'xy'">
+        <eg-chart-xy [data]="config?.chart_data" [id]="config?.id" [show_label]="config?.show_label"></eg-chart-xy>
+    </ng-container>
+    <ng-container *ngSwitchCase="'pie'">
+        <eg-chart-pie [data]="config?.chart_data" [id]="config?.id" [show_label]="config?.show_label"></eg-chart-pie>
+    </ng-container>
+    <ng-container *ngSwitchCase="'clustered'">
+        <eg-chart-clustered [data]="config?.chart_data" [id]="config?.id" [show_label]="config?.show_label"></eg-chart-clustered>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <eg-chart-xy [data]="config?.chart_data" [id]="config?.id" [show_label]="config?.show_label"></eg-chart-xy>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #noData>
+  <div class="flex flex-row"  *ngIf="config?.layout != 'info'">
+      <div class="flex flex-grow-1  align-items-center">
+        <span class="font-semibold text-lg capitalize" [innerHTML]="config?.title"></span>
+      </div>
+  </div>
+  <div style="height:90%">
+    <eg-no-data-found [config]="config?.no_data"></eg-no-data-found>
+  </div>
+
+</ng-template>
+
+<ng-template #statsContent>
+  <p-scrollPanel styleClass="h-full">
+    <ng-content ></ng-content>
+  </p-scrollPanel>
+
+</ng-template>

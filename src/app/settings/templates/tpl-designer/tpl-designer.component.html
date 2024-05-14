@@ -1,0 +1,287 @@
+<div class="h-full flex flex-row gap-2" *apploading="!settings">
+  <div class="flex flex-column h-full w-25rem surface-card border-round gap-1 pb-2 ">
+    <div class="p-2 flex-grow-0 flex flex-row">
+      <div class="text-2xl font-bolder mt-1 flex-grow-1" [innerHTML]="'translations.configuration' | translate : {count: 1}"></div>
+      <div class="text-2xl font-bolder mt-1 flex-grow-0">
+        <p-selectButton #docSplitButton id="docSplitButton"
+                        styleClass="p-button-sm"
+                        [options]="stateOptions"
+                        [(ngModel)]="stateValue"
+                        (ngModelChange)="togglemenu($event)"
+                        optionLabel="label"
+                        optionValue="value">
+        </p-selectButton>
+      </div>
+    </div>
+    <div class="flex-grow-1 overflow-hidden h-full">
+      <p-scrollPanel styleClass="h-full">
+        <div class="p-2">
+          <!-- Settings Container -->
+          <ng-container *ngIf="stateValue == 'settings'">
+            <p-accordion [activeIndex]="1">
+              <!-- Logo for documents -->
+              <p-accordionTab [header]="'translations.logo_for_documents' | translate" iconPos="end"> <!-- [contentStyleClass]="'w-100 h-1'" -->
+                <ng-container [ngTemplateOutlet]="tplImg" [ngTemplateOutletContext]="{$implicit: {frmCtrl: 'companyLogo', model: 'company_logo', url: ((settings?.companyLogo | isNotEmpty) ? (envUrl + settings?.companyLogo) : config?.formGroup.get('companyLogo')?.value?.objectURL) }}"></ng-container>
+              </p-accordionTab>
+
+              <!-- Template Colors -->
+              <p-accordionTab [header]="'translations.template_colors' | translate" iconPos="end">
+                <div class="flex flex-row gap-1">
+                  <ng-container [ngTemplateOutlet]="inputColor" [ngTemplateOutletContext]="{$implicit : {model:'titleColor', text:'Title'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputColor" [ngTemplateOutletContext]="{$implicit : {model:'textColor', text:'Text'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputColor" [ngTemplateOutletContext]="{$implicit : {model:'lineColor', text:'Line'}}"></ng-container>
+                </div>
+              </p-accordionTab>
+
+              <!-- Template Elements -->
+              <p-accordionTab [header]="'translations.template_elements' | translate" iconPos="end">
+                <div class="flex flex-column gap-1">
+                  <ng-container [ngTemplateOutlet]="inputToggle" [ngTemplateOutletContext]="{$implicit : {model:'showCompanyAddress', text:'Show Company Address'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputToggle" [ngTemplateOutletContext]="{$implicit : {model:'showCompanyLogo', text:'Show Company Logo'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputToggle" [ngTemplateOutletContext]="{$implicit : {model:'showLines', text:'Show Lines between Documents'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputToggle" [ngTemplateOutletContext]="{$implicit : {model:'showPageNumbers', text:'Show Page Number'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputToggle" [ngTemplateOutletContext]="{$implicit : {model:'noPagebreak', text:'No Page break before Sum'}}"></ng-container>
+                </div>
+              </p-accordionTab>
+
+              <p-accordionTab [header]="'translations.letterhead_and_backgrounds' | translate" iconPos="end">
+                <!-- <div class="flex flex-column gap-1">
+                </div> -->
+                <ng-container [ngTemplateOutlet]="tplImg" [ngTemplateOutletContext]="{$implicit: {frmCtrl: 'docBackgroundCover', model: 'doc_background_cover', url: ((settings?.letterHead?.docBackgroundCover | isNotEmpty) ? (envUrl + settings?.letterHead?.docBackgroundCover) : config?.formGroup.get('docBackgroundCover')?.value?.objectURL), letterHead: 'showDocBackgroundCover', label: 'Set a document background'}}"></ng-container>
+                <ng-container [ngTemplateOutlet]="tplImg" [ngTemplateOutletContext]="{$implicit: {frmCtrl: 'docBackgroundSheet', model: 'doc_background_sheet', url: ((settings?.letterHead?.docBackgroundSheet | isNotEmpty) ? (envUrl + settings?.letterHead?.docBackgroundSheet) : config?.formGroup.get('docBackgroundSheet')?.value?.objectURL), letterHead: 'showDocBackgroundSheet', label: 'Set a document background for following pages'}}"></ng-container>
+              </p-accordionTab>
+
+              <!-- Template Fonts -->
+              <p-accordionTab [header]="'translations.font' | translate : {count: 2}" iconPos="end">
+                <div class="grid">
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'font', model:'size', text_translated: ('translations.item_font_size' | translate : {item: ''})}}"></ng-container>
+                  </div>
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'font', model:'heading', text_translated: ('translations.item_font_size' | translate : {item: ('translations.heading' | translate : {count: 2})})}}"></ng-container>
+                  </div>
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'font', model:'recipient', text_translated: ('translations.item_font_size' | translate : {item: ('translations.recipient' | translate : {count: 2})})}}"></ng-container>
+                  </div>
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'font', model:'company', text_translated: ('translations.item_font_size' | translate : {item: ('translations.company' | translate )})}}"></ng-container>
+                  </div>
+                </div>
+              </p-accordionTab>
+
+              <!-- Template Margins -->
+              <p-accordionTab [header]="'translations.margin' | translate : {count: 2}" iconPos="end">
+                <div class="grid">
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'distance', model:'topMargin', text:'Top Margin', min: 0, max: 100}}"></ng-container>
+                  </div>
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'distance', model:'bottomMargin', text:'Bottom Margin', min: 0, max: 100}}"></ng-container>
+                  </div>
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'distance', model:'leftMargin', text:'Left Margin', min: 0, max: 100}}"></ng-container>
+                  </div>
+                  <div class="col-6">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'distance', model:'rightMargin', text:'Right Margin', min: 0, max: 100}}"></ng-container>
+                  </div>
+                  <div class="col-12">
+                    <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'distance', model:'headerLine', text:'Distance To Header Line', min: -120, max: 120}}"></ng-container>
+                  </div>
+                </div>
+              </p-accordionTab>
+
+              <!-- Template Reciepient Setup -->
+              <p-accordionTab [header]="'translations.recipient_address' | translate" iconPos="end">
+                <div class="flex flex-column gap-3">
+                  <div class="flex flex-row gap-3">
+                    <div class="flex align-items-center">
+                        <p-radioButton name="alignLeft" value="left" [(ngModel)]="settings.recipient.align" inputId="rl"></p-radioButton>
+                        <label for="rl" class="ml-2" [innerHTML]="'translations.on_the' | translate : {direction: ('translations.left' | translate)}"></label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-radioButton name="alignRight" value="right" [(ngModel)]="settings.recipient.align" inputId="rr"></p-radioButton>
+                        <label for="rr" class="ml-2" [innerHTML]="'translations.on_the' | translate : {direction: ('translations.right' | translate )}"></label>
+                    </div>
+                  </div>
+                  <div class="grid">
+                    <div class="col-6">
+                      <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'recipient', model:'leftRight', text:'Left & Right', max: 150, min: -150}}"></ng-container>
+                    </div>
+                    <div class="col-6">
+                      <ng-container [ngTemplateOutlet]="inputNumbers" [ngTemplateOutletContext]="{$implicit : {topic:'recipient', model:'upDown', text:'Up & Down', max: 150, min: -150}}"></ng-container>
+                    </div>
+                  </div>
+                </div>
+              </p-accordionTab>
+            </p-accordion>
+
+            <!-- Setup For Individual Pages -->
+
+            <p-divider  [align]="'center'">
+              <div class="inline-flex align-items-center font-bold" [innerHTML]="'translations.topic_specific_setup' | translate"></div>
+            </p-divider>
+
+            <p-accordion [activeIndex]="0">
+              <p-accordionTab [header]="'translations.header_options' | translate" iconPos="end" >
+                <div class="flex flex-column gap-1">
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'headerOptions', model:'showDate', text:'Show Date'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'headerOptions', model:'showValidUntil', text:'Show Valid Until'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'headerOptions', model:'showCompanyContact', text:'Show Company Contact'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'headerOptions', model:'showCustomerNumber', text:'Show Customer Number'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'headerOptions', model:'showProjectName', text:'Show Project'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'headerOptions', model:'showVATNumber', text:'Show VAT number'}}"></ng-container>
+                </div>
+              </p-accordionTab>
+              <p-accordionTab [header]="'translations.column_options' | translate" iconPos="end">
+                <div class="flex flex-column gap-1">
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'columnOptions', model:'showPositionNumber', text:'Show Position Number'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'columnOptions', model:'showAmount', text:'Show Amount'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'columnOptions', model:'showUnitPrice', text:'Show Unit Price'}}"></ng-container>
+                </div>
+              </p-accordionTab>
+              <p-accordionTab [header]="'translations.footer_options' | translate" iconPos="end">
+                <div class="flex flex-column gap-1">
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'companyNameAndAddress', text:'Company name and address'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'companyEmailAddress', text:'Company e-mail address'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'companyPhone', text:'Company phone'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'bankAccountInfo', text:'Bank account info'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'vatNumber', text:'VAT number'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'euVATNumber', text:'EU VAT number'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'mobile', text:'Mobile'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'fax', text:'Fax'}}"></ng-container>
+                  <ng-container [ngTemplateOutlet]="inputSetupToggle" [ngTemplateOutletContext]="{$implicit : {topic:'footer', model:'website', text:'website'}}"></ng-container>
+                </div>
+              </p-accordionTab>
+            </p-accordion>
+            <!-- <div class="mb-3">
+              asdasdasd
+            </div> -->
+          </ng-container>
+          <ng-container *ngIf="stateValue == 'templates'">
+            <div class="flex flex-column">
+              <div class="flex flex-row detail-nav-list-item gap-2"
+                  *ngFor="let a of getTemplateList(); let idx = index"
+                  [class.active]="rawdata?.template?.id == a.id">
+                  <div class="p-element flex-none p-2">
+                    <i class="fa-circle fa-solid mt-1"></i>
+                  </div>
+                  <div class="flex-grow-1 align-self-center">
+                    <span class="text-lg " [innerHTML]="a?.name"></span>
+                  </div>
+                  <div class="flex-grow-0 align-self-center">
+                    <p-button icon="fa-solid fa-eye"
+                              [pTooltip]="'translations.preview' | translate"
+                              (click)="manageTemplates('preview', a)"
+                              styleClass="p-button-rounded p-button-primary p-button-text">
+                    </p-button>
+                  </div>
+                  <div class="flex-grow-0 align-self-center">
+                    <p-button icon="fa-solid fa-check"
+                              [disabled]="rawdata?.template?.id == a.id"
+                              [pTooltip]="'translations.set_as_default' | translate"
+                              (click)="manageTemplates('set_default', a)"
+                              styleClass="p-button-rounded p-button-success p-button-text">
+                    </p-button>
+                  </div>
+              </div>
+              <div class="flex flex-row detail-nav-list-item gap-2 bg-success-faded" (click)="createNewTamplate()">
+                  <div class="p-element flex-none p-2">
+                    <i class="pi pi-plus mt-1"></i>
+                  </div>
+                  <div class="flex-grow-1 align-self-center">
+                    <span class="text-lg " [innerHTML]="'translations.new' | translate : {item: ('translations.template' | translate : {item: ''})}"></span>
+                  </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </p-scrollPanel>
+    </div>
+    <div class="flex-grow-0 p-2" *ngIf="stateValue == 'settings'">
+      <div class="flex flex-row gap-2 justify-content-end ">
+        <p-button
+              [icon]="'fa-solid fa-trash'"
+              [label]="'translations.reset' | translate"
+              styleClass="p-button-danger p-button-outlined"
+              (click)="reset()">
+        </p-button>
+        <p-button
+              [icon]="'fa-solid fa-save'"
+              [label]="'translations.save_settings_for' | translate : {item: (('translations.' + template_type) | translate)}"
+              styleClass="p-button-primary"
+              (click)="onSave()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+  <div class="flex flex-column h-full surface-card border-round flex-grow-1">
+    <p-scrollPanel styleClass="h-full" class="h-full">
+        <eg-position-preview #egPreview [data]="data" [settings]="settings" [template_type]="template_type" [isMockData]="isMockData"></eg-position-preview>
+    </p-scrollPanel>
+  </div>
+</div>
+
+
+<ng-template #inputColor let-data>
+  <div>
+    <div class="font-medium mb-1 text-base" [innerHTML]="'translations.' + data?.model | translate"></div>
+    <p-colorPicker id="doc_tpl"  [(ngModel)]="settings.template[data?.model]" [appendTo]="'body'"></p-colorPicker>
+  </div>
+</ng-template>
+
+<ng-template #inputToggle let-data>
+  <div class="flex flex-row gap-2 align-items-center">
+    <div class="flex-grow-0 align-self-center"><p-inputSwitch [(ngModel)]="settings?.templateEl[data?.model]"></p-inputSwitch></div>
+    <div class="flex-grow-1 text-base font-medium" [innerHTML]="'translations.' + data?.model | translate"></div>
+  </div>
+</ng-template>
+
+<ng-template #inputSetupToggle let-data>
+  <div class="flex flex-row gap-2 align-items-center">
+    <div class="flex-grow-0 align-self-center"><p-inputSwitch [(ngModel)]="settings?.setup[data?.topic][data?.model]"></p-inputSwitch></div>
+    <div class="flex-grow-1 text-base font-medium" [innerHTML]="'translations.' + data?.model | translate"></div>
+  </div>
+</ng-template>
+
+<ng-template #inputNumbers let-data>
+  <div class="text-base font-medium mb-1" [innerHTML]="data.text_translated ?  data.text_translated : ('translations.' + data?.model | translate)"></div>
+  <div>
+    <p-inputNumber  #posWrapBtn id="posWrapBtn"
+                    incrementButtonClass="p-button-info"
+                    decrementButtonClass="p-button-info"
+                    inputStyleClass="w-full"
+                    class="w-full"
+                    styleClass="w-full"
+                    [(ngModel)]="settings[data?.topic][data?.model]"
+                    mode="decimal"
+                    [showButtons]="true"
+                    inputId="minmax-buttons"
+                    [min]="(data.min != undefined ? data.min : 1)"
+                    [max]="(data.max != undefined ? data.max : 36)">
+    </p-inputNumber>
+    <p-slider [(ngModel)]="settings[data?.topic][data?.model]" class="w-full" [min]="(data.min != undefined ? data.min : 1)" [max]="(data.max != undefined ? data.max : 36)"></p-slider>
+  </div>
+</ng-template>
+
+
+<ng-template #tplImg let-imgData>
+  <div class="flex flex-row gap-2 align-items-center" *ngIf="settings?.letterHead && imgData?.letterHead">
+    <div class="flex-grow-0 align-self-center"><p-inputSwitch [(ngModel)]="settings.letterHead[imgData.letterHead]" (ngModelChange)="letterHeaderChanged($event, imgData)"></p-inputSwitch></div> <!-- (ngModelChange)="cdr.detectChanges()" -->
+    <label class="flex-grow-1 text-base font-medium" [innerHTML]="'translations.' + imgData?.model | translate"></label>
+  </div>
+
+  <ng-container *ngIf="settings && config?.formGroup" [formGroup]="config?.formGroup">
+    <eg-image #egImg *ngIf="!imgData.letterHead || settings.letterHead?.[imgData.letterHead]" [imageClass]="'text-lg w-full'"
+      [styleClass]="'text-lg w-full'"
+      [formGroup]="config?.formGroup"
+      [formControlName]="imgData.frmCtrl"
+      [config]="config"
+      [filesArr]="savedData[imgData.frmCtrl]"
+      [src]="imgData.url"
+      [preview]="true"
+      [isEditable]="true"
+      [isDeletable]="true"
+      (callback)="imgUploadCallback(egImg, $event, imgData.frmCtrl, imgData.letterHead ? 'letterHead': '')">
+    </eg-image>
+  </ng-container>
+</ng-template>

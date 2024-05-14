@@ -1,0 +1,105 @@
+.app-menu{
+  .app-menu-item{
+    border-radius: var(--eg-border-radius);
+    cursor: pointer;
+    &:hover{
+      background-color: var(--primary-faded);
+      color:var(--primary);
+
+    }
+    &:active{
+      background-color: var(--primary-faded);
+      color:var(--primary);
+    }
+  }
+  .active{
+    background-color: var(--primary-faded);
+    color:var(--primary);
+    font-weight: 600;
+  }
+}
+
+::ng-deep #appOverlay .p-overlaypanel-content{
+  padding:0.5rem;
+}
+
+.blocks{
+    width: 50px;
+    height: 50px;
+    background: yellow;
+    margin: 0.5rem;
+
+    .app-icon{
+        height: 40px;
+        position: relative;
+        background-color: green;
+    }
+    .app-name{
+        position: relative;
+        height: 10px;
+        background-color: blue;
+    }
+}
+
+::ng-deep #userMenu .light .p-overlaypanel.p-component.p-overlaypanel-content{
+    padding: 0rem;
+}
+
+::ng-deep #userMenu .p-submenu-list{
+  left: -165px !important;
+}
+
+.a-link{
+  text-decoration: none;
+  color: var(--text-color);
+
+  &:active {
+    background-color: var(--gray-100);
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
+  table.userbar-table{
+    border-collapse: collapse;
+    width:100%;
+  }
+  table.userbar-table td {
+    border: 1px solid var(--gray-100);
+    width: 50px;
+    height:50px;
+    text-align: center;
+    /* border-radius: 50px; */
+      &:hover {
+        background-color: var(--gray-100);
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      &:active {
+        background-color: var(--gray-100);
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+  }
+  table.userbar-table tr:first-child th {
+    border-top: 0;
+  }
+  table.userbar-table tr:first-child td {
+    border-top: 0;
+    border-top: 0;
+  }
+  table.userbar-table tr:last-child td {
+    border-bottom: 0;
+  }
+  table.userbar-table tr td:first-child,
+  table.userbar-table tr th:first-child {
+    border-left: 0;
+
+  }
+  table.userbar-table tr td:last-child,
+  table.userbar-table tr th:last-child {
+    border-right: 0;
+  }
+

@@ -1,0 +1,163 @@
+<div class="w-full h-full" *apploading="isLoading">
+    <eg-details-container [(config)]="config" [(data)]="data" [topic]="'bills'"  [(selectedIndex)]="activeIndex">
+      <div class="w-full h-full max-w-full" content>
+        <ng-container [ngSwitch]="activeIndex" *ngIf="detailsConfig">
+          <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="items"></ng-container>
+          <ng-container *ngSwitchCase="6" [ngTemplateOutlet]="flow"></ng-container>
+          <ng-container *ngSwitchDefault [ngTemplateOutlet]="formTemplate" [ngTemplateOutletContext]="{showHeader:true, detailsConfig:detailsConfig}"></ng-container>
+  
+        </ng-container>
+      </div>
+  
+      <div status *ngIf="data?.status as stat"
+            [class]="'p-3 text-lg flex border-round-2xl align-items-center align-content-center h-full w-full font-bolder ' + stat?.color_class" >
+        <i [class]="stat?.icon + ' mr-2'"></i>
+        <span [class]="stat?.color_class" [innerHTML]="'translations.' + (stat?.name || '').toLowerCase() | translate"></span>
+      </div>
+  
+      <div details class="flex flex-column gap-2">
+        <!-- <div class="">
+          <ng-container [ngTemplateOutlet]="displayTpl" [ngTemplateOutletContext]="{attr:'user', title:'Internal Contact Partner'}"></ng-container>
+        </div>
+        <div class="">
+          <ng-container [ngTemplateOutlet]="displayTpl" [ngTemplateOutletContext]="{attr:'updated_at', title:'Last updated'}"></ng-container>
+        </div> -->
+      </div>
+  
+    </eg-details-container>
+  </div>
+  <!-- Position / Items -->
+  <ng-template #items>
+    <!-- {{detailsConfig.data?.positions | json}} -->
+    <eg-item [(data)]="detailsConfig.data" [(perm)]="permission"  [componentType]="'bills'" (callback)="updatePosition($event)"></eg-item>
+  </ng-template>
+
+  <ng-template #flow>
+    <eg-document-flow *apploading="!relatedDocs" [relatedDocs]="relatedDocs"></eg-document-flow>
+  </ng-template>
+  
+  <!-- All the Form Control -->
+  <ng-template #formTemplate let-showHeader="showHeader" let-detailsConfig="detailsConfig">
+  
+    <div class="flex flex-column p-2 border-round surface-card" *ngIf="form['formStructure']?.[activeIndex]">
+      <div class="flex-grow-0 p-2" *ngIf="form['formStructure'][activeIndex]['header'] && showHeader">
+        <p [innerHTML]="form['formStructure'][activeIndex]['header']" class="font-bold text-xl"></p>
+        <div *ngIf="form['formStructure'][activeIndex]['subheader']" [innerHTML]="form['formStructure'][activeIndex]['subheader']" class="text-lg"></div>
+      </div>
+      <div  class="flex-grow-1"
+            *ngFor="let temp of form['formStructure'][activeIndex]['fields']; let idx=index; let last=last">
+  
+        <ng-container [ngTemplateOutlet]="egFormTemplate"
+                      [ngTemplateOutletContext]=" { data:{  key:temp, value:detailsConfig?.objArray[temp] },
+                                                    isTwoLine:form['formStructure'][activeIndex]['isTwoLine'],
+                                                    curr:idx,
+                                                    isLast:last
+                                                  }">
+        </ng-container>
+      </div>
+      <div class="flex-grow-0 m-2 align-self-end" *ngIf="detailsConfig.data?.id && activeIndex != 1">
+        <button pButton
+                styleClass="p-button"
+                [disabled]="detailsConfig.formGroup.invalid"
+                (click)="updateBill(activeIndex)"
+                [label]="'Update Bill'">
+          </button>
+      </div>
+    </div>
+  
+  </ng-template>
+  
+  <ng-template  #egFormTemplate
+                let-i="data"
+                let-isTwoLine="isTwoLine"
+                let-curr="curr"
+                let-isLast="isLast">
+    <ng-container *ngIf="detailsConfig && detailsConfig?.objArray | isNotEmpty" class="list-simple-item">
+  
+      <eg-template
+                  [detailsConfig]="detailsConfig"
+                  [egClass]="'bg-gray-faded border-round p-1 w-full'"
+                  [field]="i?.value?.['formControlName']"
+                  [title]="i?.value?.['title']"
+                  [isTwoLine]="isTwoLine"
+                  [mode]="'view'"
+                  [layout]="'table'"
+                  [config]="'complete'"
+                  [titleClass]="data?.titleClass?data.titleClass:''"
+                  [hasTitle]="true"
+                  [isLast]="isLast"
+                  [attr_class]="'w-3 text-lg'"
+                  [value_class]="'w-10 p-2'"
+                  [rendererType]="'icon-name'">
+      </eg-template>
+    </ng-container>
+  </ng-template>
+  
+  <!-- A simple Template for the Details -->
+  <ng-template #displayTpl let-attr="attr" let-title="title">
+    <ng-container *ngIf="detailsConfig">
+      <eg-template
+                  [detailsConfig]="detailsConfig"
+                  [egClass]="'bg-gray-faded border-round p-1 w-full'"
+                  [field]="attr"
+                  [title]="title"
+                  [isTwoLine]="true"
+                  [mode]="'view'"
+                  [layout]="'flex'"
+                  [config]="'complete'"
+                  [hasTitle]="true"
+                  [attr_class]="'w-3 text-lg'"
+                  [value_class]="'w-10 p-2'"
+                  [rendererType]="'icon-name'">
+      </eg-template>
+    </ng-container>
+  </ng-template>
+  
+  <!-- Dialog Header for the Table That does the Creation of Order -->
+  <p-dialog [header]="'Create '+sel_type" [(visible)]="dialogVisible" [style]="{width: '50vw'}" [position]="'top'" [modal]="true">
+    <ng-container *ngIf="dialogVisible && data | isNotEmpty">
+      <p-table [value]="cache_positions" [(selection)]="sel_positions" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-lg"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+                <th class="text-lg">Type</th>
+                <th class="text-lg">Item</th>
+                <th class="text-lg">Description</th>
+                <th class="text-lg">Quantity</th>
+                <th class="text-lg">Quantity in bill</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-idx="rowIndex">
+            <tr>
+                <td class="text-lg">
+                  <p-tableCheckbox [value]="product" [inputId]=""></p-tableCheckbox>
+                </td>
+                <td class="text-lg"><span [innerHTML]="product.type.name"></span></td>
+                <td class="text-lg"><span [innerHTML]="product.internal_pos"></span></td>
+                <td class="text-lg"><span [innerHTML]="product.text"></span></td>
+                <td class="text-lg">
+                  <ng-container *ngIf="!excluded_postion.includes(product.type.id)">
+                    <p-inputNumber inputId="integeronly" [(ngModel)]="product.quantity"
+                                  [max]="data.positions[idx]['quantity']">
+                    </p-inputNumber>
+                  </ng-container>
+  
+                </td>
+                <td class="text-lg">
+                  <ng-container *ngIf="!excluded_postion.includes(product.type.id)">
+                    <span [innerHTML]="data.positions[idx]['quantity']"></span>
+                  </ng-container>
+                </td>
+            </tr>
+        </ng-template>
+  
+    </p-table>
+    </ng-container>
+    <ng-template pTemplate="footer">
+      <p-button styleClass="p-button-primary capitalize"
+                [label]="'Create '+sel_type"
+                [disabled]="!(sel_positions | isNotEmpty)"
+                (click)="processBill(sel_positions)"></p-button>
+    </ng-template>
+  </p-dialog>
+  

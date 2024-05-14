@@ -1,0 +1,48 @@
+<div class="h-full w-full surface-card" *apploading="detailsConfig?.isLoading">
+  <eg-details-container [config]="detailsContainer" [(data)]="data" [topic]="'org'">
+    <div class="h-full w-full overflow-hidden" content>
+      <p-scrollPanel styleClass="h-full w-full" *ngIf="detailsConfig && detailsConfig?.objArray| isNotEmpty">
+        <div class="flex flex-column">
+          <div class="flex flex-row  pb-3 border-bottom-1" *ngFor="let f of  form.formStructure;">
+            <div class="w-3 flex-grow-0 flex flex-column">
+              <div class="font-bolder text-2xl" [innerHTML]="f.header"></div>
+              <div class="text-lg" [innerHTML]="f.subheader"></div>
+
+            </div>
+            <div class="w-8">
+              <ng-container *ngFor="let a of f.fields;  let idxP = index; let isLast=last">
+                <ng-container [ngTemplateOutlet]="crudForm"
+                              [ngTemplateOutletContext]="{attr:a, index:idxP, isLast:isLast}">
+                </ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </p-scrollPanel>
+    </div>
+</eg-details-container>
+</div>
+
+
+
+
+<ng-template #crudForm let-attr="attr" let-index="index" let-isLast="isLast">
+  <ng-container *ngIf="detailsConfig && detailsConfig?.objArray | isNotEmpty">
+    <eg-template
+                  [title]="detailsConfig?.objArray[attr]?.['title']"
+                  [detailsConfig]="detailsConfig"
+                  [mode]="mode"
+                  [field]="attr"
+                  [hasTitle]="true"
+                  [isTwoLine]="false"
+                  [layout]="'grid'"
+                  [rendererType]="'name'"
+                  [isLast]="isLast"
+                  [titleClass]="''"
+                  [attr_class]="'w-3 text-lg'"
+                  [value_class]="'w-full p-4 pl-0 align-self-center'"
+                  [isRequired]="detailsConfig?.objArray[attr]?.required == true"
+                  (isChangedChange)="afterSaved($event)">
+    </eg-template>
+  </ng-container>
+</ng-template>

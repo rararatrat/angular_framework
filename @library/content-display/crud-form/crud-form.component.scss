@@ -1,0 +1,58 @@
+::ng-deep #egInPlace .p-inplace {
+  .p-button{
+    padding-right:1rem;
+    padding-left:1rem;
+  }
+
+   .p-inplace-display {
+      padding: unset;
+      border: 0px;
+
+      &:hover{
+        background: none;
+        font-weight: 600;
+        color: unset;
+
+      }
+
+      .locked{
+        &:hover{
+        background: none;
+        font-weight: 400;
+        color: unset;
+        :before {
+          color: var(--danger);
+        }
+      }
+    }
+  }
+
+  }
+
+
+  ::ng-deep #editViewCalendar{
+    &.p-inputwrapper-focus{
+      .p-inputtext{
+        border-bottom-left-radius: 0px;
+      }
+    }
+    .p-calendar-w-btn{
+      .p-inputtext{
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+      .p-datepicker-trigger{
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+      }
+    }
+  }
+  ::ng-deep #contentDispSelect{
+    .p-dropdown-label{
+      margin:0.25rem;
+    }
+    .p-dropdown-open{
+      border-bottom-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }

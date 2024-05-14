@@ -1,0 +1,48 @@
+::ng-deep #notification-card-sidebar .p-card {
+  .p-card-body{
+    padding: 0rem;
+  }
+  .p-card-content{
+    padding: 0rem;
+  }
+}
+
+.notification-card-sidebar{
+  min-height: 80px;
+  background-color: var(--surface-card);
+  border-radius: var(--eg-border-radius);
+  padding: 0.5rem;
+
+  &:hover
+  {
+    background-color: var(--plain-faded);
+    .not-action-column{
+      display: block !important;;
+    }
+  }
+
+}
+
+.not-action-column{
+  display: none !important;
+}
+.not-new-notif{
+  display: none !important;
+}
+.not-msg{
+ /*  dd::marker {
+    color: hotpink;
+    font-size: 2rem;
+  } */
+
+  dd {
+    display: list-item;
+    list-style-type: none;
+
+    margin-left: 0.5rem;
+  }
+}
+
+::ng-deep #vs .p-virtualscroller-item{
+  height: unset !important;
+}

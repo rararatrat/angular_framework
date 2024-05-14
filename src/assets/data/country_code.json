@@ -1,0 +1,2001 @@
+[
+  {
+    "name": "Afghanistan",
+    "code": "AF",
+    "timezone": "Afghanistan Standard Time",
+    "utc": "UTC+04: 30",
+    "dial_code": "+93",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Åland Islands",
+    "code": "AX",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+358-18",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Albania",
+    "code": "AL",
+    "timezone": "Central Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+355",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Algeria",
+    "code": "DZ",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+213",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "American Samoa",
+    "code": "AS",
+    "timezone": "UTC-11",
+    "utc": "UTC-11: 00",
+    "dial_code": "+1-684",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Andorra",
+    "code": "AD",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+376",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Angola",
+    "code": "AO",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+244",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Anguilla",
+    "code": "AI",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-264",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Antarctica",
+    "code": "AQ",
+    "timezone": "Pacific SA Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "code": "AG",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-268",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Argentina",
+    "code": "AR",
+    "timezone": "Argentina Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+54",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Armenia",
+    "code": "AM",
+    "timezone": "Caucasus Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+374",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Aruba",
+    "code": "AW",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+297",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Australia",
+    "code": "AU",
+    "timezone": "AUS Eastern Standard Time",
+    "utc": "UTC+10: 00",
+    "dial_code": "+61",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Austria",
+    "code": "AT",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+43",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Azerbaijan",
+    "code": "AZ",
+    "timezone": "Azerbaijan Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+994",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bahamas, The",
+    "code": "BS",
+    "timezone": "Eastern Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+1-242",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bahrain",
+    "code": "BH",
+    "timezone": "Arab Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+973",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bangladesh",
+    "code": "BD",
+    "timezone": "Bangladesh Standard Time",
+    "utc": "UTC+06: 00",
+    "dial_code": "+880",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Barbados",
+    "code": "BB",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-246",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Belarus",
+    "code": "BY",
+    "timezone": "Belarus Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+375",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Belgium",
+    "code": "BE",
+    "timezone": "Romance Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+32",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Belize",
+    "code": "BZ",
+    "timezone": "Central America Standard Time",
+    "utc": "UTC-06: 00",
+    "dial_code": "+501",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Benin",
+    "code": "BJ",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+229",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bermuda",
+    "code": "BM",
+    "timezone": "Atlantic Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-441",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bhutan",
+    "code": "BT",
+    "timezone": "Bangladesh Standard Time",
+    "utc": "UTC+06: 00",
+    "dial_code": "+975",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bolivarian Republic of Venezuela",
+    "code": "VE",
+    "timezone": "Venezuela Standard Time",
+    "utc": "UTC-04: 30",
+    "dial_code": "+58",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bolivia",
+    "code": "BO",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+591",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bonaire, Sint Eustatius and Saba",
+    "code": "BQ",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+599",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "code": "BA",
+    "timezone": "Central European Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+387",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Botswana",
+    "code": "BW",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+267",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bouvet Island",
+    "code": "BV",
+    "timezone": "UTC",
+    "utc": "UTC",
+    "dial_code": "+",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Brazil",
+    "code": "BR",
+    "timezone": "E. South America Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+55",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "British Indian Ocean Territory",
+    "code": "IO",
+    "timezone": "Central Asia Standard Time",
+    "utc": "UTC+06: 00",
+    "dial_code": "+246",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Brunei",
+    "code": "BN",
+    "timezone": "Singapore Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+673",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Bulgaria",
+    "code": "BG",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+359",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Burkina Faso",
+    "code": "BF",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+226",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Burundi",
+    "code": "BI",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+257",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cabo Verde",
+    "code": "CV",
+    "timezone": "Cape Verde Standard Time",
+    "utc": "UTC-01: 00",
+    "dial_code": "+238",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cambodia",
+    "code": "KH",
+    "timezone": "SE Asia Standard Time",
+    "utc": "UTC+07: 00",
+    "dial_code": "+855",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cameroon",
+    "code": "CM",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+237",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Canada",
+    "code": "CA",
+    "timezone": "Eastern Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+1",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cayman Islands",
+    "code": "KY",
+    "timezone": "SA Pacific Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+1-345",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Central African Republic",
+    "code": "CF",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+236",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Chad",
+    "code": "TD",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+235",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Chile",
+    "code": "CL",
+    "timezone": "Pacific SA Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+56",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "China",
+    "code": "CN",
+    "timezone": "China Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+86",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Christmas Island",
+    "code": "CX",
+    "timezone": "SE Asia Standard Time",
+    "utc": "UTC+07: 00",
+    "dial_code": "+61",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cocos (Keeling) Islands",
+    "code": "CC",
+    "timezone": "Myanmar Standard Time",
+    "utc": "UTC+06: 30",
+    "dial_code": "+61",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Colombia",
+    "code": "CO",
+    "timezone": "SA Pacific Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+57",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Comoros",
+    "code": "KM",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+269",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Congo",
+    "code": "CG",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+242",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Congo (DRC)",
+    "code": "CD",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+243",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cook Islands",
+    "code": "CK",
+    "timezone": "Hawaiian Standard Time",
+    "utc": "UTC-10: 00",
+    "dial_code": "+682",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Costa Rica",
+    "code": "CR",
+    "timezone": "Central America Standard Time",
+    "utc": "UTC-06: 00",
+    "dial_code": "+506",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Côte d'Ivoire",
+    "code": "CI",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+225",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Croatia",
+    "code": "HR",
+    "timezone": "Central European Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+385",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cuba",
+    "code": "CU",
+    "timezone": "Eastern Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+53",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Curaçao",
+    "code": "CW",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+599",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Cyprus",
+    "code": "CY",
+    "timezone": "E. Europe Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+357",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Czech Republic",
+    "code": "CZ",
+    "timezone": "Central Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+420",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Democratic Republic of Timor-Leste",
+    "code": "TL",
+    "timezone": "Tokyo Standard Time",
+    "utc": "UTC+09: 00",
+    "dial_code": "+670",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Denmark",
+    "code": "DK",
+    "timezone": "Romance Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+45",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Djibouti",
+    "code": "DJ",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+253",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Dominica",
+    "code": "DM",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-767",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Dominican Republic",
+    "code": "DO",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-809 and 1-829",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Ecuador",
+    "code": "EC",
+    "timezone": "SA Pacific Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+593",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Egypt",
+    "code": "EG",
+    "timezone": "Egypt Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+20",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "El Salvador",
+    "code": "SV",
+    "timezone": "Central America Standard Time",
+    "utc": "UTC-06: 00",
+    "dial_code": "+503",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Equatorial Guinea",
+    "code": "GQ",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+240",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Eritrea",
+    "code": "ER",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+291",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Estonia",
+    "code": "EE",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+372",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Ethiopia",
+    "code": "ET",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+251",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Falkland Islands (Islas Malvinas)",
+    "code": "FK",
+    "timezone": "SA Eastern Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+500",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Faroe Islands",
+    "code": "FO",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+298",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Fiji Islands",
+    "code": "FJ",
+    "timezone": "Fiji Standard Time",
+    "utc": "UTC+12: 00",
+    "dial_code": "+679",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Finland",
+    "code": "FI",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+358",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "France",
+    "code": "FR",
+    "timezone": "Romance Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+33",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "French Guiana",
+    "code": "GF",
+    "timezone": "SA Eastern Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+594",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "French Polynesia",
+    "code": "PF",
+    "timezone": "Hawaiian Standard Time",
+    "utc": "UTC-10: 00",
+    "dial_code": "+689",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "French Southern and Antarctic Lands",
+    "code": "TF",
+    "timezone": "West Asia Standard Time",
+    "utc": "UTC+05: 00",
+    "dial_code": "+",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Gabon",
+    "code": "GA",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+241",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Gambia, The",
+    "code": "GM",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+220",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Georgia",
+    "code": "GE",
+    "timezone": "Georgian Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+995",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Germany",
+    "code": "DE",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+49",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Ghana",
+    "code": "GH",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+233",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Gibraltar",
+    "code": "GI",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+350",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Greece",
+    "code": "GR",
+    "timezone": "GTB Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+30",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Greenland",
+    "code": "GL",
+    "timezone": "Greenland Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+299",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Grenada",
+    "code": "GD",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-473",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guadeloupe",
+    "code": "GP",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+590",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guam",
+    "code": "GU",
+    "timezone": "West Pacific Standard Time",
+    "utc": "UTC+10: 00",
+    "dial_code": "+1-671",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guatemala",
+    "code": "GT",
+    "timezone": "Central America Standard Time",
+    "utc": "UTC-06: 00",
+    "dial_code": "+502",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guernsey",
+    "code": "GG",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+44-1481",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guinea",
+    "code": "GN",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+224",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guinea-Bissau",
+    "code": "GW",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+245",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Guyana",
+    "code": "GY",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+592",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Haiti",
+    "code": "HT",
+    "timezone": "Eastern Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+509",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Heard Island and McDonald Islands",
+    "code": "HM",
+    "timezone": "Mauritius Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+ ",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Honduras",
+    "code": "HN",
+    "timezone": "Central America Standard Time",
+    "utc": "UTC-06: 00",
+    "dial_code": "+504",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Hong Kong SAR",
+    "code": "HK",
+    "timezone": "China Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+852",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Hungary",
+    "code": "HU",
+    "timezone": "Central Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+36",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Iceland",
+    "code": "IS",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+354",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "India",
+    "code": "IN",
+    "timezone": "India Standard Time",
+    "utc": "UTC+05: 30",
+    "dial_code": "+91",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Indonesia",
+    "code": "ID",
+    "timezone": "SE Asia Standard Time",
+    "utc": "UTC+07: 00",
+    "dial_code": "+62",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Iran",
+    "code": "IR",
+    "timezone": "Iran Standard Time",
+    "utc": "UTC+03: 30",
+    "dial_code": "+98",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Iraq",
+    "code": "IQ",
+    "timezone": "Arabic Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+964",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Ireland",
+    "code": "IE",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+353",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Israel",
+    "code": "IL",
+    "timezone": "Israel Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+972",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Italy",
+    "code": "IT",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+39",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Jamaica",
+    "code": "JM",
+    "timezone": "SA Pacific Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+1-876",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Jan Mayen",
+    "code": "SJ",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+47",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Japan",
+    "code": "JP",
+    "timezone": "Tokyo Standard Time",
+    "utc": "UTC+09: 00",
+    "dial_code": "+81",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Jersey",
+    "code": "JE",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+44-1534",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Jordan",
+    "code": "JO",
+    "timezone": "Jordan Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+962",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Kazakhstan",
+    "code": "KZ",
+    "timezone": "Central Asia Standard Time",
+    "utc": "UTC+06: 00",
+    "dial_code": "+7",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Kenya",
+    "code": "KE",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+254",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Kiribati",
+    "code": "KI",
+    "timezone": "UTC+12",
+    "utc": "UTC+12: 00",
+    "dial_code": "+686",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Korea",
+    "code": "KR",
+    "timezone": "Korea Standard Time",
+    "utc": "UTC+09: 00",
+    "dial_code": "+82",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Kosovo",
+    "code": "XK",
+    "timezone": "Central European Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Kuwait",
+    "code": "KW",
+    "timezone": "Arab Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+965",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Kyrgyzstan",
+    "code": "KG",
+    "timezone": "Central Asia Standard Time",
+    "utc": "UTC+06: 00",
+    "dial_code": "+996",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Laos",
+    "code": "LA",
+    "timezone": "SE Asia Standard Time",
+    "utc": "UTC+07: 00",
+    "dial_code": "+856",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Latvia",
+    "code": "LV",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+371",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Lebanon",
+    "code": "LB",
+    "timezone": "Middle East Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+961",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Lesotho",
+    "code": "LS",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+266",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Liberia",
+    "code": "LR",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+231",
+    "measurement_system": "imperial"
+  },
+  {
+    "name": "Libya",
+    "code": "LY",
+    "timezone": "E. Europe Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+218",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Liechtenstein",
+    "code": "LI",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+423",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Lithuania",
+    "code": "LT",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+370",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Luxembourg",
+    "code": "LU",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+352",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Macao SAR",
+    "code": "MO",
+    "timezone": "China Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+853",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Macedonia, Former Yugoslav Republic of",
+    "code": "MK",
+    "timezone": "Central European Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+389",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Madagascar",
+    "code": "MG",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+261",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Malawi",
+    "code": "MW",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+265",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Malaysia",
+    "code": "MY",
+    "timezone": "Singapore Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+60",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Maldives",
+    "code": "MV",
+    "timezone": "West Asia Standard Time",
+    "utc": "UTC+05: 00",
+    "dial_code": "+960",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mali",
+    "code": "ML",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+223",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Malta",
+    "code": "MT",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+356",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Man, Isle of",
+    "code": "IM",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+44-1624",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Marshall Islands",
+    "code": "MH",
+    "timezone": "UTC+12",
+    "utc": "UTC+12: 00",
+    "dial_code": "+692",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Martinique",
+    "code": "MQ",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+596",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mauritania",
+    "code": "MR",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+222",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mauritius",
+    "code": "MU",
+    "timezone": "Mauritius Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+230",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mayotte",
+    "code": "YT",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+262",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mexico",
+    "code": "MX",
+    "timezone": "Central Standard Time (Mexico)",
+    "utc": "UTC-06: 00",
+    "dial_code": "+52",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Micronesia",
+    "code": "FM",
+    "timezone": "West Pacific Standard Time",
+    "utc": "UTC+10: 00",
+    "dial_code": "+691",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Moldova",
+    "code": "MD",
+    "timezone": "GTB Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+373",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Monaco",
+    "code": "MC",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+377",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mongolia",
+    "code": "MN",
+    "timezone": "Ulaanbaatar Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+976",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Montenegro",
+    "code": "ME",
+    "timezone": "Central European Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+382",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Montserrat",
+    "code": "MS",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-664",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Morocco",
+    "code": "MA",
+    "timezone": "Morocco Standard Time",
+    "utc": "UTC",
+    "dial_code": "+212",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Mozambique",
+    "code": "MZ",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+258",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Myanmar",
+    "code": "MM",
+    "timezone": "Myanmar Standard Time",
+    "utc": "UTC+06: 30",
+    "dial_code": "+95",
+    "measurement_system": "imperial"
+  },
+  {
+    "name": "Namibia",
+    "code": "NA",
+    "timezone": "Namibia Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+264",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Nauru",
+    "code": "NR",
+    "timezone": "UTC+12",
+    "utc": "UTC+12: 00",
+    "dial_code": "+674",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Nepal",
+    "code": "NP",
+    "timezone": "Nepal Standard Time",
+    "utc": "UTC+05: 45",
+    "dial_code": "+977",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Netherlands",
+    "code": "NL",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+31",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "New Caledonia",
+    "code": "NC",
+    "timezone": "Central Pacific Standard Time",
+    "utc": "UTC+11: 00",
+    "dial_code": "+687",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "New Zealand",
+    "code": "NZ",
+    "timezone": "New Zealand Standard Time",
+    "utc": "UTC+12: 00",
+    "dial_code": "+64",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Nicaragua",
+    "code": "NI",
+    "timezone": "Central America Standard Time",
+    "utc": "UTC-06: 00",
+    "dial_code": "+505",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Niger",
+    "code": "NE",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+227",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Nigeria",
+    "code": "NG",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+234",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Niue",
+    "code": "NU",
+    "timezone": "UTC-11",
+    "utc": "UTC-11: 00",
+    "dial_code": "+683",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Norfolk Island",
+    "code": "NF",
+    "timezone": "Central Pacific Standard Time",
+    "utc": "UTC+11: 00",
+    "dial_code": "+672",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "North Korea",
+    "code": "KP",
+    "timezone": "Korea Standard Time",
+    "utc": "UTC+09: 00",
+    "dial_code": "+850",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Northern Mariana Islands",
+    "code": "MP",
+    "timezone": "West Pacific Standard Time",
+    "utc": "UTC+10: 00",
+    "dial_code": "+1-670",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Norway",
+    "code": "NO",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+47",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Oman",
+    "code": "OM",
+    "timezone": "Arabian Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+968",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Pakistan",
+    "code": "PK",
+    "timezone": "Pakistan Standard Time",
+    "utc": "UTC+05: 00",
+    "dial_code": "+92",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Palau",
+    "code": "PW",
+    "timezone": "Tokyo Standard Time",
+    "utc": "UTC+09: 00",
+    "dial_code": "+680",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Palestinian Authority",
+    "code": "PS",
+    "timezone": "Egypt Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+970",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Panama",
+    "code": "PA",
+    "timezone": "SA Pacific Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+507",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Papua New Guinea",
+    "code": "PG",
+    "timezone": "West Pacific Standard Time",
+    "utc": "UTC+10: 00",
+    "dial_code": "+675",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Paraguay",
+    "code": "PY",
+    "timezone": "Paraguay Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+595",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Peru",
+    "code": "PE",
+    "timezone": "SA Pacific Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+51",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Philippines",
+    "code": "PH",
+    "timezone": "Singapore Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+63",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Pitcairn Islands",
+    "code": "PN",
+    "timezone": "Pacific Standard Time",
+    "utc": "UTC-08: 00",
+    "dial_code": "+870",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Poland",
+    "code": "PL",
+    "timezone": "Central European Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+48",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Portugal",
+    "code": "PT",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+351",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Puerto Rico",
+    "code": "PR",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-787 and 1-939",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Qatar",
+    "code": "QA",
+    "timezone": "Arab Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+974",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Reunion",
+    "code": "RE",
+    "timezone": "Mauritius Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+262",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Romania",
+    "code": "RO",
+    "timezone": "GTB Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+40",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Russia",
+    "code": "RU",
+    "timezone": "Russian Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+7",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Rwanda",
+    "code": "RW",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+250",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Barthélemy",
+    "code": "BL",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+590",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Helena, Ascension and Tristan da Cunha",
+    "code": "SH",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+290",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "code": "KN",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-869",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Lucia",
+    "code": "LC",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-758",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Martin (French part)",
+    "code": "MF",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+590",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Pierre and Miquelon",
+    "code": "PM",
+    "timezone": "Greenland Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+508",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "code": "VC",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-784",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Samoa",
+    "code": "WS",
+    "timezone": "Samoa Standard Time",
+    "utc": "UTC+13: 00",
+    "dial_code": "+685",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "San Marino",
+    "code": "SM",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+378",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "São Tomé and Príncipe",
+    "code": "ST",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+239",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Saudi Arabia",
+    "code": "SA",
+    "timezone": "Arab Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+966",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Senegal",
+    "code": "SN",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+221",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Serbia",
+    "code": "RS",
+    "timezone": "Central Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+381",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Seychelles",
+    "code": "SC",
+    "timezone": "Mauritius Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+248",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Sierra Leone",
+    "code": "SL",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+232",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Singapore",
+    "code": "SG",
+    "timezone": "Singapore Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+65",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Sint Maarten (Dutch part)",
+    "code": "SX",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+599",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Slovakia",
+    "code": "SK",
+    "timezone": "Central Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+421",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Slovenia",
+    "code": "SI",
+    "timezone": "Central Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+386",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Solomon Islands",
+    "code": "SB",
+    "timezone": "Central Pacific Standard Time",
+    "utc": "UTC+11: 00",
+    "dial_code": "+677",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Somalia",
+    "code": "SO",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+252",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "South Africa",
+    "code": "ZA",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+27",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "South Georgia and the South Sandwich Islands",
+    "code": "GS",
+    "timezone": "UTC-02",
+    "utc": "UTC-02: 00",
+    "dial_code": "+",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "South Sudan",
+    "code": "SS",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+211",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Spain",
+    "code": "ES",
+    "timezone": "Romance Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+34",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Sri Lanka",
+    "code": "LK",
+    "timezone": "Sri Lanka Standard Time",
+    "utc": "UTC+05: 30",
+    "dial_code": "+94",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Sudan",
+    "code": "SD",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+249",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Suriname",
+    "code": "SR",
+    "timezone": "SA Eastern Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+597",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Svalbard",
+    "code": "SJ",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+47",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Swaziland",
+    "code": "SZ",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+268",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Sweden",
+    "code": "SE",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+46",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Switzerland",
+    "code": "CH",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+41",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Syria",
+    "code": "SY",
+    "timezone": "Syria Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+963",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Taiwan",
+    "code": "TW",
+    "timezone": "Taipei Standard Time",
+    "utc": "UTC+08: 00",
+    "dial_code": "+886",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Tajikistan",
+    "code": "TJ",
+    "timezone": "West Asia Standard Time",
+    "utc": "UTC+05: 00",
+    "dial_code": "+992",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Tanzania",
+    "code": "TZ",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+255",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Thailand",
+    "code": "TH",
+    "timezone": "SE Asia Standard Time",
+    "utc": "UTC+07: 00",
+    "dial_code": "+66",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Togo",
+    "code": "TG",
+    "timezone": "Greenwich Standard Time",
+    "utc": "UTC",
+    "dial_code": "+228",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Tokelau",
+    "code": "TK",
+    "timezone": "Tonga Standard Time",
+    "utc": "UTC+13: 00",
+    "dial_code": "+690",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Tonga",
+    "code": "TO",
+    "timezone": "Tonga Standard Time",
+    "utc": "UTC+13: 00",
+    "dial_code": "+676",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "code": "TT",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-868",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Tunisia",
+    "code": "TN",
+    "timezone": "W. Central Africa Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+216",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Turkey",
+    "code": "TR",
+    "timezone": "Turkey Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+90",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Turkmenistan",
+    "code": "TM",
+    "timezone": "West Asia Standard Time",
+    "utc": "UTC+05: 00",
+    "dial_code": "+993",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Turks and Caicos Islands",
+    "code": "TC",
+    "timezone": "Eastern Standard Time",
+    "utc": "UTC-05: 00",
+    "dial_code": "+1-649",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Tuvalu",
+    "code": "TV",
+    "timezone": "UTC+12",
+    "utc": "UTC+12: 00",
+    "dial_code": "+688",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "U.S. Minor Outlying Islands",
+    "code": "UM",
+    "timezone": "UTC-11",
+    "utc": "UTC-11: 00",
+    "dial_code": "+1",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Uganda",
+    "code": "UG",
+    "timezone": "E. Africa Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+256",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Ukraine",
+    "code": "UA",
+    "timezone": "FLE Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+380",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "United Arab Emirates",
+    "code": "AE",
+    "timezone": "Arabian Standard Time",
+    "utc": "UTC+04: 00",
+    "dial_code": "+971",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "United Kingdom",
+    "code": "GB",
+    "timezone": "GMT Standard Time",
+    "utc": "UTC",
+    "dial_code": "+44",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "United States",
+    "code": "US",
+    "timezone": "Pacific Standard Time",
+    "utc": "UTC-08: 00",
+    "dial_code": "+1",
+    "measurement_system": "imperial"
+  },
+  {
+    "name": "Uruguay",
+    "code": "UY",
+    "timezone": "Montevideo Standard Time",
+    "utc": "UTC-03: 00",
+    "dial_code": "+598",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Uzbekistan",
+    "code": "UZ",
+    "timezone": "West Asia Standard Time",
+    "utc": "UTC+05: 00",
+    "dial_code": "+998",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Vanuatu",
+    "code": "VU",
+    "timezone": "Central Pacific Standard Time",
+    "utc": "UTC+11: 00",
+    "dial_code": "+678",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Vatican City",
+    "code": "VA",
+    "timezone": "W. Europe Standard Time",
+    "utc": "UTC+01: 00",
+    "dial_code": "+379",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Vietnam",
+    "code": "VN",
+    "timezone": "SE Asia Standard Time",
+    "utc": "UTC+07: 00",
+    "dial_code": "+84",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Virgin Islands, U.S.",
+    "code": "VI",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-340",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Virgin Islands, British",
+    "code": "VG",
+    "timezone": "SA Western Standard Time",
+    "utc": "UTC-04: 00",
+    "dial_code": "+1-284",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Wallis and Futuna",
+    "code": "WF",
+    "timezone": "UTC+12",
+    "utc": "UTC+12: 00",
+    "dial_code": "+681",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Yemen",
+    "code": "YE",
+    "timezone": "Arab Standard Time",
+    "utc": "UTC+03: 00",
+    "dial_code": "+967",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Zambia",
+    "code": "ZM",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+260",
+    "measurement_system": "metric"
+  },
+  {
+    "name": "Zimbabwe",
+    "code": "ZW",
+    "timezone": "South Africa Standard Time",
+    "utc": "UTC+02: 00",
+    "dial_code": "+263"
+  }
+]

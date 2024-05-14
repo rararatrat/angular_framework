@@ -1,0 +1,50 @@
+<div class="w-full h-full">
+  <eg-details-container [config]="config" [(data)]="data" [topic]="'import_export'">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngSwitch]="activeIndex">
+        <ng-container *ngSwitchCase="0" [ngTemplateOutlet]="template1"></ng-container>
+        <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="template2"></ng-container>
+        <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="template3"></ng-container>
+
+      </ng-container>
+    </div>
+  </eg-details-container>
+</div>
+
+<ng-template #template1>
+
+
+  <table class="custom-table">
+    <tr>
+      <th>Code</th>
+      <th>Name</th>
+  </tr>
+    <tr *ngFor="let pro of products">
+      <td>{{ pro.code }}</td>
+      <td>{{ pro.name }}</td>
+  </tr>
+  </table>
+<!--   <p-table [value]="products" styleClass="custom-table" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="caption"> Header </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr>
+            <td>{{ product.code }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.quantity }}</td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary"> Footer </ng-template>
+</p-table> -->
+
+</ng-template>
+<ng-template #template2>2</ng-template>
+<ng-template #template3>3</ng-template>

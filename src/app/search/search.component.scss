@@ -1,0 +1,27 @@
+.srch-category{
+  border-radius: 1.5rem;
+  background: var(--surface-card);
+  padding:1rem;
+  border: 0.05rem solid var(--border-color);
+}
+
+.srch-result{
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--eg-border-radius);
+  padding: 0.5rem;
+  width: 50rem;
+
+  &:hover{
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08) !important  ;
+  }
+
+  .title{
+    color: blue;
+    font-weight: 800;;
+  }
+  .link{
+    color: green;
+  }
+
+}

@@ -1,0 +1,55 @@
+
+<div class="grid h-full">
+  <div class="col-12 m-auto">
+
+    <div class="flex flex-grow-0 align-items-center mb-4">
+      <div class="text-6xl font-bold" [innerHTML]="'translations.register' | translate"></div>
+    </div>
+
+    <div class="flex flex-column gap-3" >
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <div class="flex w-full gap-2 ">
+          <div class="flex  w-full flex-column gap-2 mt-2" *ngIf="('translations.firstName' | translate) as _var">
+            <label htmlFor="firstname" class="font-semibold" [innerHTML]="_var"></label>
+            <input class="p-inputtext-lg py-3" formControlName="first_name" pInputText id="firstname" aria-describedby="firstname-help" />
+            <small id="firstname-help" [innerHTML]="'translations.enter_your' | translate : {item: _var}"></small>
+          </div>
+          <div class="flex w-full flex-column gap-2 mt-2" *ngIf="('translations.lastName' | translate) as _var">
+            <label htmlFor="lastname" class="font-semibold" [innerHTML]="_var"></label>
+            <input class="p-inputtext-lg py-3" formControlName="last_name" pInputText id="lastname" aria-describedby="lastname-help" />
+            <small id="lastname-help"[innerHTML]="'translations.enter_your' | translate : {item: _var}"></small>
+          </div>
+        </div>
+
+
+        <div class="flex flex-column gap-2 mt-5" *ngIf="('translations.email' | translate) as _var">
+          <label htmlFor="email" class="font-semibold" [innerHTML]="_var"></label>
+          <input class="p-inputtext-lg py-3" formControlName="email" id="email" type="email" pInputText aria-describedby="email-help" />
+          <small id="email-help" [innerHTML]="'translations.enter_your' | translate : {item: _var}"></small>
+        </div>
+        <div class="flex flex-column gap-2 mt-5" *ngIf="('translations.username' | translate) as _var">
+          <label htmlFor="username" class="font-semibold" [innerHTML]="_var"></label>
+          <input class="p-inputtext-lg py-3" formControlName="username" pInputText id="username" aria-describedby="username-help" />
+          <small id="username-help" [innerHTML]="'translations.enter_your' | translate : {item: _var}"></small>
+        </div>
+
+        <div class="flex flex-column gap-2 mt-5" *ngIf="('translations.password' | translate) as _var">
+          <label htmlFor="password" class="font-semibold" [innerHTML]="_var"></label>
+          <input class="p-inputtext-lg py-3" formControlName="password" [feedback]="false" pPassword type="password" id="password" aria-describedby="username-help" />
+          <small id="password-help" [innerHTML]="'translations.enter_your' | translate : {item: _var}"></small>
+        </div>
+
+        <div class="flex flex-column mt-5 w-full">
+          <p-button (click)="register()" [label]="'translations.register' | translate"
+                    styleClass="p-button-lg w-full py-3"
+                    [disabled]="!registerForm.valid"
+                    [type]="'submit'"></p-button>
+        </div>
+      </form>
+
+
+    </div>
+
+
+  </div>
+</div>

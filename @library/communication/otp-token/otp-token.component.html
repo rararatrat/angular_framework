@@ -1,0 +1,61 @@
+<p-dialog [modal]="true"
+          [header]="customDialogConfig?.header || ''"
+          [visible]="customDialogConfig?.visible"
+          [class.hidden]="!customDialogConfig?.visible"
+          [breakpoints]="customDialogConfig?.breakpoints"
+          [style]="{'width.rem':40}"
+          [draggable]="customDialogConfig?.draggable == true"
+          [resizable]="customDialogConfig?.resizable == true"
+          [position]="(customDialogConfig?.position || 'center')"
+          [closable]="customDialogConfig?.closable == true"
+          [closeOnEscape]="customDialogConfig?.closeOnEscape == true">
+
+        <ng-template pTemplate="header">
+
+          <div class="flex flex-column card-container green-container">
+
+                <div class="flex justify-content-between flex-wrap ">
+                  <div class="flex align-items-center justify-content-center">
+                    <b class="text-3xl">OTP Required</b>
+                  </div>
+                  <div class="flex align-items-center justify-content-center">
+                    <span class="bg-gray-400 border-radius-12 eg-p-4 p-1 bold" *ngIf="emailRequest">
+                      <i class="pi pi-clock"></i> {{timeLeft | time}}
+                    </span>
+                  </div>
+              </div>
+              <div class="flex" *ngIf="!isApproved">
+                <span class="text-base">This action requires an One Time Password,
+                  <a class="text-base" *ngIf="!emailRequest">Please open the Authenticator App on your Mobile Device and Enter the Token</a>
+                  <a class="text-base" *ngIf="emailRequest">We have sent the token email to <b>{{currUser.email}}</b> it will expire in <b *ngIf="emailRequest">{{timeLeft | time}}</b></a>
+                </span>
+              </div>
+              <div class="flex" *ngIf="isApproved">
+                <span class="text-base">Approved Reloading in {{timeLeft | time}}</span>
+              </div>
+          </div>
+
+
+        </ng-template>
+        <ng-template pTemplate="content" class="w-full" >
+          <div class="flex justify-content-center flex-wrap" *ngIf="!isApproved">
+              <div class="flex align-items-center justify-content-center ">
+                <ng-otp-input [formCtrl]="otp"  [config]="otpConfig"></ng-otp-input>
+              </div>
+              <div class="flex align-items-center justify-content-center mt-2">
+                <span class="text-sm" *ngIf="isProvisioned">
+                  <a class="cursor-pointer text-primary bold" (click)="requestForEmailToken()" >Click Here</a> to get a Token sent to your email address.
+                </span>
+              </div>
+          </div>
+          <div class="flex justify-content-center flex-wrap" *ngIf="isApproved">
+            <div class="flex align-items-center justify-content-center ">
+              <i class="pi pi-check-circle fs-8-em text-green-400"></i>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button type="button" pButton class="p-button-outlined p-button-danger"  icon="pi pi-times" label="Cancel" *ngIf="!isApproved" (click)="customDialogConfig.visible = false"></button>
+            <button type="button" pButton icon="pi pi-check" label="Approve" *ngIf="!isApproved" [disabled]="!otp.valid" (click)="customDialogConfig.onConfirm()"></button>
+        </ng-template>
+</p-dialog>

@@ -1,0 +1,49 @@
+<ng-container>
+  <ng-container *ngIf="isDebug">
+    avatar:   {{avatar | json}}
+    appId:    {{ app_id | json}}
+    newNotif: {{newNotif}}
+    <!-- userId: {{sharedService.appConfig.userId | json}} -->
+  </ng-container>
+  <button pButton pRipple type="button"         class="p-button-rounded p-button-text p-button-plain vertical-align-middle" (click)="toggleRightbar('notification')" >
+    <i *ngIf="newNotif" class="text-lg fa-regular fa-bell" pBadge value="&nbsp;" severity="danger" ></i>
+    <i *ngIf="!newNotif" class="text-lg fa-regular fa-bell" ></i>
+  </button>
+  <button pButton pRipple type="button" icon="text-lg fa-solid fa-grip-vertical"          class=" p-button-rounded p-button-text p-button-plain vertical-align-middle" (click)="appOverlay.toggle($event)"></button>
+  <button pButton pRipple type="button" icon="text-lg fa-regular fa-circle-question"   class=" p-button-rounded p-button-text p-button-plain vertical-align-middle" (click)="toggleRightbar('help')"></button>
+  <button pButton pRipple type="button" icon="text-lg fa-regular fa-address-book"              class=" mr-2 p-button-rounded p-button-text p-button-plain vertical-align-middle" (click)="toggleRightbar('contacts')"></button>
+  <!-- <button pButton pRipple type="button" icon="pi pi-comments"         class="p-button-rounded p-button-text p-button-plain vertical-align-middle" (click)="toggleRightbar('chat')"></button> -->
+
+  <button *ngIf="!(avatar | isNotEmpty) || avatar=='link to picture'" pButton pRipple type="button" [label]="initials" class="p-button-rounded p-button-plain p-button-primary" (click)="userMenu.toggle($event)"></button>
+
+  <p-avatar #pAvatar *ngIf="(avatar | isNotEmpty) && (avatar != 'link to picture')"
+            [image]="avatar" referrerpolicy="no-referrer"
+            class="cursor-pointer vertical-align-middle"
+            size="large"
+            shape="circle" (click)="userMenu.toggle($event)"></p-avatar>
+  <p-tieredMenu  id="userMenu" #userMenu [popup]="true" [model]="items" [appendTo]="'body'"></p-tieredMenu> <!-- [style]="{outline:'unset'}" -->
+
+  <p-overlayPanel #appOverlay id="appOverlay"
+                  [showCloseIcon]="false"
+                  [style]="{width: '16rem', overflow: 'overlay', background: 'var(--surface-ground)', outline:'unset'}">
+      <ng-template pTemplate>
+          <div class="grid h-full">
+            <div class="col-6 app-menu" *ngFor="let pos of apps; trackBy: trackByFn">
+              <div  class="flex flex-column align-items-center h-5rem app-menu-item p-2"
+                    (click)="appOverlay.toggle($event)"
+                    [routerLink]="pos?.['routerLink'] || '/'"
+                    [routerLinkActive]="'active'">
+                  <div class="flex-grow-1 flex justify-content-center">
+                    <i [class]="pos?.['icon'] +' text-4xl'"></i>
+                  </div>
+                  <div class="flex-grow-0 ">
+                    <span class="text font-medium" [innerHTML]="pos?.['label']"></span>
+                  </div>
+              </div>
+            </div>
+          </div>
+      </ng-template>
+  </p-overlayPanel>
+    
+
+</ng-container>

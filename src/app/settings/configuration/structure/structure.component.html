@@ -1,0 +1,300 @@
+<eg-details-container [config]="config" [(data)]="data" [topic]="'organization'">
+  <div class="w-full h-full max-w-full surface-card border-round" content>
+    <ng-container [ngSwitch]="activeIndex">
+      <ng-container *ngSwitchCase="0" [ngTemplateOutlet]="template1"></ng-container>
+      <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="template2"></ng-container>
+      <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="template3"></ng-container>
+      <ng-container *ngSwitchCase="3" [ngTemplateOutlet]="template3"></ng-container>
+      <ng-container *ngSwitchCase="4" [ngTemplateOutlet]="template3"></ng-container>
+    </ng-container>
+  </div>
+</eg-details-container>
+
+
+<ng-template #template1>
+  <eg-grid-list *ngIf="activeIndex == 0"
+                #gridList [gridListId]="'settings_org_dept_type'"
+                [type]="type"
+                [showHeader]="true"
+                [config]="gridListConfig">
+  </eg-grid-list>
+</ng-template>
+
+<ng-template #template2>
+  <eg-grid-list *ngIf="activeIndex == 1"
+                #gridList [gridListId]="'settings_org_dept'"
+                [type]="type"
+                [showHeader]="true"
+                [config]="gridListConfig">
+  </eg-grid-list>
+</ng-template>
+
+<ng-template #template3>
+  <eg-details-container
+                        [config]="orgDetails"
+                        [(data)]="data"
+                        [topic]="'organization'"
+                        [closeIcon]="false">
+
+    <div class="oeverflow-scroll" content>
+
+      <eg-org-chart #orgChartComp
+                    [(options)]="orgOptions"
+                    [config]="orgChart"
+                    class="max-w-full"
+                    [topicId]="orgId"
+                    [topic]="'organization'">
+        <div header>
+          <div class="flex flex-row p-2" *ngIf="!isContentLoading">
+            <div class="flex-grow-0 flex align-items-center pr-2" *ngIf=" (selectedNode?.__data__?.logo | isNotEmpty) || (selectedNode?.selected_user?.picture | isNotEmpty) ">
+              <p-avatar [image]="selectedNode?.__data__?.logo || selectedNode?.selected_user?.picture"
+                        (onImageError)="imageErr($event)"
+                        size="xlarge"
+                shape="circle"></p-avatar>
+            </div>
+            <div class="flex-grow-1 flex flex-column align-items-start ">
+              <div class="text-3xl font-semibold" [innerHTML]="'Update'"></div>
+              <div class="text-xl" [innerHTML]="selectedNode?.__data__?.name"></div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+        <ng-template #formTemplate let-tplData>
+          <div class="h-full w-full" *apploading="isContentLoading">
+            <ng-container *ngIf="detailsConfig && detailsConfig.objArray |  isNotEmpty">
+              <ng-container [ngSwitch]="current">
+                  <ng-container *ngSwitchCase="'org_myusers'" [ngTemplateOutlet]="userUpdate" [ngTemplateOutletContext]="{$implicit:tplData.data}"></ng-container>
+                  <ng-container *ngSwitchDefault [ngTemplateOutlet]="orgUpdate" [ngTemplateOutletContext]="{$implicit:tplData.data}"></ng-container>
+              </ng-container>
+
+<!--               <div *ngFor="let a of config.formProperty.formStructure">
+
+                <ng-container [ngTemplateOutlet]="form_structure"
+                              [ngTemplateOutletContext]="{$implicit:{label:a, data:a}}">
+                </ng-container>
+              </div> -->
+            </ng-container>
+          </div>
+        </ng-template>
+
+      </eg-org-chart>
+    </div>
+  </eg-details-container>
+</ng-template>
+
+
+
+
+<ng-template #userUpdate let-content>
+  <div class="flex flex-column" *apploading="isContentLoading ">
+    <div class="" *ngIf="content">
+      <p-divider align="left">
+        <div class="inline-flex align-items-center">
+            <span class="text-xl font-semibold" [innerHTML]="'Team Details'"></span>
+        </div>
+      </p-divider>
+      <div *ngIf="config.formProperty.formStructure">
+        <div *ngFor="let a of config.formProperty.formStructure">
+          <ng-container [ngTemplateOutlet]="form_structure"
+                        [ngTemplateOutletContext]="{$implicit:{label:a, data:a}}">
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="" *ngIf="content">
+      <p-divider align="left">
+        <div class="inline-flex align-items-center">
+            <span class="text-xl font-semibold" [innerHTML]="'Action'"></span>
+        </div>
+      </p-divider>
+      <div class="mb-2">
+        <button pButton class="p-button p-button-danger text-semibold" (click)="updates(current, 'remove_frm_team')">
+          <i class="fa-solid fa-trash mr-1"></i>
+          <span [innerHTML]="'translations.remove' | translate" class="mr-1"></span>
+          <span [innerHTML]="selectedNode?.selected_user?.name | capitalizeFirst" class="mr-1"></span>
+          <span [innerHTML]="'translations.from_this_group' | translate"></span>
+        </button>
+      </div>
+      <p-accordion [activeIndex]="0">
+        <p-accordionTab [header]="'Move '+(selectedNode?.selected_user?.name | capitalizeFirst)+' to Another Team'"
+                        headerStyleClass="border-1"
+                        *ngIf="deptList && deptList.avail | isNotEmpty">
+          <ng-template pTemplate="icon">
+            <i class="fa-solid fa-plus mr-2 text-sucess"></i>
+          </ng-template>
+          <ng-container *ngIf="content && !isLoading">
+            <div class="card flex  flex-wrap justify-content-center cursor-pointer">
+              <div class="bg-primary-faded p-4 m-2 cursor-pointer border-round font-bold text-lg transition-colors transition-duration-500 hover:bg-primary  hover:text-white"
+                  *ngFor="let a of deptList?.avail" (click)="updates(current, 'changeTeam', a)">
+                  <span [innerHTML]="a.name"></span>
+              </div>
+          </div>
+          </ng-container>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+
+    <div class="" *ngIf="content">
+      <p-divider align="left">
+        <div class="inline-flex align-items-center">
+            <span class="text-xl font-semibold" [innerHTML]="'User Details'"></span>
+        </div>
+      </p-divider>
+    </div>
+    <div *ngIf="(usrDetailsConfig?.objArray | isNotEmpty) && (content | isNotEmpty)">
+      <eg-template
+            *ngFor="let f of usrConfig?.formProperty?.formStructure"
+             [detailsConfig]="usrDetailsConfig"
+             [field]="f"
+             [title]="f"
+             [isTwoLine]="false"
+             [layout]="'flex'"
+             [config]="'complete'"
+             [hasTitle]="true"
+             [rendererType]="'name'">
+      </eg-template>
+
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #orgUpdate let-content>
+
+  <div class="flex flex-column w-full h-full" >
+    <div class=""  *ngIf="content">
+      <p-divider align="left">
+        <div class="inline-flex align-items-center">
+            <span class="text-xl font-semibold" [innerHTML]="'Details'"></span>
+        </div>
+      </p-divider>
+
+      <div *ngIf="(usrDetailsConfig?.objArray | isNotEmpty) && (content | isNotEmpty)">
+        <eg-template
+                *ngFor="let f of usrConfig?.formProperty?.formStructure"
+                 [detailsConfig]="usrDetailsConfig"
+                 [field]="f"
+                 [title]="f"
+                 [isTwoLine]="false"
+                 [layout]="'flex'"
+                 [config]="'complete'"
+                 [hasTitle]="true"
+                 [rendererType]="'name'">
+        </eg-template>
+      </div>
+    </div>
+
+    <div class=""  *ngIf="content">
+      <p-divider [align]="'left'">
+        <div class="inline-flex align-items-center">
+            <span class="text-xl font-semibold" [innerHTML]="'Action'"></span>
+        </div>
+      </p-divider>
+
+      <p-accordion>
+        <p-accordionTab header="Add A Child" headerStyleClass="border-1" *ngIf="this.orgList.avail_child.length > 0">
+          <ng-template pTemplate="icon">
+            <i class="fa-solid fa-plus mr-2 text-sucess"></i>
+          </ng-template>
+          <ng-container *ngIf="content && !isLoading">
+            <div class="flex  flex-wrap justify-content-center ">
+              <div  class="bg-primary-faded p-4 m-2 cursor-pointer border-round font-bold text-lg transition-colors transition-duration-500 hover:bg-primary  hover:text-white"
+                    *ngFor="let a of this.orgList.avail_child"
+                    (click)="updates(current, 'add_child', a)">
+                  <span [innerHTML]="a.name"></span>
+              </div>
+            </div>
+          </ng-container>
+        </p-accordionTab>
+
+        <p-accordionTab header="Add A parent" headerStyleClass="border-1" *ngIf="selectedNode.curr_role != 'head' && this.orgList.avail_parent.length > 0">
+          <ng-template pTemplate="icon">
+            <i class="fa-solid fa-plus mr-2 text-sucess"></i>
+          </ng-template>
+          <ng-container *ngIf="content && !isLoading">
+            <div class="flex flex-wrap justify-content-center">
+              <div class="bg-primary-faded p-4 m-2 cursor-pointer border-round font-bold text-lg transition-colors transition-duration-500 hover:bg-primary  hover:text-white"
+                  *ngFor="let a of this.orgList.avail_parent"
+                  (click)="updates(current, 'add_parent', a)">
+                  <span [innerHTML]="a.name"></span>
+              </div>
+            </div>
+          </ng-container>
+
+        </p-accordionTab>
+
+        <p-accordionTab *ngIf="(content.children | isNotEmpty) && this.orgList.child.length > 0" header="Remove child" headerStyleClass="border-1 " >
+          <ng-template pTemplate="icon">
+            <i class="fa-solid fa-trash mr-2 text-danger"></i>
+          </ng-template>
+          <ng-container *ngIf="content && !isLoading">
+            <div class="flex flex-wrap justify-content-center">
+              <div  class="bg-primary-faded p-4 m-2 cursor-pointer border-round font-bold text-lg transition-colors transition-duration-500 hover:bg-primary  hover:text-white"
+                    *ngFor="let a of this.orgList.child"
+                    (click)="updates(current, 'remove_child', a)">
+                <span [innerHTML]="a.name"></span>
+              </div>
+            </div>
+          </ng-container>
+        </p-accordionTab>
+
+        <p-accordionTab header="Remove parent" headerStyleClass="border-1 " *ngIf="selectedNode.curr_role != 'head' && this.orgList.parent.length > 0">
+          <ng-template pTemplate="icon">
+            <i class="fa-solid fa-trash mr-2 text-danger"></i>
+          </ng-template>
+
+          <ng-container *ngIf="content && !isLoading &&  this.orgList.parent.length > 0">
+            <div class="flex flex-wrap justify-content-center">
+              <div  class="bg-primary-faded p-4 m-2 cursor-pointer border-round font-bold text-lg transition-colors transition-duration-500 hover:bg-primary  hover:text-white"
+                    *ngFor="let a of this.orgList.parent"
+                    (click)="updates(current, 'remove_parent', a)">
+                  <span [innerHTML]="a.name"></span>
+              </div>
+            </div>
+          </ng-container>
+
+        </p-accordionTab>
+
+        <p-accordionTab header="Change Parent " headerStyleClass="border-1" *ngIf="selectedNode.curr_role != 'head' && this.orgList.avail_parent.length > 0">
+          <ng-template pTemplate="icon">
+            <i class="fa-solid fa-pencil mr-2 text-warn"></i>
+          </ng-template>
+          <ng-container *ngIf="content && !isLoading">
+            <div class="flex flex-wrap justify-content-center">
+              <div  class="bg-primary-faded p-4 m-2 cursor-pointer border-round font-bold text-lg transition-colors transition-duration-500 hover:bg-primary  hover:text-white"
+                    *ngFor="let a of this.orgList.avail_parent"
+                    (click)="updates(current, 'change_parent', a)">
+                    <span [innerHTML]="a.name"></span>
+              </div>
+            </div>
+          </ng-container>
+        </p-accordionTab>
+
+      </p-accordion>
+
+
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #form_structure let-content>
+ <ng-container *ngIf="content">
+   <eg-template
+               [detailsConfig]="detailsConfig"
+               [field]="content.data"
+               [title]="content.data"
+               [isTwoLine]="false"
+               [layout]="'flex'"
+               [config]="'complete'"
+               [hasTitle]="true"
+
+
+               [rendererType]="'icon-name'">
+
+   </eg-template>
+ </ng-container>
+</ng-template>

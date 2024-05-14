@@ -1,0 +1,100 @@
+<ng-container [ngSwitch]="formGroup">
+  <!-- icon {{ icon | json }} -->
+  <ng-container *ngSwitchCase="null" [ngTemplateOutlet]="selectNormal"></ng-container>
+  <ng-container *ngSwitchDefault [ngTemplateOutlet]="selectFormControl" ></ng-container>
+</ng-container>
+
+<ng-template #selectFormControl>
+  <ng-container [formGroup]="formGroup"  *ngIf="results">
+    <!-- <span [class.p-input-icon-left]="icon | isNotEmpty">
+      <i *ngIf="icon | isNotEmpty" [class]="icon"></i> -->
+      <p-dropdown id="contentDispSelect"
+                  #contentDispSelect
+                  [options]="results"
+                  [formControlName]="formControlName"
+                  [optionLabel]="attribute?.title"
+                  [filter]="true"
+                  [filterBy]="filterFields"
+                  [showClear]="!readonly"
+                  [placeholder]="placeholder"
+                  [styleClass]="styleClass + ((attribute?.colors | isNotEmpty) ? ' p-dropdown-colors' : '') "
+                  [panelStyleClass]="'w-full ' + ((attribute?.colors | isNotEmpty) ? 'p-dropdown-colors' : '') "
+                  (onChange)="onSelect($event)"
+                  [selectOnFocus]="false"
+                  [appendTo]="'body'"
+                  [autoDisplayFirst]="false"
+                  [dataKey]="attribute?.title"
+                  [readonly]="readonly"
+                  >
+
+      <ng-template let-selItem pTemplate="selectedItem">
+        <ng-container *ngIf="attribute?.colors">
+          <!-- [class.bg-primary-faded]="['bg-primary-faded', 'bg-primary-faded text-primary', 'bg-secondary-faded', 'text-secondary', 'bg-secondary-faded text-secondary'].includes(selItem.value)"  -->
+          <div [class]="(selItem?.value || '') + ' p-2 flex-initial'" [innerHTML]="attribute?.colors?.type == 'bg_color' ? '&nbsp;' : (selItem?.value || '')"></div>
+        </ng-container>
+        <ng-container *ngIf="!attribute?.colors">
+          <!-- {{selItem | json}} -->
+          <div class="flex">
+            <div class="flex-initial mr-2" *ngIf="attribute?.icon != null ">
+              <i class="{{(attribute?.icon?.iconPrefix)}}{{(selItem?.[attribute?.icon?.iconSuffix] || '') | lowercase }} border-circle"></i>
+            </div>
+            <div class="flex-initial" [innerHTML]="selItem?.[attribute?.title] || ''"></div>
+          </div>
+        </ng-container>
+      </ng-template>
+
+      <ng-template let-optionItem pTemplate="item">
+        <div class="flex p-0" [ngSwitch]="attribute?.colors | isNotEmpty">
+          <!-- [class.bg-primary-faded]="optionItem['value']=='text-secondary'" [class]="optionItem['value'] + ' full-width m-0 p-0'" [innerHTML]="attribute?.colors?.type == 'bg_color' ? '&nbsp;' : optionItem['value']" -->
+          <!-- [class.bg-primary-faded]="(optionItem['value'] || '').includes('secondary')" -->
+          <div *ngSwitchCase="true" [class]="optionItem['value'] + ' full-width p-2'" [innerHTML]="attribute?.colors?.type == 'bg_color' ? '&nbsp;' : optionItem['value']"></div>
+          <ng-container *ngSwitchCase="false">
+            <div class="flex-initial align-items-center mr-2" *ngIf="attribute?.icon != null">
+              <i class="{{(attribute?.icon?.iconPrefix) }}{{optionItem[attribute?.icon?.iconSuffix] | lowercase }} border-circle"></i>
+            </div>
+            <div [class]="attribute?.description ? 'flex flex-column' : ''">
+              <div class="flex-initial align-items-center my-auto" [innerHTML]="optionItem[attribute?.title]"></div>
+              <div *ngIf="attribute?.description_formatter || attribute?.description" class="flex-initial align-items-center my-auto" [innerHTML]="attribute.description_formatter ? attribute.description_formatter(optionItem) : optionItem[attribute.description]"></div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+      </p-dropdown>
+    <!-- </span> -->
+  </ng-container>
+</ng-template>
+
+<ng-template #selectNormal> <!-- {code, name} -->
+  <!-- selectNormal -->
+  <!-- <span [class.p-input-icon-left]="icon | isNotEmpty">
+    <i *ngIf="icon | isNotEmpty" [class]="icon"></i> -->
+    <p-dropdown id="contentDispSelect"
+                [options]="results"
+                [optionLabel]="attribute?.title"
+                [filter]="true"
+                [filterBy]="filterFields"
+                [showClear]="true"
+                [placeholder]="placeholder"
+                [styleClass]="styleClass"
+                >
+        <ng-template let-selItem pTemplate="selectedItem">
+          {{selItem | json}}
+          <div class="flex">
+            <div class="flex-initial mr-2">
+              <i *ngIf="selItem.code != null" class="fi fis fi-{{selItem.code | lowercase }} border-circle"></i>
+              <!-- <i *ngIf="icon | isNotEmpty" [class]="icon"></i> -->
+            </div>
+            <div class="flex-initial" [innerHTML]="selItem.name"></div>
+          </div>
+        </ng-template>
+        <ng-template let-optionItem pTemplate="item">
+          <div class="flex">
+            <div class="flex-initial align-items-center mr-2"><i
+                class="fi fis fi-{{optionItem.code | lowercase }} border-circle fs-2-em"></i></div>
+            <div class="flex-initial align-items-center my-auto" [innerHTML]="optionItem.name"></div>
+          </div>
+        </ng-template>
+    </p-dropdown>
+  <!-- </span> -->
+
+</ng-template>

@@ -1,0 +1,102 @@
+<div class="grid grid-nogutter"  *apploading="!(appList | isNotEmpty)">
+  <div class="col-3 p-2">
+    <h2 class="mt-0" [innerHTML]="'translations.app_preference' | translate : {count: 2}"></h2>
+    <span [innerHTML]="'translations.preference_desc' | translate"></span>
+  </div>
+  <div class="col-8 p-2">
+    <div class="flex flex-column">
+      <div class="flex list-simple-item p-2">
+        <div class="flex-grow-0 m-auto field-name w-14rem">
+          <span class="font-semibold" [innerHTML]="'translations.choose_your_color_scheme' | translate"></span>
+        </div>
+        <div class="flex-grow-1 m-auto ml-2 field-details w-20rem">
+          <div class="flex flex-row flex-wrap">
+
+            <div  class="flex align-items-center justify-content-center detail-nav-list-item m-1"
+                  *ngFor="let s of scheme.options"
+                  (click)="onChange('scheme', s)"
+                  [ngClass]="{'detail-nav-list-item-active': s.value == scheme.value.value}">
+              <i [class]="s.icon"></i> <span class="ml-2" [innerHTML]="s.label"></span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="flex list-simple-item p-2">
+        <div class="flex-grow-0 flex-column mt-2 field-name w-14rem">
+          <div class="flex"> <span class="font-semibold" [innerHTML]="'translations.choose_your_layout' | translate"></span> </div>
+          <div class="flex mt-2">
+            <p-inputSwitch inputId="globalMenubarPref" [(ngModel)]="user.globalMenubarPref" (ngModelChange)="onChange('global_menubar', $event)"></p-inputSwitch>
+            <span class="ml-2" [innerHTML]="'translations.global' | translate"></span>
+          </div>
+        </div>
+        <div class="flex-grow-1 m-auto ml-2 field-details w-20rem">
+          <div class="flex flex-row flex-wrap">
+            <div  class="flex align-items-center justify-content-center detail-nav-list-item m-1"
+                  *ngFor="let l of layout?.options"
+                  (click)="onChange('layout', l)"
+                  ><!-- [ngClass]="{'detail-nav-list-item-active': l.value == layout.value.value}" -->
+                  <div class="flex flex-column">
+                    <div class="flex align-items-center">
+                      <img [src]="'../../../assets/img/ui_layout/' + l.value +'.png'" alt="">
+                    </div>
+                    <div class="flex align-items-center justify-content-center" [innerHTML]="l.label"></div>
+                    <div class="flex align-items-center justify-content-center">
+<!-- <pre>
+  {{layout | json}}
+</pre> -->
+
+                    </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="flex list-simple-item p-2">
+        <div class="flex-grow-0 flex-column m-auto field-name w-14rem">
+          <div class="flex"> <span class="font-semibold" [innerHTML]="'translations.choose_your_grid_theme' | translate"></span> </div>
+          <div class="flex mt-2">
+            <p-inputSwitch inputId="globalMenubarPref" [(ngModel)]="user.globalGridPref" (ngModelChange)="onChange('global_grid', $event)"></p-inputSwitch>
+            <span class="ml-2" [innerHTML]="'translations.global' | translate"></span>
+          </div>
+        </div>
+        <div class="flex-grow-1 m-auto  field-details w-20rem">
+          <div class="flex flex-row flex-wrap">
+            <!-- {{grid | json}} -->
+            <div  class="flex align-items-center justify-content-center detail-nav-list-item m-1"
+                  *ngFor="let g of grid.options"
+                  (click)="onChange('grid-theme', g)"
+                  [ngClass]="{'detail-nav-list-item-active pointer-none': g.value == grid?.value?.value}">
+                  <span class="ml-2" [innerHTML]="g.label"></span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- <div class="flex list-simple-item p-2" [formGroup]="form">
+        <div class="flex-grow-0 m-auto field-name w-14rem">
+          <span class="font-semibold" [innerHTML]="'Locale'"></span>
+        </div>
+        <div class="flex-grow-1 m-auto ml-2 field-details w-20rem" >
+          <eg-inplace [styleClass]="'fs-14 w-12rem'"
+                      [isDisabled]="false"
+                      [type]="'select'"
+                      [topic]="'locale'"
+                      [displayVal]="null"
+                      [formControlName]="'locale'"
+                      [placeholder]="'Locale'"
+                      [config]="inPlaceConf"
+                      [autoConfig]="{title: 'code_2', description: null}">
+            </eg-inplace>
+        </div>
+      </div> -->
+
+
+    </div>
+  </div>
+</div>

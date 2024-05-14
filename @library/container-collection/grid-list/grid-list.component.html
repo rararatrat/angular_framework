@@ -1,0 +1,145 @@
+<eg-container #wrapContainer *apploading="configuring" [config]="container?.config" [id]="random">
+  <ng-container [ngSwitch]="viewtype">
+      <ng-container *ngSwitchCase="'grid'">
+        <!-- {{rowModelType}} {{ gridListId}} -->
+          <eag-grid [isDebug]="false" *ngIf="reloaded && gridId != null"
+              [defaultColumns]="container?.defaultColumns"
+              [isReadonly]="container?.isReadonly"
+              #mainGridList
+              [id]="gridId"
+              class="w-full"
+              [digitsInfo]="digitsInfo"
+              [(gridParams)]="container.gridParams"
+              [gridId]="gridId"
+              [rowModelType]="rowModelType"
+              [apiCallParams]="apiCallParams"
+              [extendedGridDefinition]="extGridDefn"
+              [duplicateApiParams]="duplicateApiParams"
+              [agStyle]="'height: 100%'">
+          </eag-grid>
+      </ng-container>
+      <ng-container *ngSwitchCase="'list'">
+          <div class="h-full w-full">
+            <p-table id="list-container-table-vs" #tableVs
+                    [columns]="cols"
+                    [value]="virtualList"
+                    [scrollable]="true"
+                    scrollHeight="100%"
+                    [virtualScroll]="true"
+                    [virtualScrollItemSize]="50"
+                    [(contextMenuSelection)]="selected"
+                    [contextMenu]="cm"
+                    [(selection)]="selected"
+                    [rows]="10"
+                    [lazy]="true"
+                    (onLazyLoad)="lazyLoadData($event)"
+                    >
+                  <ng-template pTemplate="header" let-columns>
+                    <tr>
+                      <th *ngFor="let col of columns">
+                          {{ col.colId | capitalizeFirst }}
+                      </th>
+                    </tr>
+                  </ng-template>
+                  <ng-template  pTemplate="body"
+                                let-rowData
+                                let-rowIndex="rowIndex"
+                                let-columns="columns">
+                    <tr class="eg-vs-row" [pContextMenuRow]="rowData" (click)="onSelectionChange($event, rowData)">
+                      <td *ngFor="let col of columns; trackBy: trackByFn"
+                          [class.w-3rem]="col.header == 'image'"
+                          [class.hidden]="col.field == null">
+
+                        <ng-container *ngIf="col.header == 'image' && col.field != null ">
+                          <p-avatar (onImageError)="imageErr($event)" [image]="rowData[col.field]" size="large" shape="circle"></p-avatar>
+                        </ng-container>
+
+                        <ng-container *ngIf="col.header != 'image'  && col.field != null ">
+                          <span [innerHTML]="(rowData[col.field]?.[col.header] || rowData[col.field]) "></span>
+                        </ng-container>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                  <ng-template pTemplate="loadingbody" let-columns="columns">
+                    <tr class="eg-vs-row w-full" >
+                      <td *ngFor="let col of columns; let even = even"
+                          [class.w-3rem]="col.header == 'image' || col.header == 'priority' || col.header == 'status'"
+                          [class.hidden]="col.field == null">
+
+                        <ng-container *ngIf="col.header == 'image' ">
+                          <p-skeleton shape="circle" size="3rem" width="100%"></p-skeleton>
+                        </ng-container>
+
+                        <ng-container *ngIf="col.header != 'image' ">
+                          <p-skeleton width="100%" height="2rem" styleClass="m-2"></p-skeleton>
+                        </ng-container>
+
+                      </td>
+                    </tr>
+                  </ng-template>
+            </p-table>
+            <p-contextMenu #cm [model]="items"></p-contextMenu>
+
+          </div>
+      </ng-container>
+  </ng-container>
+</eg-container>
+
+<p-sidebar #detailSidebar id="detailSidebar"
+          [showCloseIcon]="false"
+          [transitionOptions]="'0s'"
+          [modal]="false"
+          [closeOnEscape]="true"
+          [dismissible]="false"
+          [(visible)]="showRouterOutlet"
+          position="right"
+          (onHide)="closeSidebar()"
+          styleClass="detail-sidebar border-round-left surface-ground">
+  <router-outlet #detailsListOutlet *ngIf="showRouterOutlet" ></router-outlet>
+</p-sidebar>
+
+<!-- <ng-template #divVirtualScroller>
+    <p-virtualScroller id="vs" #vs
+                    scrollHeight="100%"
+                    minBufferPx = "200"
+                    [value]="virtualList"
+                    [itemSize]="50"
+                    [lazy]="true"
+                    [delay]="0"
+                    (onLazyLoad)="lazyLoadData($event)">
+
+      <ng-template let-data pTemplate="item"  let-scrollOptions="options">
+          <div #node class="flex overflow-hidden org-list-item" (dblclick)="selected(data)">
+            <div class="flex-none flex    align-items-center p-2">
+                <p-avatar [image]="data.logo" size="large" shape="circle"></p-avatar>
+            </div>
+            <div class="flex-grow-1 flex align-items-center p-2">
+                <div class="grid grid-nogutter">
+                <div class="col-12 fw-500 text-lg">
+                    <span [innerHTML]="data.name" class="mr-2"></span>
+                </div>
+                <div class="col-12">
+                    <span [innerHTML]="data.legal_form" class="text-black-alpha-80 fw-500"></span>
+                </div>
+                </div>
+            </div>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="footer" let-options="options" >
+          <p-blockUI [target]="vs" [blocked]="cc.itemLoading">
+              <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+          </p-blockUI>
+          <div class="p-2 text-center">
+          <span [hidden]="!cc.itemLoading && !cc.isLoading">loading new data</span>
+          </div>
+      </ng-template>
+  </p-virtualScroller>
+</ng-template> -->
+<!-- <p-contextMenu #cm [target]="node" [model]="items"></p-contextMenu> -->
+
+<!-- <router-outlet #contactListOutlet></router-outlet> -->
+<p-confirmDialog [styleClass]="'w-3'" [class]="'w-3'" [classList]="'w-3'" [position]="'top'"
+  rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+<p-toast></p-toast>

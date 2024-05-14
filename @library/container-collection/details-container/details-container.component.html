@@ -1,0 +1,181 @@
+
+<div class="fl-main" *apploading="config == null "><!-- && isLoading  -->
+  <div class="fl-content h-full gap-2">
+    <div *ngIf="config.showNavbar"
+          class="fl-left flex flex-column detail-sidebar-navigation h-full pt-0 align-items-start justify-content-start "
+          [class]="(navbar)?'detail-sidebar-navigation':'detail-sidebar-navigation-collapsed'"
+            >
+
+        <div class="flex-grow-0" *ngIf="config.showNavbar" >
+          <div class="flex detail-nav-list-header  justify-content-start py-0 w-full">
+            <div  class="flex-grow-0 flex align-items-center p-2 action-button"
+                  (click)="toggleSidenav()">
+              <i class="pi pi-bars"></i>
+            </div>
+            <div class="flex-grow-1 p-2 text-left" *ngIf="navbar">
+              <span class="font-semibold text-2xl" *ngIf="navbar" [innerHTML]="config.sidebar?.header"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex-grow-1 overflow-auto w-full">
+          <div *ngFor="let t of config.sidebar?.items; let i = index; trackBy: trackByFn"
+                [class]="'flex detail-nav-list-item justify-content-start w-full ' + (t?.class)+' ' "
+                [class.active]="selectedIndex == i"
+                [class.pointer-events-none]="selectedIndex == i "
+                [class.disabled]="t?.isDisabled"
+                [routerLink]="t.routerLink"
+                [routerLinkActive]="'active'"
+                (click)="showElement(t, i)">
+            <div class="flex-none p-2" [pTooltip]="t.label"
+                [class.w-full]="!navbar"
+                [class.text-center]="!navbar">
+
+              <i [class]="t?.icon" [class.mt-1]="navbar"   ></i>
+            </div>
+            <div class="flex-grow-1 flex flex-column p-2 text-left" *ngIf="navbar">
+              <div class="font-semibold text-lg ">
+                <span [innerHTML]="t?.label"></span>
+              </div>
+              <div class="font-medium mt-2 fs-12 ">
+                <span [innerHTML]="t?.subTitle"></span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="fl-right flex flex-column max-h-full overflow-hidden gap-2">
+      <div class="fl-right-header flex-none justify-content-between border-round surface-card"  *ngIf="config.hasHeader">
+        <div class="flex  justify-content-between snipper w-full" >
+          <div class="flex align-items-center justify-content-center snipper  ">
+            <span class="font-semibold text-2xl ml-2 snipper" [innerHTML]="config.header"></span>
+          </div>
+          <div class="flex align-items-center justify-content-center snipper p-2">
+            <ng-content select="[status]"></ng-content>
+          </div>
+        </div>
+        <div class="flex align-items-center justify-content-center">
+          <!--
+          <button pButton (click)="config.onDelete($event)" pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text"></button>
+          <button pButton (click)="config.onAdd($event)" pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-text"></button>
+          -->
+          <button pButton pRipple type="button"
+                  *ngIf="config.showDetailbar"
+                  (click)="toggle()"
+                  icon="pi pi-bars"
+                  class="p-button-rounded  p-button-text p-button-plain "></button>
+
+          <button *ngIf="currentType == 'dialog' || 'route' && closeIcon " pButton pRipple type="button"
+                  (click)="onClose($event)"
+                  icon="pi pi-times"
+                  class="p-button-rounded p-button-text p-button-plain "></button>
+        </div>
+      </div>
+
+      <div class="flex flex-grow-1 fadein animation-duration-500 h-full overflow-hidden gap-2 "> <!-- surface-card  --> <!-- [class.fl-content-height-header]="config.hasHeader" [class.fl-content-height-no-header]="!config.hasHeader" -->
+
+        <div class="flex flex-grow-1 max-h-full max-w-full border-round  "
+
+              [class.detail-content-column]="hasDetails && config.showDetailbar"
+              [class.detail-content-column-collapsed]="!hasDetails && !config.showDetailbar">
+          <ng-content select="[content]"></ng-content>
+        </div>
+
+        <div  class="flex flex-column detail-action-column  max-h-full gap-2 pb-3"
+              [class.detail-action-column-collapsed]="!hasDetails || !config.showDetailbar"
+              [class.detail-action-column]="hasDetails && config.showDetailbar">
+
+              <div class=" flex flex-row ">
+                <div  class="flex flex-grow-1 align-items-center  m-0 border-round justify-content-center mx-1 detail-nav-list-item"
+                    *ngFor="let s of actionMenu; trackBy: trackByFn"
+                    [ngClass]="{'active': s.value == currActionMenu.value}"
+                    [class.pointer-events-none]="s.value == currActionMenu.value"
+                    [class.hidden]="!s.isVisible"
+                    (click)="toggleAction(s)">
+
+                  <i [class]="s.icon"></i>
+                  <span class="ml-2" [innerHTML]="s.label"></span>
+                </div>
+              </div>
+
+              <div class="flex flex-column  h-full  ">
+                <ng-container [ngSwitch]="currActionMenu.value">
+                    <!-- <ng-container *ngSwitchCase="'action'" [ngTemplateOutlet]="action"></ng-container> -->
+                    <div class="flex-grow-1 h-full">
+                      <ng-container *ngSwitchCase="'action'" [ngTemplateOutlet]="action"></ng-container>
+                      <eg-updates   *ngSwitchCase="'updates'" #egUpdatesComponent class="h-full" [(config)]="trackingConfig"></eg-updates>
+                      <eg-comments  *ngSwitchCase="'comments'" #egCommentsComponent class="h-full" [(config)]="trackingConfig"></eg-comments>
+                      <eg-logs      *ngSwitchCase="'logs'" #egLogsComponent class="h-full" [(config)]="trackingConfig"></eg-logs>
+                    </div>
+                    <ng-container *ngIf="currActionMenu.value != 'action' && currActionMenu.value != 'logs'">
+                      <div class="flex flex-grow-1 my-1" >
+                        <textarea #commentsElement [rows]="5"
+                                  [(ngModel)]="comments"
+                                  class="comments-textarea w-full"
+                                  pInputTextarea
+                                  [autoResize]="taAutoresize"
+                                  (onResize)="handleResize($event)"></textarea>
+                      </div>
+                      <div class="flex-grow-0 p-2">
+                        <p-button styleClass="w-full capitalize"
+                                  [icon]="'fa-solid fa-pencil'"
+                                  [label]="'Add '+currActionMenu.value"
+                                  (click)="update(comments)">
+                        </p-button>
+                      </div>
+                    </ng-container>
+                </ng-container>
+              </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #action>
+  <div class="flex flex-column w-full gap-2 h-full">
+    <div class="flex flex-row gap-2 mr-2" *ngIf="config.hasOwnProperty('workflowItems') && config.workflowItems.length > 0">
+      <ng-container *ngFor="let wi of config?.workflowItems; let idx=index">
+        <div  [class]="'w-item '+ wi.styleClass"
+              [class.disabled]="wi?.disabled"
+              [class.hidden]="!wi?.visible"
+              (click)="wi.command({originalEvent: $event, item: wi, index:idx})">
+
+            <div><i [class]="'text-xl '+wi.icon"></i></div>
+            <div [innerHTML]="wi.label"></div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="flex flex-column flex-grow-0" *ngIf="actionItems.length > 0">
+
+
+      <div class="surface-card border-round p-2 h-full">
+        <div class="font-bolder text-xl p-2">
+          <span [innerHTML]="'translations.action' | translate : {count: 2}"></span>
+        </div>
+
+        <div class="w-full flex-grow-1">
+          <!-- <p-megaMenu [model]="actionItems"></p-megaMenu> -->
+          <p-panelMenu id="actionMenuItems" [model]="actionItems" styleClass="w-full"></p-panelMenu>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="flex flex-column flex-grow-1 surface-card border-round p-2 h-full">
+      <div class="font-bolder text-xl p-2">
+        <span [innerHTML]="'translations.details' | translate"></span>
+      </div>
+      <ng-content select="[details]"></ng-content>
+    </div>
+
+
+
+  </div>
+</ng-template>

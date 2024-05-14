@@ -1,0 +1,33 @@
+<div class="w-full h-full" *apploading="detailsConfig?.isLoading">
+    <eg-details-container *ngIf="detailsConfig" [config]="config" [(data)]="detailsConfig.data" [topic]="'project-conditions'"> <!-- [topic]="'project'" -->
+        <div class="w-full h-full max-w-full" content>
+            <ng-container *ngFor="let i of detailsConfig.objArray | keyvalue;">
+                <div class="grid grid-nogutter list-simple-item" *ngIf="detailsConfig.inPlaceConf && !detailsConfig.formGroup?.get(i.value['formControlName'])?.disabled">
+                    <div class="col-3 field-name my-auto">
+                        <span class="field-name field-name fw-600 text-black-alpha-90" [innerHTML]="i.value['title'] | capitalizeFirst"></span>
+                    </div>
+                    <div class="col-8 my-auto">
+                        <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:i.value, label:i.key}"></ng-container>
+                    </div>
+                </div>
+            </ng-container>
+            
+            <ng-template #inPlace let-data="data" let-label="label">
+                <ng-container [formGroup]="detailsConfig.formGroup">
+                    <eg-inplace [styleClass]="'fs-14 ' + (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-17rem' : 'white-space-prewrap') "
+                    [isDisabled]="false"
+                    [isEditable]="editingField == label"
+                    [type]="data['type']"
+                    [topic]="data['autoConfig']?.extraKey || label"
+                    [displayVal]="data['displayVal']"
+                    [formControlName]="data['formControlName']"
+                    [placeholder]="data['placeholder']"       
+                    [config]="detailsConfig.inPlaceConf"
+                    [autoConfig]="data['autoConfig']" [(isChanged)]="isChanged"
+                    (isChangedChange)="afterSaved($event)">
+                    </eg-inplace>
+                </ng-container>
+            </ng-template>
+        </div>
+    </eg-details-container>
+</div>

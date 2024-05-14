@@ -1,0 +1,111 @@
+<div class="h-full" *apploading="cc?.isLoading">
+  <p-virtualScroller id="vs" #vs scrollHeight="100%" minBufferPx="1000" [value]="virtualList" [itemSize]="90"
+    [lazy]="true" [delay]="250" (onLazyLoad)="lazyLoadData($event)">
+
+    <ng-template let-data pTemplate="item" let-scrollOptions="options">
+
+      <div class="flex overflow-hidden notification-card-sidebar  my-2 cursor-pointer" *ngIf="data">
+        <div class="flex-grow-1 flex flex-column">
+
+          <div class="flex flex-row flex-grow-0">
+            <div class="flex-grow-0">
+              <p-avatar (onImageError)="imageErr($event)"
+                        [image]="data?.notif_user_triggered?.picture"
+                        size="large"
+                        shape="circle"
+                        (click)="showUser(data?.notif_user_triggered); $event.stopPropagation()">
+              </p-avatar>
+            </div>
+            <div class="flex-grow-1 flex flex-column pl-2">
+              <div class="text-info">
+                <span *ngIf="data?.notif_action | isNotEmpty" [innerHTML]="data?.notif_action" class="mr-2"></span>
+              </div>
+              <div class="text-base my-1 ">
+                <span [innerHTML]="'translations.by' | translate | capitalizeFirst" class="mr-1"></span>
+                <span *ngIf="data?.notif_user_triggered | isNotEmpty" [innerHTML]="data?.notif_user_triggered?.name" class="underline"></span>
+                <span [innerHTML]="'translations.at' | translate" class="mx-1"></span>
+                <span *ngIf="data?.notif_date_notified | isNotEmpty" [innerHTML]="data?.notif_date_notified | date:'mediumDate' " class="underline"></span>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="flex flex-column flex-grow-1">
+            <div class="text-base my-1" [class.bg-gray-faded]="data?.notif_message?.['message'].length == 0">
+
+              <dl *ngIf="data?.notif_message | isNotEmpty" class="not-msg mt-2">
+                <dd *ngFor="let m of data?.notif_message?.['message']">
+                  <span [innerHTML]="m"></span>
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+
+
+        </div>
+        <div class="flex-grow-0 flex flex-column">
+          <div class="">
+            <p-button [icon]="data?.hasRead ? 'pi pi-circle' : 'pi pi-circle-fill'"
+                      [class.not-action-column]="data?.hasRead"
+                      styleClass="p-button-rounded p-button-text"
+                      [pTooltip]="data?.hasRead ? 'Mark as Unread' : 'Mark as Read'"
+                      (onClick)="update('update', data); $event.stopPropagation()"></p-button>
+          </div>
+          <div class="">
+            <p-button icon="pi pi-times-circle"
+                      class="not-action-column"
+                      styleClass="p-button-rounded p-button-danger p-button-text"
+                      [pTooltip]="'Delete this Notification'"
+                      (onClick)="update('delete', data); $event.stopPropagation()"></p-button>
+          </div>
+        </div>
+
+
+          <div class="flex-grow-0">
+
+          </div>
+
+
+
+      </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer" let-options="options">
+      <p-blockUI [target]="vs" [blocked]="itemLoading">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+      </p-blockUI>
+      <div class="p-2 text-center">
+        <span [hidden]="!itemLoading && !cc.isLoading">loading new data</span>
+      </div>
+    </ng-template>
+
+  </p-virtualScroller>
+</div>
+
+
+
+
+
+<!--   <ng-template pTemplate="header">
+
+    <div class="flex card-container overflow-hidden">
+      <div class="flex-none flex align-items-center">
+        <div class="flex align-items-center justify-content-center detail-nav-list-item m-1"
+          *ngFor="let s of contactMenu" [ngClass]="{'detail-nav-list-item-active': s.value == currContactMenu.value}"
+          (click)="toggleContact(s.value)">
+          <i [class]="contactNotif.icon"></i> <span class="ml-2" [innerHTML]="contactNotif.label"></span>
+        </div>
+      </div>
+      <div class="align-items-center flex flex-grow-1 justify-content-end ">
+
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input type="text" pInputText placeholder="Search" [formControl]="search" />
+        </span>
+      </div>
+
+    </div>
+
+  </ng-template> -->

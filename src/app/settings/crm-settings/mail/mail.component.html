@@ -1,0 +1,16 @@
+<div class="w-full h-full">
+  <eg-details-container [config]="config" [(data)]="data" [topic]="'mail'">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngSwitch]="activeIndex">
+        <ng-container *ngSwitchCase="0" [ngTemplateOutlet]="template1"></ng-container>
+        <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="template2"></ng-container>
+        <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="template3"></ng-container>
+
+      </ng-container>
+    </div>
+  </eg-details-container>
+</div>
+
+<ng-template #template1>1</ng-template>
+<ng-template #template2>2</ng-template>
+<ng-template #template3>3</ng-template>

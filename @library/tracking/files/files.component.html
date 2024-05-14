@@ -1,0 +1,31 @@
+<div *ngIf="data != null && data?.files.length > 0; else newData ">
+  <div class="flex list-item py-0 mt-1">
+    <p-button (click)="openDialog('data')" icon="fa-solid fa-upload" label="Upload"></p-button>
+  </div>
+  <div class="flex list-item py-0 " *ngFor="let f of data.files; trackBy: trackByFn" >
+    <div class="flex-none flex p-2">
+      <i [class]="'fa-solid fa-circle fw-600'"  ></i>
+    </div>
+    <div class="flex-grow-1 flex  p-2 overflow-hidden">
+      <a class="snipper" [href]="f.file" target="_top" [innerHTML]="f.name" [pTooltip]="f.name" tooltipPosition="bottom"></a>
+    </div>
+  </div>
+</div>
+
+<ng-template #newData>
+  <!-- <p-button (click)="openDialog()" icon="fa-solid fa-upload" label="Upload"></p-button> -->
+  <eg-no-data-found [config]="noDataConfig"></eg-no-data-found>
+</ng-template>
+
+<p-dialog [header]="'translations.upload' | translate : {item: ('translations.file' | translate : {count: 2}) }"
+          [(visible)]="visible"
+          [style]="{width: '50vw'}"
+          appendTo="body"
+          [position]="'top'"
+          [dismissableMask]="false"
+          [closeOnEscape]="false"
+          [modal]="true">
+
+  <p-fileUpload [customUpload]="true" (uploadHandler)="uploadFile($event)" ></p-fileUpload>
+
+</p-dialog>

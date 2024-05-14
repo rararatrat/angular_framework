@@ -1,0 +1,55 @@
+.map-container {
+  position: relative;
+  height: 98.5%;
+}
+.map-frame {
+  height: 100%;
+}
+
+#map {
+  height: 100%;
+}
+
+.address-detail {
+  height: 98.5%;
+  .editToggle{
+    visibility: hidden;
+    display: none;
+    font-weight: bold;
+    color: var(--primary);
+    cursor: pointer;
+  }
+  &:hover{
+    .editToggle{
+      visibility: visible;
+      display: inline-block;
+    }
+  }
+}
+
+.address-list-item{
+  /* border-top: 1px solid var(--border-color); */
+  min-height: 3rem;
+  padding: 1rem;
+  border-bottom: 0.1rem solid var(--border-color);
+  font-size: 1.10rem;
+  .address-list-item-editable{
+    display: none !important;
+  }
+  &.odd{
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--plain-faded);
+  }
+  &:hover{
+    cursor: pointer;
+    background-color: var(--primary-faded);
+    .address-list-item-editable{
+      display: block;
+    }
+  }
+  &:active{
+    cursor: pointer;
+    background-color: var(--primary-faded);
+  }
+
+}

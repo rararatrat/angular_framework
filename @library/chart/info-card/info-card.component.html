@@ -1,0 +1,73 @@
+<ng-container [ngSwitch]="display">
+  <ng-container *ngSwitchCase="'dogtag'" [ngTemplateOutlet]="dogtag"></ng-container>
+  <ng-container *ngSwitchCase="'stats'" [ngTemplateOutlet]="statistic"></ng-container>
+</ng-container>
+
+<ng-template #dogtag>
+  <div class="info-card flex" [ngClass]="styleClass" *ngIf="config != null">
+    <div class="flex flex-grow-0 mx-1 align-items-center justify-content-center w-5rem" *ngIf="config.illustrationType != null">
+      <span class="mx-2" >
+        <ng-container [ngTemplateOutlet]="visual"></ng-container>
+      </span>
+    </div>
+    <div class="flex flex-grow-1 flex-column mx-1 align-items-start justify-content-center w-full" [class.pl-3]="config.illustrationType == null">
+      <div class=" align-items-center w-11 pt-2 snipper" *ngIf="config.hasOwnProperty('topic') && config.topic != null ">
+        <p-skeleton  *ngIf="isLoading" width="100%"></p-skeleton>
+        <span *ngIf="!isLoading" class="text-gray fw-700 text-md" [innerHTML]="config.topic"></span>
+      </div>
+      <div class=" align-items-center w-11 py-1 snipper" *ngIf="config.hasOwnProperty('value') && config.value != null ">
+        <p-skeleton  *ngIf="isLoading" width="100%" height="3rem"></p-skeleton>
+        <span *ngIf="!isLoading" class="text-3xl fw-700 " [innerHTML]="config.value"></span>
+      </div>
+      <div class="align-items-center w-11 pb-2 snipper" *ngIf="config.hasOwnProperty('subTopic') && config.subTopic != null ">
+        <p-skeleton *ngIf="isLoading" width="100%" ></p-skeleton>
+        <span *ngIf="!isLoading" class="text-gray fw-500 text-sm" [innerHTML]="config.subTopic"></span>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+<ng-template #statistic>
+  <div class="info-card flex" [ngClass]="styleClass" *ngIf="config != null">
+    <div class="flex flex-grow-1 flex-column mx-1 align-items-center justify-content-center w-full">
+      <div class="  w-11 pt-2 snipper" *ngIf="config.hasOwnProperty('topic') && config.topic != null ">
+        <p-skeleton  *ngIf="isLoading" width="100%"></p-skeleton>
+        <span *ngIf="!isLoading" class="text-info font-semibold text-md" [innerHTML]="config.topic"></span>
+      </div>
+      <div class=" align-items-center justify-content-center w-11 py-1 snipper" *ngIf="config.hasOwnProperty('value') && config.value != null ">
+        <p-skeleton  *ngIf="isLoading" width="100%" height="3rem"></p-skeleton>
+        <span *ngIf="!isLoading" class="text-7xl font-semibold" [innerHTML]="config.value"></span>
+      </div>
+      <div class="align-items-center justify-content-center w-11 pb-2 snipper" *ngIf="config.hasOwnProperty('subTopic') && config.subTopic != null ">
+        <p-skeleton *ngIf="isLoading" width="100%" ></p-skeleton>
+        <span *ngIf="!isLoading" class="font-medium text-sm" [innerHTML]="config.subTopic"></span>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #visual>
+  <p-skeleton *ngIf="isLoading" size="4rem" ></p-skeleton>
+
+  <ng-container *ngIf="!isLoading" [ngSwitch]="config.illustrationType">
+    <ng-container *ngSwitchCase="'icon'">
+        <i [class]="config.illustration.icon.class + ' text-5xl'" [pTooltip]="config.illustration.icon.name"></i>
+    </ng-container>
+    <ng-container *ngSwitchCase="'image'">
+      <p-avatar (onImageError)="imageErr($event)"
+                [image]="config.illustration.image.url"
+                size="large"
+                shape="circle"
+                [class]="config.illustration.image.class"
+                [pTooltip]="config.illustration.image.name">
+      </p-avatar>
+
+    </ng-container>
+    <ng-container *ngSwitchCase="'sparkline'">
+    </ng-container>
+  </ng-container>
+
+</ng-template>
+

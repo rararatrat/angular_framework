@@ -1,0 +1,50 @@
+<p-card #libcard [id]="hasPadding" [styleClass]="class">
+  <ng-template pTemplate="header" *ngIf="hasHeader">
+    <div class="flex pt-3 px-3">
+      <div class="flex-1 flex flex-column">
+        <div class="p-card-title mb-1">
+          <ng-content select="[title]"></ng-content>
+        </div>
+        <div class="p-card-subitle">
+          <ng-content select="[subtitle]"></ng-content>
+        </div>
+      </div>
+      <div class="flex-none flex"></div>
+      <div class="flex-none flex flex-row align-items-top justify-content-end" *ngIf="menuItems?.length > 0">
+        <ng-container [ngSwitch]="btnType">
+          <ng-container *ngSwitchCase="'menu'">
+            <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+            <button pButton pRipple type="button" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"
+              class="p-button-rounded p-button-text p-button-plain"></button>
+          </ng-container>
+          <ng-container *ngSwitchCase="'button'">
+            <button pButton *ngFor="let a of menuItems; trackBy: trackByFn" type="button" class="p-button-rounded p-button-text h-fit mr-2"
+              [class]="a.styleClass" (click)="a.command({originalEvent: $event})" [icon]="a.icon"
+              [pTooltip]="a.tooltip != null ? a.tooltip : a.label">
+            </button>
+          </ng-container>
+        </ng-container>
+
+      </div>
+      <div class="flex-none flex flex-row align-items-top justify-content-end"
+        *ngIf="menuItems?.length > 0 && btnType == 'menu'">
+        <p-menu #menu [popup]="true" [model]="menuItems"></p-menu>
+        <button pButton pRipple type="button" (click)="menu.toggle($event)" icon="pi pi-ellipsis-v"
+          class="p-button-rounded p-button-text p-button-plain"></button>
+      </div>
+    </div>
+  </ng-template>
+
+
+  <ng-template pTemplate="content" *ngIf="hasContent">
+    <div class="flex-grow-1 overflow-hidden">
+      <p-scrollPanel styleClass="h-full">
+        <ng-content select="[content]"></ng-content>
+      </p-scrollPanel>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer" *ngIf="hasFooter">
+    <ng-content select="[footer]"></ng-content>
+  </ng-template>
+</p-card>

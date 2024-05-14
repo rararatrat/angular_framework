@@ -1,0 +1,40 @@
+::ng-deep #posWrapBtn {
+    .p-inputnumber-button-up{
+        padding: 0rem !important;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    .p-inputnumber-button-down{
+        padding: 0rem !important;
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+    }
+    .p-inputnumber-input{
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+
+    }
+
+}
+
+
+/* ::ng-deep  .preview-setup-wrapper{
+    .p-inputnumber-button{
+        padding: unset !important;
+        border-radius: unset !important;
+    }
+    .p-inputnumber-button-up{
+        border-top-right-radius: var(--eg-border-radius) !important;
+    }
+    .p-inputnumber-button-down{
+        border-bottom-right-radius: var(--eg-border-radius) !important;
+    }
+    .p-inputnumber-input{
+        border-radius: unset !important;
+        border-top-left-radius: var(--eg-border-radius) !important;
+        border-bottom-left-radius: var(--eg-border-radius) !important;
+    }
+} */

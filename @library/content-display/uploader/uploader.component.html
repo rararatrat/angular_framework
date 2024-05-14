@@ -1,0 +1,104 @@
+<ng-container [ngSwitch]="hasFiles || filesArr?.length > 0 ">
+  <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="filesContent"></ng-container>
+  <ng-container *ngSwitchCase="false">
+    <eg-no-data-found *ngIf="noDataConfig" [config]="noDataConfig"></eg-no-data-found>
+  </ng-container>
+</ng-container>
+
+
+<p-dialog [header]="'translations.upload' | translate : {item: ('translations.file' | translate : {count: 2}) }"
+          [(visible)]="visible"
+          [style]="{width: '50vw'}"
+          appendTo="body"
+          [position]="'top'"
+          [dismissableMask]="false"
+          [closeOnEscape]="false"
+          [modal]="true">
+
+  <ng-container *ngIf="!invalidConfig?.invalid; else invalidConf">
+    <div class="m-2 w-full">
+        <div *ngIf="labelFormatted" [innerHTML]="labelFormatted"></div>
+        <p-fileUpload #pFile [customUpload]="true"
+                      [showCancelButton]="showCancelButton"
+                      [showUploadButton]="showCancelButton"
+                      [multiple]="multiple"
+                      [mode]="mode"
+                      (onSelect)="onSelect($event)"
+                      (uploadHandler)="onBasicUploadAuto($event)">
+          </p-fileUpload>
+    </div>
+  </ng-container>
+
+</p-dialog>
+
+<ng-template #invalidConf>
+    {{invalidConfig?.message}}
+</ng-template>
+
+<ng-template #filesContent>
+  <p-table  *ngIf="isFile"
+            [value]="filesArr"
+            [paginator]="true"
+            [rows]="10"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} files"
+            styleClass="p-datatable-striped"
+            >
+
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="description">Name</th>
+            <th pSortableColumn="name">Filename</th>
+            <th pSortableColumn="extension">Extension</th>
+            <th pSortableColumn="date_uploaded">Date Uploaded</th>
+            <th pSortableColumn="uploaded_by?.name">Uploaded By</th>
+            <th pSortableColumn="size">Size</th>
+            <th pSortableColumn="type">Type</th>
+            <th *ngIf="!isNew">Delete</th>
+            <th *ngIf="!isNew">Download</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-fi>
+        <tr>
+            <td>{{ fi.description }}</td>
+            <td>{{ fi.name }}</td>
+            <td>{{ fi.extension }}</td>
+            <td>{{ fi.date_uploaded | date: 'mediumDate' }}</td>
+            <td>{{ fi.uploaded_by?.name || '-' }}</td>
+            <td>{{ fi.size || '-' }}</td>
+            <td>{{ fi.type || '-' }}</td>
+            <td *ngIf="!isNew">delete</td>
+            <td *ngIf="!isNew">
+              <a class="snipper" [href]="fi.file" target="_blank" >
+                download
+              </a>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="paginatorleft">
+      <p-button (onClick)="visible=!visible"
+                [disabled]="!showUploadButton"
+                type="button"
+                [label]=" (showUploadButton)? ('translations.upload' | translate : {item: ('translations.file' | translate : {count: 2}) } ):'No Permission'"
+                [icon]="(showUploadButton)?'pi pi-plus':'pi pi-lock'"
+                styleClass="p-button"></p-button>
+  </ng-template>
+</p-table>
+
+  <ng-container *ngIf="!invalidConfig?.invalid && !isFile; else invalidConf">
+    <div class="m-2 w-full">
+        <div *ngIf="labelFormatted" [innerHTML]="labelFormatted"></div>
+        <p-fileUpload #pFile [customUpload]="true"
+                      [showCancelButton]="showCancelButton"
+                      [showUploadButton]="showCancelButton"
+                      [multiple]="multiple"
+                      [mode]="mode"
+                      chooseLabel="Upload New Image"
+                      (onSelect)="onSelect($event)"
+                      (uploadHandler)="onBasicUploadAuto($event)">
+        </p-fileUpload>
+    </div>
+  </ng-container>
+</ng-template>
+

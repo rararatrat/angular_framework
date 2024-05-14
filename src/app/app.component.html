@@ -1,0 +1,31 @@
+<eg-main-container [(appId)]="app" [(data)]="items">
+
+
+</eg-main-container>
+
+<!-- Global Confirm Dialog -->
+<!-- [baseZIndex]="10000" -->
+
+<p-confirmDialog [styleClass]="'w-3'" [class]="'w-3'" [classList]="'w-3'" [position]="'top'"
+  rejectButtonStyleClass="p-button-text">
+</p-confirmDialog>
+<!-- Global Token Dialog -->
+<eg-otp-token></eg-otp-token>
+<!-- All Sidenav Service -->
+<lib-rightbar *ngIf="translationDone"></lib-rightbar>
+
+<!-- Message Service RT: TODO component-->
+<p-toast>
+  <ng-template let-message pTemplate="message">
+    <!-- {{message | json}} -->
+    <div class="flex flex-column" style="flex: 1">
+      <div [ngSwitch]="message.severity">
+        <h4 *ngIf="message.summary" [innerHTML]="message.summary"></h4>
+        <p *ngIf="message.detail" [innerHTML]="message.detail"></p>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+
+
+

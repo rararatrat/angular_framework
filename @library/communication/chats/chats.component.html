@@ -1,0 +1,45 @@
+<div class="grid grid-nogutter left-layout m-0 p-0">
+    <div class="col-1">
+      <p-listbox #pListbox2 [options]="chats" (onChange)="onChat($event)" [styleClass]="'m-0 p-0'">
+        <ng-template let-item pTemplate="item">
+          <table class="w-full" border="0">
+            <tr>
+              <td rowspan="2" class="w-3rem">
+                <p-avatar [image]="((item.value?.picture | isNotEmpty) &&  item.value?.picture != 'link to picture') ? item.value.picture : ''"
+                  [label]="(!(item.value?.picture | isNotEmpty) || item.value?.picture == 'link to picture') ? (item.label | getInitials : 1 : [' ','.', '@']) : ''"
+                  [styleClass]="(!(item.value?.picture | isNotEmpty) || item.value?.picture == 'link to picture') ? 'bg-eg-secondary font-eg-white' : ''"
+                  referrerpolicy="no-referrer" class="cursor-pointer valign-middle" size="normal"  shape="circle"></p-avatar>
+              </td>
+            </tr>
+          </table>
+        </ng-template>
+      </p-listbox>
+    </div>
+    <div class="col-11" [style]="'height: calc(100vh - ' + (config ? '225' : '105') + 'px)'"> <!-- full-height -->
+      <div style="height: calc(100% - 20px)">
+        <div *ngFor="let m of selectedChats?.chatMessages; let i = index; trackBy: trackByFn" class="float-clear">
+            <div [class]="'talk-bubble tri-right round ' + getBubbleShape(i, i+1) "> <!-- getBubbleShape() -->
+              <div class="talktext">
+                <p [innerHTML]="m?.message"></p>
+              </div>
+            </div>
+        </div>
+        <div *ngIf="!config && !(selectedChats?.chatMessages | isNotEmpty)" class="flex flex-column h-full center fs-2-em">
+          <div class="w-full">
+            <i class="fa fa-comments"></i>
+          </div>
+          <div class="w-full">
+            Select a conversation
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-nogutter" *ngIf="config || (selectedChats?.chatMessages| isNotEmpty)">
+        <span class="col-10">
+          <input #sendText [(ngModel)]="chatText" type="text" class="w-full m-r-8" pInputText [placeholder]="'translations.sendMessage' | translate" (keyup)="onChatKeyDown($event)">
+        </span>
+        <span class="col-2">
+          <button pButton pRipple type="button" icon="fa fa-paper-plane" class="p-button-rounded p-button-text valign-middle" (click)="appendChat()"></button> <!-- fa fa-paper-plane-top -->
+        </span>
+      </div>
+    </div>
+  </div>

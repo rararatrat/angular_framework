@@ -1,0 +1,35 @@
+.block-scroll{
+  overflow: hidden;
+}
+
+
+
+
+::ng-deep #inplaceAutoComplete {
+
+  &.p-inputwrapper-focus{
+    .p-inputtext{
+      border-bottom-left-radius: 0px;
+    }
+    .p-autocomplete-dropdown{
+      border-bottom-right-radius: 0px;
+    }
+  }
+
+  .p-autocomplete{
+
+    .p-inputtext{
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .p-autocomplete-dropdown{
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+
+    p-overlay[ng-reflect-visible="true"] + .p-inputtext {
+      border-radius: 0;
+    }
+  }
+
+}

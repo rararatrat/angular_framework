@@ -1,0 +1,54 @@
+.pdf-preview{
+    margin: 5mm auto;
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    position: relative;
+    /* padding-left: 25mm;
+    padding-right: 18mm;
+    padding-bottom: 21mm;
+    padding-top: 20mm; */
+
+    padding-left: var(--pdf-page-padding-left);
+    padding-top: var(--pdf-page-padding-top);
+    padding-right: var(--pdf-page-padding-right);
+    padding-bottom: var(--pdf-page-padding-bottom);
+    
+    color: rgba(0, 0, 0, 1);
+    background-color: #ffffff;
+    box-shadow: 0 0 5px 0 rgba(1, 1, 1, 0.12);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    /* font-size: 11px; */
+
+    &.front{
+        background-image: var(--front-cover-url);
+    }
+
+    &.succeeding{
+        background-image: var(--succeeding-cover-url);
+    }
+
+}
+
+::ng-deep .p-scrollpanel #pdf-preview p{
+    padding: unset !important;
+} 
+
+    
+
+.footer-wrapper{
+    /* position: absolute;
+    overflow: hidden;
+    bottom: 0; */
+
+    .footer{
+        text-align: center;
+        line-height: 1.2;
+        position: absolute;
+        bottom: 5mm;
+        font-size: 7pt;
+        font-weight: 700;
+    }
+}

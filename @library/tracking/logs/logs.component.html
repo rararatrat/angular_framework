@@ -1,0 +1,118 @@
+
+<ng-container [ngSwitch]="viewtype">
+  <ng-container *ngSwitchCase="'list'" [ngTemplateOutlet]="listView"></ng-container>
+  <ng-container *ngSwitchCase="'grid'" [ngTemplateOutlet]="gridView"></ng-container>
+</ng-container>
+
+
+<ng-template #gridView>
+  <eag-grid [isDebug]="false"
+            #updatesListGrid
+            class="w-full"
+            [(gridParams)]="container.gridParams"
+            [gridId]="'updates-list-grid'"
+            [rowModelType]="'serverSide'"
+            [apiCallParams]="apiCallParams"
+            [extendedGridDefinition]="extGridDefn"
+            [agStyle]="'height: 100%'">
+    </eag-grid>
+</ng-template>
+
+<ng-template #listView>
+  <div class="h-full" *apploading="cc?.isLoading">
+    <p-virtualScroller id="vs" #vs scrollHeight="100%" minBufferPx="1000"
+                      *ngIf="hasData; else noDataFound;"
+                      [value]="virtualList"
+                      [itemSize]="90"
+                      [lazy]="true"
+                      [delay]="250"
+                      (onLazyLoad)="lazyLoadData($event)">
+      <ng-template let-data pTemplate="item" let-scrollOptions="options">
+        <ng-container [ngTemplateOutlet]="dogtag" [ngTemplateOutletContext]="{$implicit:data}"></ng-container>
+      </ng-template>
+      <ng-template pTemplate="footer" let-options="options" >
+        <p-blockUI [target]="vs" [blocked]="cc.itemLoading">
+            <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+        </p-blockUI>
+        <div class="p-2 text-center">
+          <span [hidden]="!cc.itemLoading && !cc.isLoading">loading new data</span>
+        </div>
+      </ng-template>
+    </p-virtualScroller>
+
+  </div>
+</ng-template>
+
+<ng-template #noDataFound>
+  <eg-no-data-found [config]="noDataConfig">
+  </eg-no-data-found>
+
+</ng-template>
+
+<ng-template let-data #dogtag>
+  <div class="flex overflow-hidden surface-card border-round p-2 my-2 tracking-card" *ngIf="data">
+    <div class="flex-grow-1 flex flex-column">
+       <div class="flex flex-row flex-grow-0">
+          <div class="flex-grow-0">
+            <p-avatar (onImageError)="imageErr($event)"
+                      [image]="data?.user.name"
+                      size="large"
+                      shape="circle"
+                      >
+            </p-avatar>
+          </div>
+          <div class="flex-grow-1 flex flex-column pl-2">
+            <div class="text-info" [class.bg-gray-faded]="!(data?.action | isNotEmpty)">
+              <span *ngIf="data?.action | isNotEmpty;else emptyString" [innerHTML]="data?.action.name" class="mr-2"></span>
+            </div>
+            <div class="text-base my-1 ">
+              <span [innerHTML]="'translations.by' | translate | capitalizeFirst" class="mr-1"></span>
+              <span *ngIf="data?.user | isNotEmpty" [innerHTML]="data?.user?.name" class="underline"></span>
+              <span [innerHTML]="'translations.at' | translate" class="mx-1"></span>
+              <span *ngIf="data?.date_logged | isNotEmpty" [innerHTML]="data?.date_logged | date:'mediumDate' " class="underline"></span>
+            </div>
+          </div>
+          <div class="flex-grow-0  delete-button">
+            <p-button icon="fa-solid fa-trash-can text-danger"
+                      styleClass="p-button-rounded p-button-danger p-button-text "
+                      [pTooltip]="'Delete'"
+                      (onClick)="delete(data); $event.stopPropagation()"></p-button>
+          </div>
+
+        </div>
+        <div class="flex flex-column flex-grow-1 my-2">
+          <div class="text-base my-1" [class.bg-gray-faded]="!(data?.name | isNotEmpty)">
+              <span *ngIf="data?.name | isNotEmpty; else emptyString" [innerHtml]="data?.name"></span>
+          </div>
+        </div>
+
+        <div class="flex flex-row align-items-center gap-2">
+
+          <div class="flex flex-column flex-grow-1 align-items-center surface-ground border-round p-1">
+            <div class="p-1">
+              <span class="font-semibold" [innerHTML]="data?.project?.id || '-'"></span>
+            </div>
+            <div class="font-medium capitalize text-xs">project</div>
+          </div>
+          <div class="flex flex-column flex-grow-1 align-items-center surface-ground border-round p-1">
+            <div class="p-1">
+              <span class="font-semibold" [innerHTML]="data?.task?.id || '-'"></span>
+            </div>
+            <div class="font-medium capitalize text-xs">task</div>
+          </div>
+          <div class="flex flex-column flex-grow-1 align-items-center surface-ground border-round p-1">
+            <div class="p-1">
+              <span class="font-semibold" [innerHTML]="data?.activity?.id || '-'"></span>
+            </div>
+            <div class="font-medium capitalize text-xs">activity</div>
+          </div>
+
+        </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #emptyString>
+  <span class="">&nbsp;</span>
+</ng-template>

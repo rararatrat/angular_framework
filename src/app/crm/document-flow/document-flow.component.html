@@ -1,0 +1,68 @@
+<!-- {{relatedDocs | pluck : 'title' | json }} -->
+<!-- *apploading="relatedDocs?.length <= 0 && !isLoaded" -->
+<div class="h-full w-full">
+    <p-table id="list-container-table-vs" #tableVs
+        [columns]="cols"
+        [value]="relatedDocs"
+        [scrollable]="true"
+        scrollHeight="100%"
+        [virtualScroll]="true"
+        [virtualScrollItemSize]="50"
+        [(contextMenuSelection)]="selected"
+        [contextMenu]="cm"
+        [(selection)]="selected"
+        >
+        <!-- [rows]="10"
+        [lazy]="true" -->
+        <!-- (onLazyLoad)="lazyLoadData($event)" -->
+        <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns">
+                {{ col.colId | translateField }}
+            </th>
+        </tr>
+        </ng-template>
+        <ng-template  pTemplate="body"
+                    let-rowData
+                    let-rowIndex="rowIndex"
+                    let-columns="columns">
+        <tr class="eg-vs-row" [pContextMenuRow]="rowData" (click)="onSelectionChange($event, rowData)">
+            <td *ngFor="let col of columns; trackBy: trackByFn"
+                [class.w-3rem]="col.header == 'image'"
+                [class.hidden]="col.field == null">
+
+            <ng-container *ngIf="(rowData['type'] == 'quotes' && col.colId == 'date' ? rowData['updated_at'] : (rowData[col.field]?.[col.header] || rowData[col.field])) as _val" [ngSwitch]="col.colId">
+                <ng-container *ngSwitchCase="'document'">
+                    <!-- <a [routerLink]="'/crm/sales/' + rowData['type'] + '/' + rowData['id']" [innerHTML]="((rowData['type'] + '') | capitalizeFirst) + ' ' + _val"></a> -->
+                    <div class="full-width font-medium underline cursor-pointer" pTooltip="Open in new tab" tooltipPosition="top">
+                        <span class="mr-2" (click)="gotoPage(rowData)" [innerHTML]="((rowData['type'] + '') | capitalizeFirst) + ' ' + _val"></span><i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </div>
+                </ng-container>
+                <span *ngSwitchCase="'gross'" [innerHTML]="(_val || '') | number : '0.2' : locale"></span>
+                <span *ngSwitchCase="'date'" [innerHTML]="( _val || '') | date : dateFormat : locale"></span>
+                <span *ngSwitchDefault [innerHTML]="_val"></span>
+            </ng-container>
+            </td>
+        </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody" let-columns="columns">
+        <tr class="eg-vs-row w-full" >
+            <td *ngFor="let col of columns; let even = even"
+                [class.w-3rem]="col.header == 'image' || col.header == 'priority' || col.header == 'status'"
+                [class.hidden]="col.field == null">
+
+            <ng-container *ngIf="col.header == 'image' ">
+                <p-skeleton shape="circle" size="3rem" width="100%"></p-skeleton>
+            </ng-container>
+
+            <ng-container *ngIf="col.header != 'image' ">
+                <p-skeleton width="100%" height="2rem" styleClass="m-2"></p-skeleton>
+            </ng-container>
+
+            </td>
+        </tr>
+        </ng-template>
+    </p-table>
+    <p-contextMenu #cm [model]="items"></p-contextMenu>
+</div>

@@ -1,0 +1,17 @@
+<div class="w-full h-full" *apploading="isLoading">
+  <eg-details-container [(config)]="config"
+                        [(data)]="data"
+                        [topic]="'document'"
+                        [(selectedIndex)]="activeIndex">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container *ngIf="data">
+        <eg-tpl-designer  [(settings)]="template_settings"
+                          [(template_type)]="template_type"
+                          [orig_template_type]="orig_template_type"
+                          [(rawdata)]="rawdata"
+                          [(topicId)]="data.id">
+        </eg-tpl-designer>
+      </ng-container>
+    </div>
+  </eg-details-container>
+</div>

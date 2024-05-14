@@ -1,0 +1,15 @@
+<div class="w-full h-full" *apploading="isLoading">
+  <ng-container [ngSwitch]="isHome">
+    <ng-container *ngSwitchCase="false">
+      <router-outlet></router-outlet>
+    </ng-container>
+    <ng-container *ngSwitchCase="true" ><!-- [ngTemplateOutlet]="organizationList" -->
+      <eg-details-container [config]="config" [(data)]="data" [topic]="'organization'">
+        <div class="w-full h-full max-w-full  border-round " content>
+          <router-outlet></router-outlet>
+        </div>
+      </eg-details-container>
+    </ng-container>
+  </ng-container>
+</div>
+

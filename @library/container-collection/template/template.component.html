@@ -1,0 +1,240 @@
+<ng-container *ngIf="!noControlFound; else noControlFoundTpl">
+  <ng-container [ngSwitch]="layout">
+    <ng-container *ngSwitchCase="'grid'">
+      <div  class="grid grid-nogutter border-none"
+            [class.list-simple-item]="hasTitle && !isTwoLine">
+        <div  *ngIf="hasTitle"
+            class="col-3  my-auto text-lg "
+            [class.col-12]="isTwoLine || !hasForm"
+            [class.pb-2]="isTwoLine">
+            <ng-container *ngIf="(('translations.' + field) | translate : {count: 1, company: '', item: ''}) as _title">
+              <i  *ngIf="hasIcon && (rendererType == 'icon' || rendererType == 'icon-name')"
+                  [pTooltip]="_title"
+                  [class]="icon +' '+ iconClass"></i>
+                  <!-- [pTooltip]="title | titlecase" -->
+  
+              <span *ngIf="hasTitle && (rendererType == 'name' || rendererType == 'icon-name')"
+                    [class]="titleClass+ '  font-medium'"
+                    [class.text-base]="isTwoLine"
+                    [class.ml-2]="rendererType == 'icon-name'"
+                    [pTooltip]="!hasIcon ? _title : ''"
+                    [innerHTML]="_title == '{translations.' + field + '}' ? ((title | capitalizeFirst)) : _title"></span> <span *ngIf="isRequired" class="pl-1" style="color: var(--danger) !important">*</span>
+                    <!-- [innerHTML]="(title | capitalizeFirst)"></span> <span *ngIf="isRequired" class="pl-1" style="color: var(--danger) !important">*</span> -->
+            </ng-container>
+        </div>
+        <div  *ngIf="hasForm"
+              class="col-9 "
+              [class.col-12]="isTwoLine">
+
+          <!-- If there is Detail Config Then Render This -->
+
+          <ng-container *ngIf="hasDetailConfig; else ngContentGridForm"
+                        [ngTemplateOutlet]="formTemplateRef"
+                        [ngTemplateOutletContext]="{$implicit:{data:data, label:field}}">
+
+            <ng-container *ngIf="mode=='add' || (mode=='edit' && (detailsConfig?.objArray[field]?.type == 'boolean' && detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled || !detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled))"
+                          [ngTemplateOutlet]="crudForm"
+                          [ngTemplateOutletContext]="{data:data, label:field}">
+            </ng-container>
+
+            <ng-container *ngIf="mode=='view' && ((detailsConfig?.objArray[field]?.type == 'boolean' && detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled) || !detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled)"
+                          [ngTemplateOutlet]="inPlace"
+                          [ngTemplateOutletContext]="{data:data, label:field}">
+            </ng-container>
+            
+            <!-- the ngContent -->
+            <ng-content select="[gridForm]"></ng-content>
+
+          </ng-container>
+
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'label'">
+      <ng-container *ngIf="(('translations.' + field) | translate : {count: 1, company: '', item: ''}) as _title">
+        <i  *ngIf="hasIcon && (rendererType == 'icon' || rendererType == 'icon-name')"
+            [pTooltip]="_title"
+            [class]="icon +' '+ iconClass"></i>
+  
+        <span *ngIf="hasTitle && (rendererType == 'name' || rendererType == 'icon-name')"
+            [class]="titleClass+ ' text-lg font-medium'"
+            [class.text-base]="isTwoLine"
+            [class.ml-2]="rendererType == 'icon-name'"
+            [pTooltip]="!hasIcon ? _title : ''"
+            [innerHTML]="_title == '{translations.' + field + '}' ? (title | capitalizeFirst) : _title"></span>
+            <!-- [innerHTML]="(title | capitalizeFirst)"></span> -->
+      </ng-container>
+
+      <span *ngIf="isRequired" class="pl-1" style="color: var(--danger) !important">*</span>
+
+     </ng-container>
+
+  <ng-container *ngSwitchCase="'table'">
+    <div  [class]="'flex flex-row w-full  flex-grow-1' +  titleClass"
+          [class.innerborder-grid-bottom]="!isLast" >
+      <div  [class]="'innerborder-grid-right p-1 flex align-items-center flex-grow-1 '+attr_class " *ngIf="!editMode"
+            >
+        <ng-container *ngIf="(('translations.' + field) | translate : {count: 1, company: '', item: ''}) as _title">
+          <i  *ngIf="hasIcon && (rendererType == 'icon' || rendererType == 'icon-name')"
+              [pTooltip]="_title"
+              [class]="icon +' '+ iconClass"></i>
+  
+          <span *ngIf="hasTitle && (rendererType == 'name' || rendererType == 'icon-name')"
+                [class]="'font-medium'"
+                [class.text-base]="isTwoLine"
+                [class.ml-2]="rendererType == 'icon-name'"
+                [pTooltip]="!hasIcon ? _title : ''"
+                [innerHTML]="_title == '{translations.' + field + '}' ? (title | capitalizeFirst) : _title"></span>
+        </ng-container>
+        <span *ngIf="isRequired" class="pl-1" style="color: var(--danger) !important">*</span>
+      </div>
+      <div  [class]="'p-1 h-full align-items-center '+value_class"
+            [ngClass]="{'w-full ' : editMode}">
+        <ng-container  *ngIf="hasDetailConfig; else ngContentFlexForm"
+                            [ngTemplateOutlet]="formTemplateRef"
+                            [ngTemplateOutletContext]="{$implicit:{data:data, label:field}}">
+              <ng-container *ngIf="mode=='add' || (mode=='edit' && !detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled)"
+                      [ngTemplateOutlet]="crudForm"
+                      [ngTemplateOutletContext]="{data:data, label:field}">
+              </ng-container>
+
+              <ng-container *ngIf="mode=='view' && !detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled"
+                      [ngTemplateOutlet]="inPlace"
+                      [ngTemplateOutletContext]="{data:data, label:field}">
+              </ng-container>
+
+              <!-- the ngContent -->
+              <ng-content select="[tableForm]"></ng-content>
+            </ng-container>
+      </div>
+    </div>
+   </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <div  [class]="'flex list-simple-item border-none h-full '+egClass "
+            [class.flex-column]="isTwoLine"
+
+            [class.p-2]="isTwoLine">
+            <div *ngIf="!editMode && (hasTitle || hasIcon)"
+                class="flex field-name my-auto mr-2 min-w-max align-items-center"
+                [class.w-3]="rendererType == 'name' || rendererType == 'icon-name'"
+                  >
+              <ng-container *ngIf="(('translations.' + field) | translate : {item: '', count: 1, company: ''}) as _title">
+                <i *ngIf="rendererType == 'icon' || rendererType == 'icon-name'"
+                    [pTooltip]="_title"
+                    [class]="icon +' '+ iconClass"></i>
+  
+                <!-- <span *ngIf="rendererType == 'name' || rendererType == 'icon-name'"
+                      [class]="titleClass+ ' ml-2  field-name font-medium'"
+                      [innerHTML]="(title | capitalizeFirst)"></span> <span *ngIf="isRequired" class="pl-1" style="color: var(--danger) !important">*</span> -->
+                <span *ngIf="rendererType == 'name' || rendererType == 'icon-name'"
+                      [class]="titleClass+ ' ml-2  field-name font-medium'"
+                      [pTooltip]="!hasIcon ? _title : ''"
+                      [innerHTML]="_title == '{translations.' + field + '}' ? (title | capitalizeFirst) : _title"></span>
+              </ng-container>
+              <span *ngIf="isRequired" class="pl-1" style="color: var(--danger) !important">*</span>
+
+            </div>
+            <!-- <div class="flex w-full"> -->
+            <div class="w-full flex-grow-1"
+                [class.mt-2]="isTwoLine">
+              <!-- If there is Detail Config Then Render This -->
+                <ng-container  *ngIf="hasDetailConfig; else ngContentFlexForm"
+                                [ngTemplateOutlet]="formTemplateRef"
+                                [ngTemplateOutletContext]="{$implicit:{data:data, label:field}}">
+                  <ng-container *ngIf="mode=='add' || (mode=='edit' && !detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled)"
+                                [ngTemplateOutlet]="crudForm"
+                                [ngTemplateOutletContext]="{data:data, label:field}">
+                  </ng-container>
+
+                  <ng-container *ngIf="mode=='view' && !detailsConfig?.formGroup.get(detailsConfig?.objArray[field]['formControlName'])?.disabled"
+                                [ngTemplateOutlet]="inPlace"
+                                [ngTemplateOutletContext]="{data:data, label:field}">
+                  </ng-container>
+
+                  <!-- the ngContent -->
+                  <ng-content select="[flexContentForm]"></ng-content>
+            </ng-container>
+            </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<!-- If you need full customization of the component use this -->
+<ng-template #ngContentTableForm >
+  <ng-content  select="[tableForm]"></ng-content>
+</ng-template>
+
+<ng-template #ngContentGridForm >
+  <ng-content  select="[form]"></ng-content>
+</ng-template>
+
+<!-- If you need full customization of the component use this -->
+<ng-template #ngContentFlexForm >
+  <ng-content  select="[flexForm]"></ng-content>
+</ng-template>
+<ng-template #inPlace let-data="data" let-label="label" let-ipClass="ipClass">
+  <ng-container [formGroup]="detailsConfig.formGroup">
+    <eg-inplace *ngIf="data"
+                [(editMode)]="editMode"
+                [class]="ipClass+' text-lg'"
+                [styleClass]="'text-lg '+ (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-full' : 'white-space-prewrap') "
+                [isDisabled]="isReadonly"
+                [icon]="data['icon']"
+                [numberConfig]="data['numberConfig']"
+                [type]="data['type']"
+                [topic]="data['autoConfig']?.extraKey || label"
+                [displayVal]="data['displayVal']"
+                [formControlName]="data['formControlName']"
+                [placeholder]="data['placeholder']"
+                [config]="detailsConfig.inPlaceConf"
+                [isRawText]="data['textArea']?.isRawText==true"
+                [tinyMceConfig]="data['textArea']?.tinyMceConfig"
+                [autoConfig]="data['autoConfig']"
+                [(isChanged)]="isChanged"
+                [options]="data['data'] || []"
+                (isChangedChange)="afterSaved($event)">
+    </eg-inplace>
+  </ng-container>
+</ng-template>
+
+<ng-template #crudForm let-data="data" let-label="label">
+  <ng-container [formGroup]="detailsConfig.formGroup">
+    <eg-crud-form #egCrud *ngIf="data"
+                  [mode]="mode"
+                  [styleClass]="'text-lg w-full'"
+                  [files]="files"
+                  [isEditable]="isReadonly"
+                  [isDisabled]="false"
+                  [type]="data['type']"
+                  [topic]="data['autoConfig']?.extraKey || label"
+                  [displayVal]="data['displayVal']"
+                  [formGroup]="detailsConfig.formGroup"
+                  [formControlName]="data['formControlName']"
+                  [placeholder]="data['placeholder']"
+                  [config]="detailsConfig.inPlaceConf"
+                  [autoConfig]="data['autoConfig']"
+                  [data]="data['data']"
+                  [options]="data['data']"
+                  [dataCallback]="data['callback']"
+                  [numberConfig]="data['numberConfig']"
+                  [isRawText]="data['textArea']?.isRawText==true"
+                  [tinyMceConfig]="data['textArea']?.tinyMceConfig"
+                  [parentFormGroupKey]="parentFormGroupKey"
+                  [parentFormGroupKeyIndex]="parentFormGroupKeyIndex"
+                  (frmCtrlUpdated)="onFrmCtrlUpdated($event)"
+                  [(isChanged)]="isChanged"
+                  (optionsChange)="optionsChange.emit($event)"
+                  >
+    </eg-crud-form>
+    <ng-container *ngIf="!data" [ngTemplateOutlet]="noControlFoundTpl"></ng-container>
+  </ng-container>
+
+</ng-template>
+
+<ng-template #noControlFoundTpl>
+  No Control Found for {{field | titlecase}}
+</ng-template>

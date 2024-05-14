@@ -1,0 +1,103 @@
+
+<div class="h-full flex flex-column p-1" *apploading="loading">
+    <eg-details-container [(config)]="config" [data]="data" [topic]="'email-template'">
+        <div class="w-full h-full max-w-full" content>
+            <div class="flex-grow-1 overflow-y-auto grid grid-nogutter p-2" *ngIf="detailsConfig?.formGroup">
+                <div class="col-6">
+                    <ng-container [formGroup]="detailsConfig.formGroup" *ngFor="let fs of fp.formStructure; trackBy: trackByFn; let i = index; let odd = odd;"> <!-- trackBy: trackByFn; -->
+                        <div class="flex flex-column" [class.form-field-header]="odd">
+                            <div class="grid grid-nogutter p-2" [ngClass]="{'border-bottom-1 ': fs['collapsed']}">
+                                <div class="col-12">
+                                    <div *ngIf="fs['header']">
+                                        <p [innerHTML]="fs['header']" class="font-medium text-xl"></p>
+                                        <i *ngIf="fs['headerTooltip']" [class]="fs['headerTooltip'].icon || 'pi pi-question'" [pTooltip]="fs['headerTooltip'].text"></i>
+
+                                        <div (click)="toggle(i)" class="text-gray">
+                                        [<span class="font-bold text-primary cursor-pointer">{{fs['collapsed']?'show':'hide'}}</span>]
+                                        </div>
+
+                                        <div  class="text-lg" [innerHTML]="(!fs['subheader']) ? '' : '-' + fs['subheader']"> </div>
+
+                                    </div>
+                                </div>
+                                <div [class]="'col-12'" >
+                                    <div class="grid grid-nogutter " *ngIf="!fs['collapsed']">
+                                        <div  [class.col-12]="fs['isTwoLine']==undefined || !fs['isTwoLine']"
+                                            [class.col]="fs['isTwoLine']"
+                                            *ngFor="let temp of fs['fields']">
+                                            <ng-container [ngTemplateOutlet]="egFormTemplate" [ngTemplateOutletContext]="{data: {key:temp, value: detailsConfig.objArray[temp] }, isTwoLine:fs['isTwoLine'], index: i}"></ng-container>
+                                        </div>
+                                    </div>
+                                <div *ngIf="fs['collapsed']">
+                                    <span [innerHTML]="fs['fields'].length+' field(s) in this section'"></span><br/>
+                                    <span [innerHTML]="fs['fields']"></span>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="col-6">
+                    <!-- <pre>{{detailsConfig.formGroup?.getRawValue() | json}}</pre> -->
+                    <p-accordion [(activeIndex)]="activeIndex"> <!-- (onClose)="setValue($event)" -->
+                        <p-accordionTab *ngFor="let la of languages; trackBy: trackByFn; let i = index; let odd = odd;" [header]="la?.name">
+                            <!-- <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p> -->
+                            <ng-container *ngFor="let fs2 of fp.valueFormStructure; trackBy: trackByFn; let i = index; let odd = odd;"> <!-- [formGroup]="detailsConfig.formGroup" -->
+                                <!-- {{fs2['fields'] | json}} -->
+                                <!-- {{la | json}} -->
+                                <div  [class.col-12]="fs2['isTwoLine']==undefined || !fs2['isTwoLine']"
+                                    [class.col]="fs2['isTwoLine']"
+                                    *ngFor="let temp2 of fs2['fields']">
+                                    <!-- <ng-container [ngTemplateOutlet]="egFormTemplate" [ngTemplateOutletContext]="{data: {key:temp2, value: detailsConfig.objArray[temp2] }, isTwoLine:fs2['isTwoLine'], index: i}"></ng-container> -->
+                                    <!-- {{ ga?.getRawValue() | json }} -->
+                                    <!-- {{ {temp2: detailsConfig.objArray[temp2]} | json }} -->
+
+                                    <eg-template [title]="temp2"
+                                        [parentFormGroupKey]="detailsConfig.objArray[temp2]?.parentFormGroupKey + '.' + la.code_2"
+                                        [detailsConfig]="detailsConfig"
+                                        [mode]="'add'"
+                                        [field]="temp2"
+                                        [hasTitle]="true"
+                                        [isTwoLine]="false"
+                                        [layout]="'grid'"
+                                        [rendererType]="'name'"
+                                        [isRequired]="false"
+                                        (frmCtrlUpdated)="frmCtrlUpdated($event)"
+                                        >
+                                    </eg-template>
+
+                                </div>
+                            </ng-container>
+
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </div>
+            <div class="flex-grow-0 text-right my-2 " >
+                <button pButton pRipple type="button"
+                    [icon]="'pi pi-save'" [label]="'Save'"
+                    class="p-button-primary "
+                    (click)="onSend()" [disabled]="detailsConfig?.formGroup?.invalid">
+                </button>
+            </div>
+        </div>
+    </eg-details-container>
+</div>
+
+<ng-template #egFormTemplate let-i="data" let-isTwoLine="isTwoLine" let-index="index" let-key="key">
+    <eg-template *ngIf="i?.value" [title]="i?.value?.['title']"
+        [detailsConfig]="detailsConfig"
+        [mode]="'add'"
+        [field]="i.key"
+        [hasTitle]="(i.key == 'files')?false:true"
+        [isTwoLine]="fp.formStructure[index]['isTwoLine']"
+        [layout]="'grid'"
+        [rendererType]="'name'"
+        [isRequired]="i.value?.required == true"
+        (frmCtrlUpdated)="frmCtrlUpdated($event)"
+        >
+    </eg-template>
+</ng-template>

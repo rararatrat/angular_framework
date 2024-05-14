@@ -1,0 +1,22 @@
+::ng-deep #settings-org-card .p-card{
+
+  width : 20rem;
+
+  .p-card-header{
+    text-align: center;
+    padding:0.75rem;
+
+    .org-logo{
+      width:12rem;
+      height: 12rem;
+    }
+
+  }
+
+  .p-card-body{
+    text-align: center;
+    padding-top: 0;
+  }
+
+}
+

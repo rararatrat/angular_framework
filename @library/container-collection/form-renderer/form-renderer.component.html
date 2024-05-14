@@ -1,0 +1,67 @@
+<table class="innerborder-table w-full" >
+  <ng-container [formGroup]="formGroup" *ngFor="let fs of formStructure; trackBy: trackByFn; let i = index; let odd = odd;">
+    <ng-container [ngSwitch]="typeof(fs) == 'object'">
+      <tr>
+        <td colspan="2" class="p-0 border-bottom-none ">
+          <ng-container *ngSwitchCase="true">
+            <p-fieldset [toggleable]="true" styleClass="text-lg mb-3" (collapsedChange)="collapsedChange($event, fs)">
+              <ng-template pTemplate="header">
+                <div class="flex flex-column">
+                  <div>
+                    <span [innerHTML]="!fs['header'] || !(fs['header'] | isNotEmpty) ? 'No Title' : fs['header'] | capitalizeFirst"></span>
+                    <span *ngIf="fs['collapsed']" class="ml-1 underline font-medium"  [innerHTML]="'has '+fs['fields'].length+' field(s)'"></span>
+                  </div>
+                  <div *ngIf="fs['collapsed']"><small class="font-normal" [innerHTML]="fs['fields']"></small></div>
+                </div>
+              </ng-template>
+              <div class="grid grid-nogutter gap-3">
+                <div  [class.col-12]="fs['isTwoLine']==undefined || !fs['isTwoLine']"
+                      [class.col]="fs['isTwoLine']"
+                      *ngFor="let temp of fs['fields']">
+                      <!-- <ng-container [ngTemplateOutlet]="egTemplate" [ngTemplateOutletContext]="{data:{key:temp, value:objArray[temp] }, isTwoLine:fs['isTwoLine']}"></ng-container>
+ -->
+                      <ng-container [ngTemplateOutlet]="egTemplate"
+                                    [ngTemplateOutletContext]="{$implicit:{field:temp, title:temp}}">
+                      </ng-container>
+                </div>
+              </div>
+            </p-fieldset>
+          </ng-container>
+        </td>
+      </tr>
+
+      <ng-container *ngSwitchDefault>
+        <ng-container *ngIf="hasObjInArr(formStructure)">
+          <tr>
+            <td colspan="2" class="p-0 border-bottom-none ">
+              <p-fieldset [toggleable]="true" [legend]="(fs).toString()" styleClass="text-lg mb-3 capitalize" >
+                <!-- <ng-container [ngTemplateOutlet]="egTemplate"
+                              [ngTemplateOutletContext]="{data:{key:fs, value:objArray[(fs).toString()] }, isTwoLine:true}">
+                </ng-container> -->
+                {{fs}}
+              </p-fieldset>
+            </td>
+          </tr>
+        </ng-container>
+        <!-- <ng-container *ngIf="!hasObjInArr(formStructure)" [ngTemplateOutlet]="tableFormTemplate" [ngTemplateOutletContext]="{data:{key:fs, value:objArray[(fs).toString()] }, isTwoLine:false, layout:'label'}"></ng-container> -->
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</table>
+
+
+<ng-template #egTemplate let-data>
+  <eg-template
+        [detailsConfig]="detailsConfig"
+        [egClass]="'bg-gray-faded border-round p-1 w-full'"
+        [field]="data.field"
+        [title]="data.title"
+        [isTwoLine]="true"
+        [layout]="data?.layout ? data?.layout : 'flex'"
+        [config]="'complete'"
+        [titleClass]="data?.titleClass?data.titleClass:''"
+        [hasTitle]="true"
+        [mode]="mode"
+        [rendererType]="'icon-name'">
+  </eg-template>
+</ng-template>

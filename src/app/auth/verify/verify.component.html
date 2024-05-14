@@ -1,0 +1,62 @@
+
+<div class="grid h-full">
+  <div class="col-12 m-auto">
+    <ng-container *ngIf="isVerified; then verifiedHeader else notVerifiedHeader"></ng-container>
+
+    <ng-container [ngSwitch]="isVerified">
+      <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="notVerified"></ng-container>
+      <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="verified"></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<eag-splash-screen [image]="orgDetails.logo || '../assets/img/eg_rd_black.png'" *ngIf="loading"></eag-splash-screen>
+
+<ng-template #notVerifiedHeader>
+  <div class="flex-column">
+    <div class="flex flex-grow-0 align-items-center mb-4">
+      <div class="text-6xl font-bold" [innerHTML]="'translations.verify_your_email' | translate"></div>
+    </div>
+
+    <div class="text-lg">
+      <span [innerHTML]="'translations.you_need_to_verify_email' | translate"></span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #verifiedHeader>
+  <div class="flex-column">
+    <div class="flex flex-grow-0 align-items-center mb-4">
+      <div class="text-6xl font-bold" [innerHTML]="'translations.verified_user' | translate"></div>
+    </div>
+
+    <div class="text-lg">
+      <span [innerHTML]="'translations.your_account_activated' | translate"></span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #notVerified>
+  <div class="flex flex-column card-container green-container">
+    <div class="flex align-items-center justify-content-start text-left">
+      <h3 [innerHTML]="'Hi ' + (user_details?.first_name || 'Mr') + ' ' + (user_details?.last_name || 'Unknown') + ', '"></h3>
+    </div>
+    <div class="flex align-items-center justify-content-center text-left">
+      <p class="fw-400 fs-14" [innerHTML]="'translations.an_email_is_sent_to_verify' | translate : { item: user_details?.email || 'un@kn.own' }"></p>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #verified>
+  <div class="flex flex-column card-container yellow-container">
+    <div class="flex align-items-center justify-content-center text-left">
+      <i class="pi pi-check-circle text-green-300" style="font-size: 12rem"></i>
+    </div>
+    <div class="field grid mt-6">
+      <div class="col-12 md:col-12 text-center">
+        <button pButton pRipple [label]="'translations.login'" icon="pi pi-user" class="lh-20" [routerLink]="['/auth/login']"></button>
+      </div>
+    </div>
+  </div>
+</ng-template>

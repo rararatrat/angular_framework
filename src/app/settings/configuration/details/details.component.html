@@ -1,0 +1,97 @@
+<div class="h-full w-full" *apploading="detailsConfig?.isLoading">
+  <eg-details-container [config]="detailsContainer" [(data)]="data" [topic]="'org'">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngTemplateOutlet]="dogtag" [ngTemplateOutletContext]="{$implicit:detailsConfig.data}"></ng-container>
+      <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{$implicit:'details'}"></ng-container>
+      <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{$implicit:'disclaimer'}"></ng-container>
+      <ng-container [ngTemplateOutlet]="content" [ngTemplateOutletContext]="{$implicit:'company_address'}"></ng-container>
+    </div>
+</eg-details-container>
+</div>
+
+
+
+<ng-template #content let-sub>
+  <div class="grid grid-nogutter mb-2">
+    <div class="col-3 p-2">
+      <h2 class="mt-0" [innerHTML]="section.header[sub]['name']"></h2>
+      <p [innerHTML]="section.header[sub]['description']"></p>
+    </div>
+    <div class="col-8  p-2">
+      <div *ngFor="let obj of section.content[sub]; trackBy: trackByFn">
+        <ng-container [ngTemplateOutlet]="gridItem" [ngTemplateOutletContext]="{$implicit:{label:obj, data:obj}}"></ng-container>
+        <!-- <ng-container [ngTemplateOutlet]="gridItem" [ngTemplateOutletContext]="{data:detailsConfig.objArray[obj], label:obj}"></ng-container> -->
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #gridItem let-content>
+  <div class="grid" *ngIf="detailsConfig.inPlaceConf && !detailsConfig.formGroup?.get(detailsConfig.objArray[content.data]['formControlName'])?.disabled">
+    <div class="col-2 font-bold text-lg text-gray pt-3">
+    <!-- <span [innerHTML]="content.label.replace('_', ' ') | titlecase"></span> -->
+    <span [innerHTML]="('translations.' + content.label) | translate : {count: 1}"></span>
+    </div>
+    <div class="col-10">
+      <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:detailsConfig.objArray[content.data], label:content.data}"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #dogtag let-template_data>
+  <div class="grid grid-nogutter mb-2">
+    <div class="col-3 px-2">
+      <h2 class="my-0 mt-1" [innerHTML]="'Company Logo'"></h2>
+      <p class="mt-2" [innerHTML]="'You can update your company logo over here'"></p>
+    </div>
+    <div class="col-9 px-2">
+
+      <ng-container>
+        <div class="flex flex-column w-full ">
+          <div class="flex align-items-center">
+            <div class="flex-none flex align-items-center justify-content-center">
+              <div class="border-circle w-6rem h-6rem overflow-hidden mr-3">
+                <!-- <ng-container [ngTemplateOutlet]="gridItem" [ngTemplateOutletContext]="{$implicit:{label:'logo', data:'logo'}}"></ng-container> -->
+                <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:detailsConfig.objArray['logo'], label:'logo'}"></ng-container>
+              </div>
+            </div>
+            <div class="flex-grow-1 flex flex-column">
+              <div class="flex"><span class="text-xl fw-600 mx-1 text-overflow-contain"  [innerHTML]="template_data['name']"></span></div>
+              <div class="flex"><span class="text-base m-1 fw-500 text-overflow-contain" [innerHTML]="template_data['preferred_name']"></span></div>
+              <div class="flex mt-1">
+                <span class="mr-3" *ngIf="template_data.__data__?.branding?.instagram != null" [pTooltip]="'@'+detailsConfig?.data.__data__?.branding?.instagram" tooltipPosition="bottom"> <a class="font-medium no-underline" [href]="'https://www.instagram.com/'+detailsConfig.data.__data__.branding.instagram" target="popup"> <i class="text-xl fa-brands fa-instagram"></i></a></span>
+                <span class="mr-3" *ngIf="template_data.__data__?.branding?.facebook != null"  [pTooltip]="template_data.__data__?.branding?.facebook"      tooltipPosition="bottom"> <a class="font-medium no-underline" [href]="'https://www.facebook.com/'+detailsConfig.data.__data__.branding.facebook" target="popup">   <i class="text-xl fa-brands fa-facebook"></i></a></span>
+                <span class="mr-3" *ngIf="template_data.__data__?.branding?.linkedin != null"  [pTooltip]="template_data.__data__?.branding?.linkedin"      tooltipPosition="bottom"> <a class="font-medium no-underline" [href]="'https://www.linkedin.com/in/'+detailsConfig.data.__data__.branding.linkedin" target="popup"><i class="text-xl fa-brands fa-linkedin"></i></a></span>
+                <span class="mr-3" *ngIf="template_data.__data__?.branding?.twitter != null"   [pTooltip]="template_data.__data__?.branding?.twitter"       tooltipPosition="bottom"> <a class="font-medium no-underline" [href]="'https://twitter.com/'+detailsConfig.data.__data__.branding.twitter" target="popup">         <i class="text-xl fa-brands fa-twitter"></i></a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #inPlace let-data="data" let-label="label">
+  <!-- [styleClass]="'text-lg ' + (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-full' : 'white-space-prewrap') " -->
+  <ng-container [formGroup]="detailsConfig.formGroup">
+    <eg-inplace
+      [styleClass]="'text-lg w-full ' + data['styleClass']"
+      [isDisabled]="false"
+      class="text-lg"
+      [isEditable]="detailsConfig.permission.update"
+      [type]="data['type']"
+      [topic]="data['autoConfig']?.extraKey || label"
+      [displayVal]="data['displayVal']"
+      [formControlName]="data['formControlName']"
+      [placeholder]="data['placeholder']"
+      [(config)]="detailsConfig.inPlaceConf"
+      [autoConfig]="data['autoConfig']"
+      [(isChanged)]="isChanged"
+      (isChangedChange)="afterSaved($event)">
+    </eg-inplace>
+  </ng-container>
+
+</ng-template>

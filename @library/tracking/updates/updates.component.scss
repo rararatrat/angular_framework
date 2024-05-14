@@ -1,0 +1,24 @@
+.snipper {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.update-tag{
+  border-bottom: 1px solid var(--border-color);
+}
+
+.update-dialog{
+  width: 50vw;
+  height: 50vh;
+  min-width: 50vw;
+  min-height: 50vh;
+}
+
+::ng-deep #vs .p-virtualscroller-item{
+  height: unset !important;
+}
+::ng-deep #vs .p-virtualscroller .p-virtualscroller-content{
+  background-color: transparent;
+}
+

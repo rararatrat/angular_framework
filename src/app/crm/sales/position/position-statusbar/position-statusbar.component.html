@@ -1,0 +1,21 @@
+<!-- <pre>{{ (params?.anyParams?.firstData | pluck : 'tax') | json }}</pre> -->
+<!-- <ng-container *ngIf="taxableItems?.length > 0; else defaultSum">
+    <div class="flex justify-content-between">
+        <span class="mr-2" [innerHTML]="('translations.total' | translate) + ' &nbsp; '"></span>
+        <span>{{ sum | number : "0.2" : locale_saved }}</span>
+    </div>
+    <ng-container *ngFor="let _tItem of taxableItems">
+        <div class="flex justify-content-between" *ngIf="_tItem.tax?.value > 0">
+            <span><span [innerHTML]="('translations.plus_tax' | translate : {tax: ((_tItem.tax?.value | number : '0.2' : locale_saved) + '%') })"></span> <span class="p-button-icon pi pi-question-circle ml-1 text-primary" styl="font-size: 7px !important" [pTooltip]="getTaxTooltip(_tItem)"></span></span>
+            <span [innerHTML]="_tItem.total_tax | number : '0.2' : locale_saved"></span>
+        </div>
+    </ng-container>
+    <ng-container [ngTemplateOutlet]="defaultSum"></ng-container>
+</ng-container>
+
+<ng-template #defaultSum>
+    <div class="flex justify-content-between">
+        <span class="mr-2" [innerHTML]="('translations.' + (taxableItems?.length > 0 ? 'amount_inc_tax' : 'amountTaxExempt') | translate) + ' &nbsp; '"></span>
+        <span>{{ (taxableItems?.length > 0 ? sumWithTax : sum) | number : "0.2" : locale_saved }}</span>
+    </div>
+</ng-template> -->

@@ -1,0 +1,14 @@
+<div class="w-full h-full" *apploading="isLoading">
+  <ng-container [ngSwitch]="isHome">
+    <ng-container *ngSwitchCase="false">
+      <router-outlet></router-outlet>
+    </ng-container>
+    <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="dashboard">
+
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #dashboard>
+  Dashboard code is ready, data is being fetched just need to plot it out
+</ng-template>

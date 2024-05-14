@@ -1,0 +1,47 @@
+<div class="flex flex-wrap h-full justify-content-center align-items-center overflow-y-auto gap-2" *ngIf="afterViewInitLoaded">
+  <ng-container *ngIf="images.length > 0; else noDataFound" [ngSwitch]="type">
+
+    <ng-container *ngSwitchCase="'grid'">
+        <div class="flex"  *ngFor="let ig of  images">
+          <ng-container [ngTemplateOutlet]="imageTemplateRef"
+                        [ngTemplateOutletContext]="{$implicit:ig}">
+
+          </ng-container>
+
+        </div>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'carousel'">
+      <p-carousel
+                  [value]="images"
+                  [numVisible]="1"
+                  [numScroll]="1"
+                  [circular]="false"
+                  styleClass="text-center"
+                  [responsiveOptions]="responsiveOptions">
+
+        <ng-template let-img pTemplate="item">
+          <img [src]="img.file" class="w-5" />
+        </ng-template>
+
+      </p-carousel>
+    </ng-container>
+    <ng-container *ngSwitchCase="'gallery'">
+
+      <gallery [items]="imageGallery"
+                thumbPosition="top"
+                [autoHeight]="true"
+                class="h-full w-full"
+                >
+      </gallery>
+
+    </ng-container>
+  </ng-container>
+
+</div>
+
+
+<ng-template #noDataFound>
+  <eg-no-data-found [config]="noDataConfig">
+  </eg-no-data-found>
+</ng-template>

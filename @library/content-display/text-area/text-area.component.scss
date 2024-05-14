@@ -1,0 +1,19 @@
+::ng-deep .ql-toolbar.ql-snow{
+  border: 0px solid;
+  border-bottom: 1px solid var(--default-grey);
+  font-family: var(--font-family);
+}
+::ng-deep .ql-container.ql-snow{
+  border: 0px !important;
+  height: fit-content !important;
+}
+::ng-deep .p-editor-content{
+  height: fit-content !important;
+  max-height: calc(100% - 41px) !important;
+  overflow-y: auto;
+}
+.editor-div{
+  min-height: 20rem;
+}
+
+

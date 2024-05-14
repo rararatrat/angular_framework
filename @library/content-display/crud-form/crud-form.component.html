@@ -1,0 +1,272 @@
+<ng-container [ngSwitch]="type">
+<!--   <ng-container *ngSwitchCase="'image'"   [ngTemplateOutlet]="image"></ng-container> -->
+  <ng-container *ngSwitchCase="'address'" [ngTemplateOutlet]="address"></ng-container>
+  <ng-container *ngSwitchDefault          [ngTemplateOutlet]="inputContainer"></ng-container>
+</ng-container>
+
+<ng-template #inputContainer>
+  <ng-container [ngSwitch]="type" *ngIf="(parentFormGroupKey ? getPrentFormGroup() : config?.formGroup) as _computedForm">
+    <ng-container *ngSwitchCase="'mask'"          [ngTemplateOutlet]="mask"  [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'number'"        [ngTemplateOutlet]="number"  [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'text'"          [ngTemplateOutlet]="text" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'password'"      [ngTemplateOutlet]="text" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'textarea'"      [ngTemplateOutlet]="textarea" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'date'"          [ngTemplateOutlet]="date" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'autocomplete'"  [ngTemplateOutlet]="autocomplete" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'select'"        [ngTemplateOutlet]="select" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'boolean'"       [ngTemplateOutlet]="boolean"  [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'multiselect'"   [ngTemplateOutlet]="multiselect" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'file'"          [ngTemplateOutlet]="file" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'radio'"         [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'chips'"         [ngTemplateOutlet]="chips" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'chip-labels'"   [ngTemplateOutlet]="chipLabels" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'json'"          [ngTemplateOutlet]="textarea" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <ng-container *ngSwitchCase="'color'"         [ngTemplateOutlet]="colorPicker" [ngTemplateOutletContext]="{$implicit: _computedForm}"></ng-container>
+    <!-- <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small> -->
+  </ng-container>
+</ng-template>
+
+<ng-template #mask>
+  <ng-container>
+    <p-inputMask  [placeholder]="placeholder || ''"
+                  [mask]="mask_string"
+                  [(ngModel)]="modelValue"
+                  (ngModelChange)="setMaskValue($event)"
+                  [ngModelOptions]="{standalone: true}"
+                  [class]="styleClass + ' '">
+    </p-inputMask>
+    <small class="p-invalid"><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #number let-computedForm>
+  <ng-container [formGroup]="computedForm">
+      <p-inputNumber *ngIf="numberConfig"
+                      [placeholder]="placeholder || ''"
+                      [mode]="numberConfig?.mode"
+                      [currency]="numberConfig?.currency || 'EUR'"
+                      [currencyDisplay]="numberConfig?.currencyDisplay"
+                      [locale]="locale"
+                      [minFractionDigits]="numberConfig?.minFractionDigits"
+                      [maxFractionDigits]="numberConfig?.maxFractionDigits"
+                      [prefix]="numberConfig?.prefix"
+                      [suffix]="numberConfig?.suffix"
+                      [formControlName]="formControlName"
+                      [styleClass]="styleClass + ' '"
+                      [inputStyleClass]="styleClass + ' '"
+                      class="w-full"
+                      >
+      </p-inputNumber>
+
+      <small class="p-invalid"><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+
+  </ng-container>
+</ng-template>
+
+<ng-template #text let-computedForm>
+  <ng-container [formGroup]="computedForm">
+      <input  pInputText
+              [type]="type == 'password' ? 'password' : 'text'"
+              [placeholder]="placeholder || ''"
+              [formControlName]="formControlName"
+              [class]="styleClass + ' '" />
+      <!-- TODO: multi validation errors -->
+      <small class="p-invalid"><span [innerHTML]="computedForm.get(formControlName)?.errors?.['err'] || (computedForm.get(formControlName)?.errors?.['email']===true ? ('translations.errValidationEmailFormat' | translate : {value: computedForm.value[formControlName]}) : '')"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #textarea let-computedForm>
+  <ng-container [formGroup]="computedForm" *ngIf="formControlName != null">
+    <eg-text-area [type]="type" [formGroup]="computedForm" [formControlName]="formControlName" [isRawText]="isRawText==true" [class]="styleClass + ' '" [config]="tinyMceConfig"></eg-text-area>
+    <small class="p-invalid"><span [innerHTML]="computedForm.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #password>
+  <ng-container [formGroup]="config?.formGroup">
+    <p-password [formControlName]="formControlName" [styleClass]="styleClass"></p-password>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #date>
+  <ng-container [formGroup]="config?.formGroup">
+    <p-calendar
+      id="editViewCalendar"
+      [appendTo]="'body'"
+      [formGroup]="config?.formGroup"
+      [formControlName]="formControlName"
+      [inputId]="formControlName"
+      [styleClass]="'form-control ' + styleClass"
+      [placeholder]="'dd/mm/yyyy'"
+      [dateFormat]="'dd/mm/yy'"
+      [showIcon]="true"
+      [locale]="locale"
+      (onSelect)="handleCallback($event)"
+      panelStyleClass="ac-inp-overlay"
+      [inputStyleClass]="' ' + config.formGroup?.get(formControlName).invalid?'ng-invalid':'ng-valid'"
+      [minDate]="dateConfig?.minDate" [maxDate]="dateConfig?.maxDate"
+    ></p-calendar>
+    <!-- {{dateConfig?.minDate | json}}
+    {{dateConfig?.maxDate | json}} -->
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #autocomplete let-computedForm>
+  <div class="w-full" [formGroup]="computedForm">
+    <eg-auto-complete *ngIf="type != 'file'" [topic]="topic"
+                      (callback)="handleCallback($event)"
+                      [formGroup]="computedForm"
+                      [formControlName]="formControlName"
+                      [attribute]="autoConfig"
+                      [newData]="(config?.mode == 'add')"
+                      [styleClass]="' ' +styleClass + ' w-full'">
+    </eg-auto-complete>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </div>
+</ng-template>
+
+<ng-template #select>
+  <ng-container [formGroup]="config?.formGroup">
+    <eg-select [topic]="topic" [mode]="config.mode"
+      (optionsChange)="optionsChange.emit($event)"
+                      (callback)="handleCallback($event)"
+                      [formGroup]="config?.formGroup"
+                      [formControlName]="formControlName"
+                      [attribute]="autoConfig"
+                      [placeholder]="placeholder"
+                      [styleClass]="' ' +styleClass">
+    </eg-select>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #multiselect>
+  <ng-container [formGroup]="config?.formGroup">
+    <eg-multi-select [topic]="topic"
+                      [mode]="mode"
+                      (callback)="handleCallback($event)"
+                      [formGroup]="config?.formGroup"
+                      [formControlName]="formControlName"
+                      [attribute]="autoConfig"
+                      [placeholder]="placeholder"
+                      [styleClass]="' ' +styleClass">
+    </eg-multi-select>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #boolean>
+  <ng-container [formGroup]="config?.formGroup">
+    <input type="hidden" [formControlName]="formControlName" />
+    <p-inputSwitch [(ngModel)]="modelValue" [disabled]="config?.formGroup?.get(formControlName)?.disabled==true"
+                  (ngModelChange)="switchChanged($event)"
+                  [ngModelOptions]="{standalone: true}">
+    </p-inputSwitch>
+    <!-- <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small> -->
+  </ng-container>
+</ng-template>
+
+<ng-template #image>
+  <p-skeleton shape="circle" size="7rem"  *ngIf="fcLoader == null"></p-skeleton>
+  <ng-container [formGroup]="config?.formGroup" *ngIf="fcLoader != null">
+    <eg-image [imageClass]="styleClass"
+              [formGroup]="config?.formGroup"
+              [formControlName]="formControlName"
+              [src]="config?.formGroup.get(formControlName).value"
+              [preview]="!isDisabled"
+              [isEditable]="!canEdit"
+              (callback)="handleCallback($event)">
+    </eg-image>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #address>
+  <p-skeleton styleClass="fadeout animation-duration-600 w-full" *ngIf="fcLoader == null" ></p-skeleton>
+  <ng-container [formGroup]="config?.formGroup" *ngIf="fcLoader != null">
+    <!-- {{data | json}} -->
+    <eg-address type="edit"
+                [format]="'object'"
+                (callback)="handleCallback($event, 'addressCreated')"
+                [formGroup]="config?.formGroup"
+                [formControlName]="formControlName"
+                [topic]="topic"
+                [data]="data">
+    </eg-address>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #file>
+  <ng-container [formGroup]="config?.formGroup" *ngIf="fcLoader != null">
+    <eag-uploader #fileUploader
+      [isNew]="mode == 'add'"
+      [filesArr]="files?.[formControlName] || []"
+      [label]="formControlName" [formGroup]="config?.formGroup"
+      (imgApiCallback)="handleCallback($event, 'uploadApiCallback')"
+      (ngModelChange)="handleCallback($event, 'ngModelChange')"
+      [autoUpload]="false"
+      [showCancelButton]="!canEdit || isDisabled"
+      [showUploadButton]="!canEdit || isDisabled"
+    ></eag-uploader>
+    <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<ng-template #radio>
+  <div [class]="styleClass + ' flex gap-3'" [formGroup]="config?.formGroup"> <!-- flex-column -->
+    <div *ngFor="let opt of options" class="field-checkbox">
+      <!-- <p-radioButton [inputId]="opt.id" [value]="opt" [formControlName]="formControlName"></p-radioButton> -->
+      <p-radioButton  [inputId]="opt.id"
+                      [value]="opt.hasOwnProperty('value') ? opt?.value : opt?.id"
+                      [formControlName]="formControlName"></p-radioButton>
+      <label [for]="opt.id" class="ml-2">{{ opt.label }}</label>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #chips>
+  <div [class]="styleClass + ' w-full'" [formGroup]="config?.formGroup"> <!-- flex-column -->
+    <!-- RT TODO put to formProperties addOnBlue, etc -->
+    <!-- {{ config?.formGroup?.get(formControlName).value | json }} -->
+    <p-chips #pChips [formControlName]="formControlName" [pStyleClass]="'w-full'" [addOnBlur]="true" [addOnTab]="false" [showClear]="true" [allowDuplicate]="false" [separator]="';'" (onChipClick)="onChipsClick($event, pChips)"></p-chips>
+    <div>
+      <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #chipLabels>
+  <!-- {{options | json}} -->
+  <div [class]="styleClass + ' flex flex-wrap gap-1'" [formGroup]="config?.formGroup"> <!-- flex-column -->
+    <div *ngFor="let opt of options" class="cursor-pointer">
+      <p-chip [label]="opt.label" (click)="onChipClick(opt, $event)"></p-chip>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Color Picker -->
+<ng-template #colorPicker>
+  <div [class]="styleClass + ' flex flex-row align-items-center'" [formGroup]="config?.formGroup">
+    <div class="flex-grow-0">
+      <p-colorPicker  #colorPicker id="colorPicker"
+                      [formControlName]="formControlName"
+                      [(ngModel)]="modelValue"
+                      (onChange)="config?.formGroup.get(formControlName).setValue($event.value)"
+                      (onShow)="config?.formGroup.get(formControlName).value">
+      </p-colorPicker>
+    </div>
+    <div  class="flex-grow-1 ml-2">
+      <input  pInputText
+              #colorPickerText
+              type="text"
+              [formControlName]="formControlName"
+              [placeholder]="placeholder"
+              class="w-full"
+              [(ngModel)]="modelValue"/>
+
+    </div>
+  </div>
+</ng-template>

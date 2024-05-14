@@ -1,0 +1,172 @@
+.no-app-mobile{
+  background-color: #1d1d1d;
+  color: #fafafa;
+}
+.eagna-class{
+  height: 100vh;
+  width: 100%;
+  max-width: 100% !important;
+  overflow: hidden;
+  background-color: var(--surface-ground);
+}
+.eagna-loading{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.eagna-content{
+  width: calc(var(--min-width) -  var(--sidebar-width));
+  min-width: calc(var(--min-width) -  var(--sidebar-width));
+  max-width: calc(var(--min-width) -  var(--sidebar-width));
+}
+::ng-deep #glbSearch .p-inputtext{
+  padding-left:1.75rem !important;
+}
+.body-container{
+  margin-left: var(--eg-container-left-margin);
+  min-height: var(--eg-container-body-height);
+}
+
+.content-container{
+  min-height: var(--eg-container-body-height) !important;
+  max-height: var(--eg-container-body-height) !important;
+  height: var(--eg-container-body-height) !important;
+
+  /* to make it dynamic for fixed and non fixed */
+  /* overflow-y: var(--eg-container-scroll) !important; */
+  overflow: hidden;
+  &:hover{
+      overflow-y: overlay;
+      overflow-x: overlay;
+  }
+}
+
+::ng-deep #eag-breadcrumb .p-breadcrumb{
+  padding: 0.5rem;
+  border-radius: 0px;
+  background-color: transparent;
+  font-size: 1rem;
+  /* height: var(--eg-container-breadcrumbs-height) !important; */
+}
+
+
+/*  To ammend the calsses in the eagna.io library css*/
+::ng-deep .p-dialog{
+ overflow: hidden;
+ .p-dialog-content{
+  overflow: hidden;
+  &:hover{
+    overflow: overlay;
+  }
+ }
+}
+
+.navbar-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /*or space-between*/
+  align-items: center;
+  width: 100%;
+  padding: 0.5em 0;
+  height: var(--eg-container-header-height) !important;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--border-color)
+  /* position: fixed; */ /* Need to work on this  */
+}
+
+.left-navbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
+
+}
+
+.right-navbar {
+  align-items: center;
+  justify-content: center;
+}
+
+.login-bg{
+  background-image: url("https://cdn.eagna.io/background/dots-7.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border: 1px solid white;
+  background-color: #f3f5f4;
+}
+
+
+.login-side{
+  width: 40px;
+  /* border-left: 0.1rem solid ; */
+  background-image: linear-gradient(to left, #ff000000, #fafafa);
+}
+.login-body{
+  height:95%;
+  vertical-align: top;
+}
+.login-social{
+  margin-top: calc(100vh - 60vh);
+}
+.login-footer{
+  height:4%;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+
+
+.map-container {
+  width: 100%;
+  height: 100%;
+
+}
+
+.map-frame {
+  height: 100%;
+
+}
+
+#map {
+  height: 100%;
+  border-top-right-radius:var(--eg-border-radius);
+  border-bottom-right-radius:var(--eg-border-radius);
+
+}
+.leaflet-tile {
+  filter: hue-rotate(45deg) !important;
+}
+
+
+.frame {
+  width: 315px;
+  height: 165px;
+  margin: 20px;
+  position: relative;
+}
+
+.fade {
+  height: 100%;
+  width: 100%;
+  position:absolute;
+  background: -webkit-linear-gradient(left,
+              rgba(0,0,0,0.65) 0%,
+              rgba(0,0,0,0) 20%,
+              rgba(0,0,0,0) 80%,
+              rgba(0,0,0,0.65) 100%
+  );
+}
+
+
+
+.eagna-border{
+  transition: border-bottom-left-radius 0.5s ease-in-out;
+  transition: border-bottom-right-radius 0.5s ease-in-out;
+  transition: border-top-left-radius 0.5s ease-in-out;
+  transition: border-top-right-radius 0.5s ease-in-out;
+}

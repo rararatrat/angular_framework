@@ -1,0 +1,318 @@
+<div class="item-container h-full border-round surface-card" *ngIf="perm != null && (perm | isNotEmpty)">
+  <div class="item-panel-header mt-2 shadow-1" *ngIf="!isEditable()">
+    <p-menubar id="itemMenu" #itemMenu
+              [model]="positionMenu"
+              styleClass="p-0">
+    </p-menubar>
+  </div>
+  <!-- <p-menu #menu [model]="groupPositionMenu" [popup]="true"></p-menu> -->
+  <p-menu #groupMenu [model]="positionMenu | filterBy : {field: 'id', value: '!group_position'} | filterBy : {field: 'id', value: '!discount_position'}" [popup]="true"></p-menu>
+  <div class="flex-grow-1">
+    <p-table id="itemTable" #itemTable
+            styleClass="m-1 border-round overflow-hidden max-h-full"
+            tableStyleClass="surface-card border-round  max-h-full"
+            [value]="position_items"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            cdkDropList
+            [cdkDropListEnterPredicate]="noDropPredicate"
+            (cdkDropListDropped)="drop($event)"
+            [scrollable]="true"
+            scrollHeight="87vh">
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th class="text-lg">&nbsp;</th>
+            <th class="text-lg w-7" [innerHTML]="'translations.description' | translate"></th>
+            <th class="text-lg w-1" [innerHTML]="'translations.qty' | translate">Quantity</th>
+            <th class="text-lg w-1" [innerHTML]="'translations.individual_price' | translate">Indiviudal Price</th>
+            <th class="text-lg w-1" [innerHTML]="'translations.discount' | translate">Discount</th>
+            <th class="text-lg w-1" [innerHTML]="'translations.price_in' | translate : {currency: ((data.currency != null) ? data.currency.name : 'eur')}"></th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-item let-columns="columns">
+        <ng-container *ngIf="data.positions | isNotEmpty">
+          <tr cdkDrag [cdkDragDisabled]="isDiscount(item)" [class.bg-warn-faded]="item.type?.position_key == 'group_position' || item.parent != null" (cdkDragStarted)="onDragStart($event, item)"> <!-- (cdkDragEnded)="onDragEnd($event)" -->
+            <td class="text-base " [vAlign]="'top'">
+              <p-chip styleClass="text-xs font-bold" [label]="(item.type != null) ? ('translations.position_type' | translate : {type: ('translations.' + (item.type.position_key || '').replace('_position', '') | translate : {count: 1}) }) : '-'"></p-chip>
+            </td>
+            <td class="text-base" [colSpan]="(isPdf(item) || isText(item)) ?'5':'0'">
+              <div  class="action-items"
+                    [class.hidden]="(!perm.read || !perm.update) || isEditable()">
+                <p-button *ngIf="!isDiscount(item)" [styleClass]="'p-button-rounded p-button-text p-button-plain cursor-move'"
+                          icon="fa-solid fa-ellipsis-vertical"
+                          [pTooltip]="'translations.move' | translate"
+                          [disabled]="!perm.update"
+                          cdkDragHandle>
+                </p-button>
+                <p-button styleClass="p-button-rounded p-button-text p-button-danger"
+                          icon="fa-solid fa-trash"
+                          [pTooltip]="'translations.delete' | translate : {item: ''}"
+                          [disabled]="!perm.delete"
+                          (click)="delete(item)">
+                </p-button>
+                <p-button styleClass="p-button-rounded p-button-text p-button-warning "
+                          icon="fa-solid fa-pencil"
+                          *ngIf="!isPdf(item)"
+                          [pTooltip]="'translations.edit' | translate : {item: ''}"
+                          [disabled]="!perm.update"
+                          (click)="edit(item)">
+                </p-button>
+                <p-button styleClass="p-button-rounded p-button-text p-button-primary "
+                          icon="fa-solid fa-eye"
+                          *ngIf="!isPdf(item)"
+                          [pTooltip]="'translations.view' | translate : {item : ''}"
+                          [disabled]="!perm.read"
+                          (click)="view(item)">
+                </p-button>
+                <p-button styleClass="p-button-rounded p-button-text p-button-primary "
+                          icon="pi pi-plus"
+                          *ngIf="isGroup(item)"
+                          [pTooltip]="'translations.create_entry' | translate: {item: ('translations.item' | translate : {count: 1}) }" 
+                          [disabled]="!perm.read"
+                          (click)="toggleGroup($event, groupMenu, item)">
+                </p-button>
+              </div>
+
+              <ng-container [ngSwitch]="isPdf(item)">
+                <ng-container *ngSwitchCase="true">
+                  <div class="text-center">PDF Page Break</div>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                  <span [innerHTML]="item.external_pos ? item.external_pos + ' ' : ''"></span> 
+                  <span [innerHTML]="(item.text || item.name  || '-')"></span> <!-- (item.parent ? '--' + item.parent + '-- ' : (isGroup(item) ? '--' + item.id + '-- ' : '')) + -->
+                </ng-container>
+              </ng-container>
+            </td>
+
+            <ng-container *ngIf="!isPdf(item) && !isText(item)">
+              <td class="text-base">
+                <ng-container *ngIf="!isSubTotal(item) && !isGroup(item) && !isDiscount(item)">
+                  <span [innerHTML]="(item.quantity | number) || 0"></span>
+                  <small class="ml-1 text-xs text-gray" [innerHTML]="(item.unit != null) ? item.unit.name : '-'"></small>
+                </ng-container>
+              </td>
+              <td class="text-base">
+                <ng-container *ngIf="!isSubTotal(item) && !isGroup(item) && !isDiscount(item)">
+                  <span [innerHTML]="(item.unit_price | number) || 0"></span>
+                  <div class="text-xs text-gray" [innerHTML]="item?.tax?.tax_rate ? ((item?.tax?.tax_rate | percent)) : '' "></div>
+                </ng-container>
+              </td>
+              <td class="text-base">
+                <!-- <span [innerHTML]="((item.discount_in_percent | number: '1.2') || 0)"></span> -->
+                <!-- <span [innerHTML]="((item.discount_in_percent | number: '1.2') / 100 || 0) | percent:'2.2'"></span> -->
+                <span *ngIf="!isSubTotal(item) && !isGroup(item) && !isDiscount(item)" [innerHTML]="item.discount_in_percent > 0 ? ((item.discount_in_percent|| 0) | percent : '1.2') : '-'"></span>
+                <span *ngIf="isDiscount(item) && item?.is_percentual && item.value > 0" [innerHTML]="((item.value ) * 0.01) | percent : '1.2'"></span>
+              </td>
+              <!-- <td class="text-base" [ngSwitch]="isSubTotal(item) || isDiscount(item) || isGroup(item)">
+                <ng-container *ngSwitchCase="true">
+                  <span *ngIf="computeSum(item) as _sum">{{_sum | number : '0.2-2' : locale }}</span>
+                </ng-container>
+                <ng-container *ngSwitchCase="false">
+                  <span [innerHTML]="(item.total_sum | number) || 0"></span>
+                  <div class="text-xs text-gray" [innerHTML]="item?.account?.name || '-' "></div>
+                </ng-container>
+              </td> -->
+              <td class="text-base">
+                <span [innerHTML]="(computeSum(item) | number : '0.2-2' : locale ) || 0"></span>
+                <div class="text-xs text-gray" [innerHTML]="item?.account?.name || '-' "></div>
+              </td>
+            </ng-container>
+
+          </tr>
+        </ng-container>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <ng-container *ngIf="(data.positions | isNotEmpty) && (total | isNotEmpty)">
+          <tr>
+            <td class="font-medium text-lg text-right" colspan="2" [innerHTML]="'translations.subtotal' | translate"></td>
+            <!-- <td class="font-medium text-lg" colspan="4"><span *ngIf="total" [innerHTML]="data?.total_wo_tax | currency:total.currency"></span></td> -->
+            <td class="font-medium text-lg" colspan="4"><span *ngIf="total" [innerHTML]="taxSummary?.sum| currency: total.currency"></span></td>
+          </tr>
+          <tr>
+            <td class="font-normal text-lg text-right" colspan="2" [innerHTML]="'translations.taxed' | translate"></td>
+            <!-- <td class="font-normal text-lg" colspan="4 "><span *ngIf="total" [innerHTML]="(data?.total_w_tax - data?.total_wo_tax) | currency:total.currency"></span></td> -->
+            <td class="font-normal text-lg" colspan="4 "><span *ngIf="total" [innerHTML]="(taxedAmount) | currency:total.currency"></span></td>
+          </tr>
+          <tr>
+            <td class="font-medium text-lg border-1 text-lg text-right" colspan="2">
+              <span>Total</span>
+              <p-button icon="fa-solid fa-circle-info"
+                        styleClass="p-button-rounded p-button-text"
+                        [disabled]="!perm.read"
+                        (click)="totalDetail=!totalDetail">
+              </p-button>
+
+            </td>
+            <!-- <td class="border-1 text-lg" colspan="4"><span *ngIf="total" [innerHTML]="data?.total_w_tax | currency:total.currency"></span></td> -->
+            <td class="border-1 text-lg" colspan="4"><span *ngIf="total" [innerHTML]="taxSummary?.sumWithTax | currency:total.currency"></span></td>
+          </tr>
+        </ng-container>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+ <ng-container *ngIf="data?.positions | isNotEmpty">
+   <p-dialog header="Cost Breakdown"
+            [modal]="true"
+            [position]="'top'"
+            [(visible)]="totalDetail"
+            [style]="{width: '50vw'}">
+    <ng-container *ngIf="taxGroup != null">
+      <p-table styleClass="text-lg" [value]="taxGroup" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th class="text-lg">Tax</th>
+              <th class="text-lg">Rate</th>
+              <th class="text-lg">Subtotal (Nett)</th>
+              <th class="text-lg">Taxed Value</th>
+              <th class="text-lg">Total (Gross)</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tg let-columns="columns">
+            <tr *ngIf="tg.tax">
+              <td class="text-lg pl-1"><span [innerHTML]="tg.tax"></span></td>
+              <td class="text-lg pl-1"><span [innerHTML]="tg.rate"></span></td>
+              <td class="text-lg pl-1"><span [innerHTML]="tg.before | currency:tg.currency"></span></td>
+              <td class="text-lg pl-1"><span [innerHTML]="tg.taxed | currency:tg.currency"></span></td>
+              <td class="text-lg pl-1"><span [innerHTML]="tg.after | currency:tg.currency"></span></td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr >
+            <td class="text-lg">Total</td>
+            <td class="text-lg"></td>
+            <td class="text-lg"><span *ngIf="total" [innerHTML]="total.before | currency:total.currency"></span></td>
+            <td class="text-lg"><span *ngIf="total" [innerHTML]="total.taxed | currency:total.currency"></span></td>
+            <td class="text-lg"><span *ngIf="total" [innerHTML]="total.after | currency:total.currency"></span></td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
+  </p-dialog>
+
+ </ng-container>
+<ng-template #noDataFound>
+  8rem
+</ng-template>
+
+<!-- NOt using This just here for backup -->
+<!-- <ng-template #oldGrid>
+
+  <div class="item-header grid border-1">
+    <div class="attribute align-items-center text-center col-1 col-fixed">Action</div>
+    <div class="attribute align-items-center text-center col-1 col-fixed">Type</div>
+    <div class="attribute align-items-center col">Description</div>
+    <div class="attribute align-items-center col-1 col-fixed">Quantity</div>
+    <div class="attribute align-items-center col-1 col-fixed">Indiviudal Price</div>
+    <div class="attribute align-items-center col-1 col-fixed">Discount</div>
+    <div class="attribute align-items-center col-1 col-fixed">Price In {{(data.currency != null) ? data.currency.name : "eur"}}</div>
+  </div>
+
+
+  <div class="item-content" cdkDropList (cdkDropListDropped)="drop($event)">
+    <p-scrollPanel styleClass="h-full" >
+      <div  class="grid border-round ml-2 my-1 mr-0 surface-ground " cdkDrag
+            *ngFor="let item of position_items"
+            [class.bg-gray-faded]="isPdf(item)"
+            [class.item-row]="!isPdf(item)"
+            (dblclick)="view(item)">
+        <div class="col-1 col-fixed">
+          <p-button styleClass="p-button-rounded p-button-text cursor-move"
+                    icon="fa-solid fa-ellipsis-vertical"
+                    cdkDragHandle>
+          </p-button>
+          <p-button styleClass="p-button-rounded p-button-text p-button-danger"
+                    icon="fa-solid fa-trash"
+                    (click)="delete(item)">
+          </p-button>
+          <p-button styleClass="p-button-rounded p-button-text p-button-warning "
+                    icon="fa-solid fa-pencil"
+                    *ngIf="!isPdf(item)"
+                    (click)="edit(item)">
+          </p-button>
+        </div>
+
+
+        <ng-container [ngSwitch]="isPdf(item)">
+          <ng-container *ngSwitchCase="true">
+            <div class="attribute text-center col font-bolder">
+              <span [innerHTML]="(item.type != null) ? item.type.name : '-'"></span>
+            </div>
+          </ng-container>
+
+          <ng-container *ngSwitchCase="false">
+            <div class="attribute text-center col-1 col-fixed">
+              <span [innerHTML]="(item.type != null) ? item.type.name : '-'"></span>
+            </div>
+
+            <div class="attribute col">
+              <span [innerHTML]="item.internal_pos+'. '"></span>
+              <span [innerHTML]="item.text || '-'"></span>
+            </div>
+
+            <ng-container *ngIf="!isText(item)">
+              <ng-container *ngIf="!isSubTotal(item)">
+                <div class="attribute col-1 col-fixed">
+                  <span [innerHTML]="(item.quantity | number) || 0"></span>
+                  <div class="ml-2 text-xs text-gray" [innerHTML]="(item.unit != null) ? item.unit.name : '-'"></div>
+                </div>
+
+                <div class="attribute col-1 col-fixed">
+                  <span [innerHTML]="(item.unit_price | number) || 0"></span>
+                  <div class="text-xs text-gray" [innerHTML]="item?.tax?.name || '-' "></div>
+                  <div class="text-xs text-gray" [innerHTML]="((item?.tax?.tax_rate * 100))+'%' || '-' "></div>
+                </div>
+
+                <div class="attribute col-1 col-fixed">
+                  <span [innerHTML]="(item.discount_in_percent | number) || 0"></span>
+                  <span class="ml-1 text-xs text-gray" [innerHTML]="(item.is_percentual) ? '%' : '-'"></span>
+                </div>
+              </ng-container>
+
+              <div class="attribute col-1 col-fixed">
+                <span [innerHTML]="(calculate(item, false) | number) || 0"></span>
+                <div class="text-sm" [innerHTML]="'incl tax '+(calculate(item, true) | number) || 0"></div>
+                <div class="text-xs text-gray" [innerHTML]="item?.account?.name || '-' "></div>
+              </div>
+            </ng-container>
+
+          </ng-container>
+        </ng-container>
+      </div>
+    </p-scrollPanel>
+  </div>
+
+  <div class="item-footer border-round border-1 surface-ground p-2 m-2">
+    <ng-container *ngIf="total != null">
+      <div class="grid">
+        <div class="col-8 text-right align-self-center">
+          <span class="" [innerHTML]="'Subtotal'"></span>
+        </div>
+        <div class="col-4 align-self-center">
+          <span class="font-medium text-lg" [innerHTML]="total.before | currency:total.currency"></span>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col-8 text-right align-self-center">
+          <span class="" [innerHTML]="'Taxed'"></span>
+        </div>
+        <div class="col-4 text-xl  align-self-center">
+          <span class="font-medium text-lg" [innerHTML]="total.taxed | currency:total.currency"></span>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col-8 text-right align-self-center">
+          <span class="font-medium text-lg" [innerHTML]="'Total'"></span>
+          <sup class="ml-1 cursor-pointer" (click)="totalDetail=!totalDetail">
+            <i class="fa-solid fa-circle-info text-primary"></i>
+          </sup>
+        </div>
+        <div class="col-4 align-self-center">
+          <span class="font-bold text-2xl" [innerHTML]="total.after | currency:total.currency"></span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</ng-template>
+ -->

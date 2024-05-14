@@ -1,0 +1,214 @@
+<!-- {{0.1504 | percent : '0.0-1'}} --> <!-- will output 15% -->
+<!-- {{0.1505 | percent : '0.0-1'}} --> <!-- will output 15.1% -->
+<!-- {{0.15155 | percent : '0.0-2'}} --> <!-- will output 15.16% -->
+<!-- {{0.151 | percent : '0.2'}} --> <!-- will output 15.10% -->
+<!-- {{0.151234 | percent : '0.2'}} --> <!-- will output 15.12% -->
+<!-- {{0.151234 | percent : '0.2-2' }} --> <!-- will output 15.12% -->
+<!-- {{0.151234 | percent : '0.2-2' : locale}} --> <!-- will output 15.12 % -->
+<!-- <pre>{{data | json}}</pre> -->
+
+<div id="pdf-preview" class="surface-ground py-2" *apploading="!settings || (!isMockData && (positionsForPrint || []).length < 0)"> <!-- *apploading="positionsForPrint?.length <= 0" -->
+    <!-- <pre>{{taxSummary | json}}</pre> -->
+    <div class="pdf-preview front" [style]="(settings?.template?.textColor ? 'color: ' + settings.template.textColor + ';' : '')">
+        <div class="flex border-none">
+            <div class="flex-column flex-grow-1">
+                <div class="my-2" style="position: relative; height: 120px;">
+                    <div [style]="'position: absolute;' + ( (!settings || settings?.recipient?.align == 'left') ? 'right: 95px;' : '' ) 
+                    + (settings?.font?.company ? 'font-size: ' + settings?.font?.company + 'px' : '') ">
+                        <ng-container *ngIf="(settings?.companyLogo ? envUrl + settings?.companyLogo : (orgData?.logo || '')) as orgLogo">
+                            <p-avatar *ngIf="!settings || settings?.templateEl?.showCompanyLogo" #pAvatar
+                                [image]="orgLogo" referrerpolicy="no-referrer"
+                                class="cursor-pointer vertical-align-middle"
+                                size="xlarge"
+                                shape="circle"></p-avatar>
+                            <div *ngIf="!settings || settings?.templateEl?.showCompanyAddress" class="my-4" [innerHTML]="orgData?.name || ''"></div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div [style]="'position: relative; height: ' + (120 + (settings?.distance?.headerLine ? settings?.distance?.headerLine : 0 )) + 'px'">
+                    <div [style]="'position: absolute;' 
+                        + ( settings?.recipient?.align == 'right' ? ('right: '+ (150 + (settings?.recipient?.leftRight != undefined ? settings.recipient.leftRight : 0) ) + 'px;') : 
+                            ('left: ' + (settings?.recipient?.leftRight != undefined ? settings.recipient.leftRight : 0) + 'px;') ) 
+                        + ('top: '+ (settings?.recipient?.upDown != undefined ? settings.recipient.upDown : 0) + 'px;')
+                        + (settings?.font?.recipient ? 'font-size: ' + settings?.font?.recipient + 'px' : '')" class="my-4">
+                        <div [innerHTML]="data?.__data__?.company?.name"></div>
+                        <div class="my-2" [innerHTML]="data?.__data__?.company?.__data__?.reg_add?.formatted_address || data?.__data__?.company?.__data__?.reg_add?.country || ''"></div>
+                    </div>
+                </div>
+                
+                <div class="grid col-12 grid-nogutter border-bottom-1 font-bold p-2 justify-content-between"
+                    [style]="(settings?.font?.heading ? 'font-size: ' + settings?.font?.heading + 'px;' : '')
+                    + (settings?.template?.titleColor ? 'color: ' + settings.template.titleColor + ';' : '')
+                    + (settings?.template?.lineColor? 'border-color: ' + settings.template.lineColor + ';' : '')">
+                    <span [innerHTML]="isMockData ? ('Test ' + (label_from_type || '')) : (data?.title || data?.name || '')"></span>
+                    <span *ngIf="settings?.templateEl?.showPageNumbers" [innerHTML]="'translations.page_of' | translate : {x: 1, y: (positionsForPrint.length + (settings?.templateEl?.noPagebreak ? 0 : 1))}"></span>
+                </div>
+                <div *ngIf="isMockData" class="grid col-12 grid-nogutter border-bottom-1 font-bold p-2" 
+                    [style]="(settings?.font?.heading ? 'font-size: ' + settings?.font?.heading + 'px;' : '')
+                    + (settings?.template?.titleColor ? 'color: ' + settings.template.titleColor + ';' : '')
+                    + (settings?.template?.lineColor? 'border-color: ' + settings.template.lineColor + ';' : '')">{{ 'Example ' + (label_from_type || '').toLowerCase() }}</div>
+                
+                <div class="grid grid-nogutter border-none p-2" [style]="settings?.font?.size ? 'font-size: ' + settings?.font?.size + 'px' : ''">
+                    <ng-container *ngIf="!settings || settings?.setup?.headerOptions?.showDate">
+                        <div class="col-3 my-auto py-1">
+                            Date
+                        </div>
+                        <div class="col-3 my-auto py-1" [innerHTML]="data?.is_valid_from ? (data?.is_valid_from | date : dateFormat : null : locale) : ''"></div>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="!settings || settings?.setup?.headerOptions?.showCompanyContact">
+                        <div class="col-3 my-auto py-1">
+                            Contact person
+                        </div>
+                        <div class="col-3 my-auto py-1" [innerHTML]="data?.contact?.name"></div>
+                    </ng-container>
+                    <ng-container *ngIf="!settings || settings?.setup?.headerOptions?.showValidUntil">
+                        <div class="col-3 my-auto py-1">
+                            Valid until
+                        </div>
+                        <div class="col-3 my-auto py-1" [innerHTML]="data?.is_valid_from ? (data?.is_valid_until | date : dateFormat : null : locale) : ''"></div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!settings || settings?.setup?.headerOptions?.showCustomerNumber">
+                        <div class="col-3 my-auto py-1">
+                            Customer number
+                        </div>
+                        <div class="col-3 my-auto py-1">
+                            000001
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!settings || settings?.setup?.headerOptions?.showProjectName">
+                        <div class="col-3 my-auto py-1">
+                            Project name
+                        </div>
+                        <div class="col-3 my-auto " [innerHTML]="data?.project?.name"></div>
+                    </ng-container>
+
+                    <ng-container *ngIf="!settings || settings?.setup?.headerOptions?.showVATNumber">
+                        <div class="col-3 my-auto py-1">
+                            VAT
+                        </div>
+                        <div class="col-3 my-auto py-1">
+                            {{data?.__data__?.company?.vat_no}}
+                        </div>
+                    </ng-container>
+                </div>
+    
+                <div class="my-5 p-2" [style]="settings?.font?.size ? 'font-size: ' + settings?.font?.size + 'px' : ''" [ngSwitch]="isMockData">
+                    <p *ngSwitchCase="true">{{ 'translations.dear' | translate : {item: orgData?.name || ('&lt;' + ('translations.customer' | translate) +'&gt;') } }}<br><br>
+                        
+                    {{ 'translations.thank_you_for_your_interest' | translate : {item: label_from_type} }}
+                    </p>
+                    <p *ngSwitchCase="false" style="white-space: pre-wrap" [innerHTML]="data?.header"></p>
+                </div>
+                <ng-container [ngTemplateOutlet]="renderPage" [ngTemplateOutletContext]="{data: (positionsForPrint[0] || []).concat( ( settings?.templateEl?.noPagebreak && positionsForPrint?.length == 1 ? (taxSummary.taxableItems || []) : [])) }"></ng-container>
+            </div>
+        </div>
+    </div>
+    
+    <ng-container *ngIf="positionsForPrint?.length > 1">
+        <div class="pdf-preview succeeding" [style]="(settings?.template?.textColor ? 'color: ' + settings.template.textColor + ';' : '')"
+        *ngFor="let toPrint of positionsForPrint.slice(1, positionsForPrint.length); let idx=index; let isFirst=first; let isLast=last">
+            <div class="grid col-12 grid-nogutter border-bottom-1 font-bold p-2 justify-content-between"
+                [style]="(settings?.font?.heading ? 'font-size: ' + settings?.font?.heading + 'px;' : '')
+                + (settings?.template?.titleColor ? 'color: ' + settings.template.titleColor + ';' : '')
+                + (settings?.template?.lineColor? 'border-color: ' + settings.template.lineColor + ';' : '')">
+                <span [innerHTML]="data?.name || ''"></span>
+                <span *ngIf="settings?.templateEl?.showPageNumbers" [innerHTML]="'translations.page_of' | translate : {x: (idx + 2), y: (positionsForPrint.length + (settings?.templateEl?.noPagebreak ? 0 : 1))}"></span>
+            </div>     
+            <ng-container [ngTemplateOutlet]="renderPage" [ngTemplateOutletContext]="{data: ((toPrint || []).concat( ( settings?.templateEl?.noPagebreak && isLast ? (taxSummary.taxableItems || []) : [])) )}"></ng-container>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!settings?.templateEl?.noPagebreak && taxSummary?.taxableItems | isNotEmpty">
+        <div class="pdf-preview succeeding" [style]="(settings?.template?.textColor ? 'color: ' + settings.template.textColor + ';' : '')">
+            <div class="grid col-12 grid-nogutter border-bottom-1 font-bold p-2 justify-content-between"
+                [style]="(settings?.font?.heading ? 'font-size: ' + settings?.font?.heading + 'px;' : '')
+                + (settings?.template?.titleColor ? 'color: ' + settings.template.titleColor + ';' : '')
+                + (settings?.template?.lineColor? 'border-color: ' + settings.template.lineColor + ';' : '')">
+                <span [innerHTML]="data?.name || ''"></span>
+                <span *ngIf="settings?.templateEl?.showPageNumbers" [innerHTML]="'translations.page_of' | translate : {x: positionsForPrint.length + (settings?.templateEl?.noPagebreak ? 0 : 1), y: (positionsForPrint.length + (settings?.templateEl?.noPagebreak ? 0 : 1))}"></span>
+            </div>
+    
+            <ng-container [ngTemplateOutlet]="renderPage" [ngTemplateOutletContext]="{data: taxSummary.taxableItems, isForTax: true}"></ng-container>
+        </div>
+    </ng-container>
+</div>
+
+<ng-template #renderPage let-eachData="data" let-isForTax="isForTax">
+    <div [style]="settings?.font?.size ? 'font-size: ' + settings?.font?.size + 'px' : ''">
+        <div class="grid grid-nogutter p-2" 
+            [class.border-bottom-1]="!isForTax || settings?.templateEl?.noPagebreak"
+            [style]="(settings?.template?.titleColor ? 'color: ' + settings.template.titleColor + ';' : '')
+            + (settings?.template?.lineColor? 'border-color: ' + settings.template.lineColor + ';' : '')">
+            <div *ngIf="!settings || settings?.setup?.columnOptions?.showPositionNumber" class="col-1 my-auto" [innerHTML]="'translations.pos' | translate"></div>
+            <div [class.col-4]="columnsHidden <= 1" [class.col-6]="columnsHidden==2" [class.col-8]="columnsHidden==3" class="my-auto" [innerHTML]="'translations.description' | translate"></div>
+            <div *ngIf="!settings || settings?.setup?.columnOptions?.showAmount" class="col-2 my-auto " [innerHTML]="'translations.quantity' | translate : {count: 1}"></div>
+            <div *ngIf="!settings || settings?.setup?.columnOptions?.showUnitPrice" class="col-2 my-auto" [innerHTML]="'translations.unit_price' | translate"></div>
+            <div class="col-1 my-auto " [innerHTML]="'translations.discount' | translate"></div>
+            <div style="text-align: right" [class]="(columnsHidden > 0 ? 'col-3' :'col-2') + ' my-auto'" [innerHTML]="'translations.total_price' | translate : {currency: (currency | uppercase)}"></div>
+        </div>
+    
+        <div *ngFor="let _pos of eachData; let isFirst=first; let isLast=last" class="grid grid-nogutter p-2" 
+            [style]="(settings?.template?.lineColor? 'border-color: ' + settings.template.lineColor + ';' : '')"
+            [class.border-bottom-1]="(!isForTax && !_pos.isForTax && (!settings || settings?.templateEl?.showLines))"
+            [class.border-top-1]="!settings?.templateEl?.showLines && _pos.isForTax && _pos.isFirst">
+            <!-- pos. -->
+            <div *ngIf="!settings || settings?.setup?.columnOptions?.showPositionNumber" class="col-1">
+                <span *ngIf="!_pos.isForTax && !isForTax" [innerHTML]="_pos.external_pos ? _pos.external_pos + ' ' : ''"></span>
+            </div>
+            <!-- description -->
+            <div class="pl-2" [class.col-4]="columnsHidden <= 1" [class.col-6]="columnsHidden==2" [class.col-8]="columnsHidden==3">
+                <span *ngIf="!isForTax && !_pos.isForTax" [innerHTML]="_pos?.text"></span>
+                <ng-container *ngIf="isForTax || _pos.isForTax" [ngSwitch]="_pos.isFirst || isFirst || isLast">
+                    <span *ngSwitchCase="true">{{_pos?.tax?.name}}</span>
+                    <span *ngSwitchCase="false">
+                        <ng-container *ngIf="(_pos?.tax?.tax_rate || _pos?.__data__?.tax?.tax_rate || 0) as _tax_rate"> <!-- RT: added __data__ -->
+                            {{'translations.plus_vat' | translate : {vat: (_tax_rate | percent : '0.0-1' : locale )} }}
+                        </ng-container>
+                    </span> 
+                </ng-container>
+            </div>
+            <!-- quantity -->
+            <div *ngIf="!settings || settings?.setup?.columnOptions?.showAmount" class="col-2 ">
+                <span *ngIf="!isForTax && !_pos.isForTax">{{(_pos?.quantity || '') | number : '0.0-0' }}</span>
+            </div>
+            <!-- unit price -->
+            <div *ngIf="!settings || settings?.setup?.columnOptions?.showUnitPrice" class="col-2 ">
+                <span *ngIf="!isForTax && !_pos.isForTax">{{_pos?.unit_price ? (_pos?.unit_price | number : '0.2-2' : locale) : ''}}</span>
+            </div>
+            <!-- discount  -->
+            <div class="col-1" [ngSwitch]="_pos.type?.id == positionTypes?.discount_position.id">
+                <ng-container *ngSwitchCase="true">
+                    <span *ngIf="_pos.value > 0 && _pos?.is_percentual">{{ (_pos?.value * 0.01) | percent : '0.0-1' : locale }}</span>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <span *ngIf="!isForTax && !_pos.isForTax">{{_pos?.discount_in_percent > 0 ? (_pos?.discount_in_percent | percent : '0.0-1' : locale ) : ''}}</span>
+                </ng-container>
+            </div>
+            <div style="text-align: right" [class]="'' + (columnsHidden > 0 ? 'col-3' :'col-2')">
+                <ng-container *ngIf="isForTax || _pos.isForTax">
+                    <span>{{ _pos?.total_tax | currency : currency : true : '0.2-2' : locale }}</span>
+                </ng-container>
+                <ng-container *ngIf="!isForTax && !_pos.isForTax">
+                    <span *ngIf="computeSum(_pos) as _sum">{{_sum | number : '0.2-2' : locale }}</span>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="footer-wrapper">
+        <div class="footer">
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.companyNameAndAddress && data?.__data__?.company?.name)" [innerHTML]="data?.__data__?.company?.name"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.companyNameAndAddress && (data?.__data__?.company?.__data__?.reg_add?.formatted_address || data?.__data__?.company?.__data__?.reg_add?.country))" [innerHTML]="(data?.__data__?.company?.__data__?.reg_add?.formatted_address || data?.__data__?.company?.__data__?.reg_add?.country)"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.companyEmailAddress && (data?.__data__?.company?.email || data?.__data__?.company?.email_2))" [innerHTML]="data?.__data__?.company?.email || data?.__data__?.company?.email_2"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.companyPhone && (data?.__data__?.company?.phone || data?.__data__?.company?.phone_2))" [innerHTML]="data?.__data__?.company?.phone || data?.__data__?.company?.phone_2"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.bankAccountInfo && (data?.__data__?.bank_account?.bank_name || data?.__data__?.bank_account?.bank_account_nr))" [innerHTML]="(data?.__data__?.bank_account?.bank_name ? data?.__data__?.bank_account?.bank_name + ' ' : '' ) + (data?.__data__?.bank_account?.bank_account_nr ? data?.__data__?.bank_account?.bank_account_nr + ' ' : '' )"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.vatNumber && data?.__data__?.company?.vat_no)" [innerHTML]="data?.__data__?.company?.vat_no"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.euVATNumber && data?.__data__?.company?.vat_id_no)" [innerHTML]="data?.__data__?.company?.vat_id_no"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.mobile && data?.__data__?.company?.mobile)" [innerHTML]="data?.__data__?.company?.mobile"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.fax && data?.__data__?.company?.fax_number)" [innerHTML]="data?.__data__?.company?.fax_number"></span>
+            <span class="pr-2" *ngIf="(settings.setup?.footer?.website && data?.__data__?.company?.website)" [innerHTML]="data?.__data__?.company?.website"></span>
+        </div>
+    </div>
+</ng-template>

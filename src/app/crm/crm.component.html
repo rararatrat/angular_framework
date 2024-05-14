@@ -1,0 +1,158 @@
+<div class="w-full h-full" *apploading="isLoading">
+  <ng-container [ngSwitch]="isHome">
+    <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="dashboard">
+
+    </ng-container>
+    <ng-container *ngSwitchCase="false">
+      <router-outlet></router-outlet>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #dashboard>
+
+  <div class="flex flex-row gap-2 h-full w-full overflow-y-auto">
+      <div class="w-9 min-h-full flex flex-column gap-2">
+        <div class="surface-card border-round h-30rem shadow-1 flex flex-column gap-2 p-3">
+          <div class="flex-grow-0">
+            <span class="font-boldest text-2xl" [innerHTML]="'Overview 2023'" ></span>
+          </div>
+          <div class="flex-grow-1 gap-2 flex flex-row h-30rem">
+              <div class="flex-grow-1">
+                <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[2]"></eg-chart-wrapper>
+              </div>
+              <div class="flex-grow-0 w-2 flex flex-column gap-3">
+                <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                  <div class="font-medium text-sm" [innerHTML]="'New Customers'"></div>
+                  <div class="font-boldest text-4xl mt-2" [innerHTML]="stats?.['all']?.['companies']?.['new'] || ''"></div>
+                </div>
+                <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                  <div class="font-medium text-sm" [innerHTML]="'New Contacts'"></div>
+                  <div class="font-boldest text-4xl mt-2" [innerHTML]="stats?.['all']?.['contacts']?.['new'] || ''"></div>
+                </div>
+                <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                  <div class="font-medium text-sm" [innerHTML]="'Total Income'"></div>
+                  <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['cash']?.['income'] || 0) | currency:'EUR'"></div>
+                </div>
+                <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                  <div class="font-medium text-sm" [innerHTML]="'Total Expense'"></div>
+                  <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['cash']?.['expense'] || 0) | currency:'EUR'"></div>
+                </div>
+              </div>
+          </div>
+        </div>
+        <div class="surface-card border-round h-30rem shadow-1 flex flex-column gap-2 p-3">
+          <div class="flex-grow-0">
+            <span class="font-boldest text-2xl" [innerHTML]="'Invoices'" ></span>
+          </div>
+          <div class="flex-grow-1 gap-2 flex flex-row h-30rem">
+            <div class="flex-grow-1">
+              <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[0]"></eg-chart-wrapper>
+            </div>
+            <div class="flex-grow-0 w-2 flex flex-column gap-3">
+              <!-- <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'New Customers'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="stats['all']['invoice']['overdue']"></div>
+              </div> -->
+              <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'Paid'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['invoice']?.['paid'] || 0) | currency:'EUR'"></div>
+              </div>
+              <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'Pending'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['invoice']?.['pending'] || 0) | currency:'EUR'"></div>
+              </div>
+              <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'Total'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['invoice']?.['total'] || 0) | currency:'EUR'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="surface-card border-round h-30rem shadow-1 flex flex-column gap-2 p-3">
+          <div class="flex-grow-0">
+            <span class="font-boldest text-2xl" [innerHTML]="'Bills'" ></span>
+          </div>
+          <div class="flex-grow-1 gap-2 flex flex-row h-30rem">
+            <div class="flex-grow-1">
+              <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[1]"></eg-chart-wrapper>
+            </div>
+            <div class="flex-grow-0 w-2 flex flex-column gap-3">
+              <!-- <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'New Customers'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="stats['all']['invoice']['overdue']"></div>
+              </div> -->
+              <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'Paid'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['bills']?.['paid'] || 0) | currency:'EUR'"></div>
+              </div>
+              <div class="bg-gray-faded w-full h-5rem border-round p-2">
+                <div class="font-medium text-sm" [innerHTML]="'Pending'"></div>
+                <div class="font-boldest text-4xl mt-2" [innerHTML]="(stats?.['all']?.['bills']?.['pending'] || 0) | currency:'EUR'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="w-3 flex flex-column min-h-full">
+        <div class="surface-card border-round h-30rem shadow-1 flex flex-column gap-2 p-3">
+            <div class="flex-grow-0">
+              <span class="font-boldest text-2xl" [innerHTML]="'Top Customers'" ></span>
+            </div>
+            <div class="flex-grow-1 gap-2 overflow-hidden">
+              <p-scrollPanel styleClass="h-full">
+                <div class="flex flex-row border-bottom-1 py-3 gap-2" *ngFor="let c of stats?.['all']?.['companies']?.['most_business_overall']">
+                  <div class="flex-grow-1">
+                    <span class="font-medium text-lg " [innerHTML]="c?.company__name | capitalizeFirst" ></span>
+
+                  </div>
+                  <div class="flex-grow-0">
+                    <span class="font-bolder text-lg text-gray" [innerHTML]="c?.total | currency:'EUR'" ></span>
+                  </div>
+              </div>
+              </p-scrollPanel>
+            </div>
+        </div>
+      </div>
+  </div>
+
+
+
+
+  <div class="flex flex-column min-h-full w-full gap-2">
+
+    <div class="flex flex-row gap-2 w-full">
+      <div class="border-round p-2 surface-card  w-full shadow-1">
+        <div class="h-30rem w-full">
+          <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[0]"></eg-chart-wrapper>
+        </div>
+      </div>
+
+      <div class="border-round p-2 surface-card  w-full shadow-1">
+        <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[1]"></eg-chart-wrapper>
+      </div>
+      <div class="border-round p-2 surface-card  w-full shadow-1">
+        <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[2]"></eg-chart-wrapper>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<p-toast></p-toast>
+
+<!--
+
+    <div class="flex flex-column">
+    <div class="h-20rem w-30rem">
+      <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[0]"></eg-chart-wrapper>
+    </div>
+    <div class="h-20rem w-30rem">
+      <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[1]"></eg-chart-wrapper>
+    </div>
+    <div class="h-20rem w-30rem">
+      <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[2]"></eg-chart-wrapper>
+    </div>
+
+  </div>
+ -->

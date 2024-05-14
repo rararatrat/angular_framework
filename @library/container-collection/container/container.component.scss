@@ -1,0 +1,135 @@
+::ng-deep #container-menubar .p-menubar {
+  background-color: var(--surface-card);
+  border-radius: var(--eg-border-radius);
+  padding-bottom: 0px;
+  padding-top: 0px;
+  margin-top: -0.1rem;
+  .p-menubar-root-list{
+    .p-menuitem {
+      margin:0rem 0.25rem;
+      font-size: 1.1rem;
+
+      .p-menuitem-link{
+        min-height: 3rem;
+        border-radius: var(--eg-border-radius);
+        padding: 0.5rem;
+        margin: 0.25rem 0rem;
+        font-weight: 500;
+        &:not(.p-disabled):hover {
+          background: var(--primary-faded);
+          color: var(--primary);
+          font-weight: var(--active-font-weight);
+          .p-menuitem-text {
+            color: var(--primary);
+          }
+
+          .p-menuitem-icon {
+            color: var(--primary);
+          }
+
+          .p-submenu-icon {
+            color: var(--primary);
+          }
+        }
+        &:focus {
+          background: var(--primary-faded);
+          color: var(--primary);
+          font-weight: var(--active-font-weight);
+          .p-menuitem-text {
+            color: var(--primary);
+          }
+
+          .p-menuitem-icon {
+            color: var(--primary);
+          }
+
+          .p-submenu-icon {
+            color: var(--primary);
+          }
+        }
+        &:active {
+          background: var(--primary-faded);
+          color: var(--primary);
+          font-weight: var(--active-font-weight);
+          .p-menuitem-text {
+            color: var(--primary);
+          }
+
+          .p-menuitem-icon {
+            color: var(--primary);
+          }
+
+          .p-submenu-icon {
+            color: var(--primary);
+          }
+        }
+
+      }
+      &.p-highlight.p-menuitem-link {
+        background-color: var(--primary-faded);
+        color: var(--primary);
+        font-weight: 600;
+        font-weight: var(--active-font-weight);
+        border-bottom: 0px solid var(--primary);
+      }
+      & .p-menuitem-link {
+        border-bottom: 0px !important;
+      }
+
+    }
+  }
+
+}
+
+
+/* ::ng-deep .p-menuitem-link {
+  border-bottom: 2px solid var(--surface-ground) !important;
+}
+ */
+::ng-deep #containerTabMenu .p-tabmenu{
+  .p-tabmenu-nav{
+    background: unset ;
+    max-width: calc(100vw - 420px);
+  }
+  .p-tabmenuitem{
+    margin:0rem 0.25rem;
+    font-size: 1.1rem;
+
+    .p-menuitem-link{
+      min-height: 3rem;
+      border-radius: var(--eg-border-radius);
+      padding: 0.5rem;
+      margin: 0.25rem 0rem;
+      font-weight: 500;
+      justify-content: center;
+
+    }
+
+    &.p-highlight .p-menuitem-link {
+      background-color: var(--primary-faded);
+      color: var(--primary);
+      font-weight: 600;
+      font-weight: var(--active-font-weight);
+      border-bottom: 0px solid var(--primary);
+    }
+    &:not(.p-highlight):not(.p-disabled):hover .p-menuitem-link {
+      color: var(--primary);
+      font-weight: 600;
+      background-color: var(--primary-faded);
+      border-bottom: 0px solid var(--primary);
+    }
+  }
+
+
+}
+
+.subheader{
+  color: #8d8d8d;
+}
+
+.has-header {
+  height: calc(var(--eg-container-body-height) - 4rem) !important;
+}
+.no-header {
+  height: var(--eg-container-body-height) !important;
+}

@@ -1,0 +1,65 @@
+.snipper {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+::ng-deep #detailSidebar .p-sidebar-right {
+  width: calc(100vw - var(--sidebar-width));
+  /* width: calc(var(--min-width) - var(--sidebar-width)); */
+}
+::ng-deep #detailSidebar .p-sidebar-content{
+  padding: 0rem;
+
+}
+::ng-deep #detailSidebar .p-sidebar-header{
+  display: none;
+}
+
+::ng-deep #list-container-vs .p-virtualscroller-list {
+  overflow-x: hidden;
+
+}
+
+::ng-deep #list-container-table-vs .p-datatable {
+  height: 100%;
+
+  .p-datatable-scrollable{
+    height: 100%;
+  }
+
+  .p-datatable-wrapper{
+    height: 100%;
+  }
+
+  .p-datatable-tbody > tr {
+    font-size: 1rem;
+    &:focus {
+      outline: 0px;
+      outline-offset: 0px;
+      background-color: var(--primary-faded);
+      font-weight: 500;
+      cursor: pointer;
+      }
+
+    &:hover {
+      background: var(--primary-faded);
+      cursor: pointer;
+    }
+    &:active {
+      background: var(--primary-faded);
+    }
+
+    &.p-datatable-dragpoint-top>td {
+      box-shadow: unset;
+    }
+
+    &.p-datatable-dragpoint-bottom>td {
+      box-shadow: unset;
+    }
+  }
+  .eg-vs-row{
+    height: 3rem;
+  }
+}
+

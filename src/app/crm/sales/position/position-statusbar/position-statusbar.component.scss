@@ -1,0 +1,12 @@
+:host {
+    width: 100%;
+}
+
+::ng-deep.ag-status-bar {
+     max-height: 200px;
+     overflow-y: auto;
+}
+
+::ng-deep.ag-status-bar-right {
+    width: 100%;
+}

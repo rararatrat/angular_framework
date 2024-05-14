@@ -1,0 +1,180 @@
+<!-- <ng-container *apploading="this.detailsConfig?.isLoading">
+  <ng-container *ngIf="params?.mode == 'view' && params?.fromComponent=='orders'; else defaultView">
+    <div class="grid grid-nogutter p-2">
+      <div class="col-2"></div>
+      <div class="col-4 p-2 tex-center justify-center">
+        Delivery
+        <hr>
+        <div class="grid grid-nogutter p-2">
+          <div class="col-8">
+            Quantity delivered
+          </div>
+          <div class="col-4">
+            {{0 | number}}
+          </div>
+
+          <div class="col-8">
+            Quantity pending
+          </div>
+          <div class="col-4">
+            {{25 | number}}
+          </div>
+
+          <div class="col-8">
+            Quantity commissioned
+          </div>
+          <div class="col-4">
+            {{75 | number}}
+          </div>
+        </div>
+      </div>
+      <div class="col-4 p-2 tex-center justify-center">
+        Invoicing
+        <hr>
+        <div class="grid grid-nogutter p-2">
+          <div class="col-8">
+            Quantity invoiced
+          </div>
+          <div class="col-4">
+            {{0 | number}}
+          </div>
+
+          <div class="col-8">
+            Quantity pending
+          </div>
+          <div class="col-4">
+            {{100 | number}}
+          </div>
+        </div>
+      </div>
+      <div class="col-2"></div>
+    </div>
+  </ng-container>
+
+  <ng-template #defaultView>
+    <ng-container [ngTemplateOutlet]="renderTemplate" [ngTemplateOutletContext]="{index: 0, showHeader:true, firstElement: ((params?.type==positionType.PRODUCT_POSITION && params?.mode=='add') ? 'product' : (params?.type==positionType.PDF_POSITION ? (!detailsConfig?.data?.parent ? 'is_optional' : '') : 'text'))}"></ng-container>
+  </ng-template>
+  
+</ng-container>
+
+<ng-template #renderTemplate let-index="index" let-showHeader="showHeader" let-firstElement="firstElement">
+  <div class="grid max-h-full overflow-y-auto" [formGroup]="detailsConfig?.formGroup">
+    <div *ngIf="firstElement" [class]="form['formStructure'][index] ? 'col-4' : 'col-12'" style="white-space: initial">
+      <ng-container [ngTemplateOutlet]="egFormTemplate"
+                    [ngTemplateOutletContext]="{data:{key: firstElement, value: detailsConfig?.objArray[firstElement]}, isTwoLine:true}"></ng-container>
+    </div>
+    <div [class]="form['formStructure'][index] ? 'col-8' : 'col-12'">
+      <div class="grid grid-nogutter w-full" *ngIf="form['formStructure'][index]">
+        <ng-container  *ngFor="let temp of form['formStructure'][index]['fields']">
+          <div class="col" *ngIf="typeOf(temp) == 'object'">
+            <ng-container [ngTemplateOutlet]="nestedRender"
+                          [ngTemplateOutletContext]="{index:index, data: temp}">
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="grid m-2 w-full" *ngIf="form['formStructure'][index] && ([positionType.STANDARD_POSITION, positionType.PRODUCT_POSITION].includes(params.data?.type?.name ) || (params?.type==positionType.PRODUCT_POSITION && params?.mode!='add')) || params?.type==positionType.STANDARD_POSITION">
+        <div class="col-2 font-medium"><strong>Total:</strong></div>
+        <div class="col-10 fs-14">{{total_sum | number : "0.2"}}</div>
+        <span class="col-11">
+          <hr>
+        </span>
+      </div>
+      <div class="text-right p-2" *ngIf="(mode != 'view')">
+        <button (click)="close()" pButton
+                [icon]="'fa-solid fa-times'"
+                [label]="'Cancel'" class="mr-2 p-button-outlined p-button-danger"></button>
+        <button (click)="setThem()" pButton
+                [label]="(mode == 'edit')?'Update':'Add'"
+                [icon]="(mode == 'edit')?'fa-solid fa-pencil':'fa-solid fa-plus'" ></button> 
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #nestedRender let-index="index" let-data="data">
+  <div [formGroup]="detailsConfig?.formGroup">
+    <div class="grid grid-nogutter " >
+      <div  class="pl-2 col-12" *ngFor="let temp of data">
+          <ng-container *ngIf="detailsConfig?.objArray[temp]" [ngTemplateOutlet]="egFormTemplate" [ngTemplateOutletContext]="{data:{key:temp, value: detailsConfig?.objArray[temp] }, isTwoLine:form['formStructure'][index]['isTwoLine']}"></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #egFormTemplate let-i="data" let-isTwoLine="isTwoLine">
+  <ng-container *ngIf="mode=='add' || (mode=='edit' && !detailsConfig?.formGroup.get(i.value['formControlName'])?.disabled)">
+    <eg-template  *ngIf="i?.key != 'id'"
+                  [title]="i?.value['title'] || i?.label"
+                  [isTwoLine]="isTwoLine"
+                  [layout]="'grid'"
+                  [rendererType]="'name'"
+                  [isRequired]="i.value?.required == true"
+                  >
+      <div form>
+        <ng-container [ngTemplateOutlet]="crudForm" [ngTemplateOutletContext]="{data:i.value, label:i.key}"></ng-container>
+      </div>
+    </eg-template>
+  </ng-container>
+
+  <ng-container *ngIf="mode=='view' && !detailsConfig?.formGroup.get(i.value['formControlName'])?.disabled" class="list-simple-item">
+    <eg-template  [title]="i.value['title']"
+                  [isTwoLine]="isTwoLine"
+                  [layout]="'grid'"
+                  [rendererType]="'name'"
+                  [isRequired]="i.value?.required == true"
+                  >
+      <div form>
+        <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:i.value, label:i.key}"></ng-container>
+      </div>
+    </eg-template>
+  </ng-container>
+</ng-template>
+
+<ng-template #inPlace let-data="data" let-label="label">
+  <ng-container [formGroup]="detailsConfig.formGroup">
+    <eg-inplace [styleClass]="'text-lg ' + (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-17rem' : 'white-space-prewrap') "
+                [isDisabled]="false"
+                [numberConfig]="data['numberConfig']"
+                [icon]="data['icon']"
+                [mask_string]="data['mask_string']"
+                [type]="data['type']"
+                [topic]="data['autoConfig']?.extraKey || label"
+                [displayVal]="data['displayVal']"
+                [formControlName]="data['formControlName']"
+                [placeholder]="data['placeholder']"
+                [config]="detailsConfig.inPlaceConf"
+                [isRawText]="data['textArea']?.isRawText==true"
+                [options]="data['data']"
+                [autoConfig]="data['autoConfig']" [(isChanged)]="isChanged" (isChangedChange)="afterSaved($event)">
+    </eg-inplace>
+  </ng-container>
+</ng-template>
+
+<ng-template #crudForm let-data="data" let-label="label">
+  <ng-container [formGroup]="detailsConfig.formGroup">
+    <eg-crud-form #egCrud [styleClass]="'text-lg w-full'"
+                  [files]="files"
+                  [isEditable]="false"
+                  [isDisabled]="false"
+                  [type]="data['type']"
+                  [topic]="data['autoConfig']?.extraKey || label"
+                  [displayVal]="data['displayVal']"
+                  [formGroup]="detailsConfig.formGroup"
+                  [formControlName]="data['formControlName']"
+                  [placeholder]="data['placeholder']"
+                  [config]="detailsConfig.inPlaceConf"
+                  [autoConfig]="data['autoConfig']"
+                  [numberConfig]="data['numberConfig']"
+                  [data]="data['data']"
+                  [icon]="data['icon']"
+                  [mask_string]="data['mask_string']"
+                  [isRawText]="data['textArea']?.isRawText==true"
+                  [options]="data['data']"
+                  [(isChanged)]="isChanged">
+    </eg-crud-form>
+  </ng-container>
+
+</ng-template>
+ -->

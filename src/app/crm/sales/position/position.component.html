@@ -1,0 +1,42 @@
+<div class="flex flex-column h-full">
+  <div class="flex-grow-0">
+    {{componentType}}
+    <p-menubar [model]="positionMenu"></p-menubar>
+  </div>
+  <div class="flex-grow-1">
+    <eg-grid-list #gridList *ngIf="config && !isLoading"
+                    [gridListId]="'grid-position'"
+                    [data]="data"
+                    [serverOrClient]="'clientSide'"
+                    [type]="viewType"
+                    [showHeader]="false"
+                    [class]="'h-full'"
+                    style="height:100% !important"
+                    [digitsInfo]="'.2'"
+                    [noContainerHeight]="false"
+                    [(config)]="config">
+    </eg-grid-list>
+
+  <!-- <ng-container *ngIf="grid2.rowData | isNotEmpty">
+    <div class="font-semibold text-xl ml-2">Optional Items </div>
+    <eg-grid-list  #gridList2 *ngIf="config && !isLoading"
+                [gridListId]="'grid-position-optional'"
+                [data]="data"
+                [serverOrClient]="'clientSide'"
+                [type]="viewType"
+                [showHeader]="false"
+                [digitsInfo]="'.2'"
+                [noContainerHeight]="false"
+                [config]="config | mergeTo: {params: (config?.params | mergeTo : { is_optional: true}),
+                    extendedGridDefOverride: (config.extendedGridDefOverride | mergeTo : {headerHeight: 0, context: {isOptionalItems: true}, sideBar: [], statusBar: {statusPanels: [{
+                        statusPanel: 'agAggregationComponent',
+                        statusPanelParams: {
+                          aggFuncs: ['count', 'sum'],
+                        },
+                      }]} })}">
+    </eg-grid-list>
+  </ng-container> -->
+
+  </div>
+</div>
+

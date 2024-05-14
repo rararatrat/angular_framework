@@ -1,0 +1,95 @@
+<div class="w-full h-full" *apploading="isLoading">
+  <eg-details-container
+    [(config)]="config"
+    [(data)]="data"
+    [topic]="'branding'"
+    [closeIcon]="false"
+  >
+    <div *ngIf="detailsConfig && detailsConfig.objArray | isNotEmpty"
+         class="w-full h-full max-w-full flex-grow-1 align-items-center surface-card border-round" content>
+
+        <div class="flex-grow-1">
+          <div class="flex flex-column" >
+            <div *ngFor="let fs of brandingFormProp?.formStructure">
+              <p-fieldset [toggleable]="true" styleClass="text-lg mb-3" >
+                <ng-template pTemplate="header">
+                  <div class="flex flex-column">
+                    <div>
+                      <span [innerHTML]="!fs['header'] || !(fs['header'] | isNotEmpty) ? 'No Title' : fs['header'] | capitalizeFirst"></span>
+                      <span *ngIf="fs['collapsed']" class="ml-1 underline font-medium"  [innerHTML]="'has '+fs['fields'].length+' field(s)'"></span>
+                    </div>
+                    <div *ngIf="fs['collapsed']"><small class="font-normal" [innerHTML]="fs['fields']"></small></div>
+                  </div>
+                </ng-template>
+                <div class="grid grid-nogutter gap-3">
+
+                  <div  [class.col-12]="fs['isTwoLine']==undefined || !fs['isTwoLine']"
+                        [class.col]="fs['isTwoLine']"
+
+                        *ngFor="let temp of fs['fields']">
+
+                        <ng-container [ngTemplateOutlet]="egTemplate"
+                                      [ngTemplateOutletContext]="{$implicit:{field:temp, title:temp }}"></ng-container>
+                  </div>
+                </div>
+              </p-fieldset>
+            </div>
+          </div>
+        </div>
+        <div class="flex-grow-0 ml-3">
+          <p-button
+                  *ngIf="!createMode && config?.formProperty.mode == 'edit'"
+                  class="p-button-primary"
+                  [icon]="'fa-solid fa-save'"
+                  [label]="'Save'"
+                  (click)="save()">
+          </p-button>
+
+          <!-- <button pButton
+                  *ngIf="!createMode"
+                  class="p-button-danger ml-2"
+                  [icon]="'fa-solid fa-trash'"
+                  [label]="'Delete'"
+                  (click)="delete()">
+          </button> -->
+
+          <p-button
+                  *ngIf="!isOrgBranding && !createMode"
+                  styleClass="p-button-secondary ml-2"
+                  [icon]="'fa-solid fa-check'"
+                  [label]="'Set for org'"
+                  (click)="setForOrg()">
+          </p-button>
+
+          <p-button
+                  *ngIf="createMode"
+                  class="p-button-secondary ml-2"
+                  [icon]="'fa-solid fa-plus'"
+                  [label]="'Create New Brand'"
+                  [disabled]="!detailsConfig.formGroup.valid"
+                  (click)="create()">
+          </p-button>
+        </div>
+
+
+    </div>
+  </eg-details-container>
+</div>
+
+
+<ng-template #egTemplate let-data>
+
+  <eg-template
+        [detailsConfig]="detailsConfig"
+        [egClass]="'surface-ground border-round p-1 w-full'"
+        [field]="data.field"
+        [title]="data.title"
+        [isTwoLine]="true"
+        [layout]="'flex'"
+        [hasTitle]="true"
+        [icon]="detailsConfig?.objArray[data?.field]?.icon"
+        [mode]="config?.formProperty.mode"
+        [rendererType]="'icon-name'">
+  </eg-template>
+</ng-template>
+

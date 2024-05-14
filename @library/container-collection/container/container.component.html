@@ -1,0 +1,179 @@
+<div [class.h-full]="!(config?.noContainerHeight===true)">
+  <ng-container [ngSwitch]="config?.containerType">
+    <ng-container *ngSwitchCase="'onecolumn'" [ngTemplateOutlet]="onecolumn" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+    <ng-container *ngSwitchCase="'twocolumn'" [ngTemplateOutlet]="twocolumn" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+  </ng-container>
+
+<ng-template #twocolumn let-config>
+  <div class="fl-main border-round">
+    <div class="fl-content h-full gap-2">
+      <div  class="fl-left surface-card flex flex-column detail-sidebar-navigation h-full pt-0 align-items-start justify-content-start"
+            [class]="(navbar)?'detail-sidebar-navigation':'detail-sidebar-navigation-collapsed'">
+        <!-- <div class=""> -->
+          <div class="flex-grow-0 w-full">
+            <div class="flex detail-nav-list-header  justify-content-start py-0 w-full">
+              <div  class="flex-grow-0 flex align-items-center p-2 action-button"
+                    (click)="toggleSidenav()">
+                <i class="pi pi-bars"></i>
+              </div>
+              <div class="flex-grow-1 p-2 text-left" *ngIf="navbar">
+                <div class="font-bolder text-2xl ">
+                  <span *ngIf="navbar"[innerHTML]="config?.header"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex-grow-1 w-full">
+            <div *ngFor="let t of sidemenuItems; let i = index; trackBy: trackByFn"
+                [class]="'flex detail-nav-list-item justify-content-start w-full '+t.class "
+                [class.active]="selectedIndex == i"
+                [class.pointer-events-none]="selectedIndex == i"
+                (click)="showElement(t, i)">
+              <div class="flex-none  p-2 text-left" [pTooltip]="t.label" >
+                <i [class]="t?.icon" [class.mt-1]="navbar"></i>
+              </div>
+              <div class="flex-grow-1 flex flex-column p-2 text-left" *ngIf="navbar">
+                <div class="font-semibold text-lg ">
+                  <span [innerHTML]="t?.label"></span>
+                </div>
+                <div class="font-medium mt-2 fs-12 ">
+                  <span [innerHTML]="t?.subTitle"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- </div> -->
+      </div>
+      <div class="fl-right flex flex-column border-round ">
+        <div class="fl-right-header order-round-top surface-card" *ngIf="config.hasHeader">
+          <ng-container [ngTemplateOutlet]="header" [ngTemplateOutletContext]="{ $implicit:divItems }"></ng-container>
+        </div>
+        <div class="flex-grow-1 fadein animation-duration-500"><!-- [class.fl-content-height-header]="config.hasHeader" [class.fl-content-height-no-header]="!config.hasHeader" -->
+          <ng-container [ngTemplateOutlet]="ngEgContent"></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #onecolumn let-config>
+  <div class="fl-main border-round">
+    <div class="fl-header w-full border-round-top surface-card">
+      <ng-container [ngTemplateOutlet]="header" [ngTemplateOutletContext]="{$implicit:config}"></ng-container>
+    </div>
+    <div class="fl-content h-full border-round">
+      <div class="fl-right fadein animation-duration-300">
+        <ng-container [ngTemplateOutlet]="ngEgContent"></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #ngEgContent>
+  <ng-content> </ng-content>
+</ng-template>
+
+
+<ng-template #searchTpl>
+  <input #inputSearch class="ml-2" type="text" pInputText [(ngModel)]="searchString" [placeholder]="'translations.search' | translate"> <!-- (ngModelChange)="config.onSearch?.($event)" -->
+</ng-template>
+
+<ng-template #header let-config>
+  <!-- {{config?.items | json}} -->
+  <!--START: Seting up the Header of the Containers with Menubar and Headings -->
+  <ng-container *ngIf="config?.hasHeader" [ngSwitch]="config?.menuType">
+    <div class="flex justify-content-center flex-column w-full" *ngSwitchCase="'menubar'" >
+      <div class="flex-grow-1 w-full">
+        <p-menubar [model]="topmenuItems" id="container-menubar" styleClass="min-h-full" #containerMenubar>
+          <ng-template pTemplate="start">
+            <div class="font-bolder text-2xl mr-2" *ngIf="config?.header != null" >
+              <span [innerHTML]="config?.header"></span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="end" *ngIf="config?.hasSearch">
+            <input  [class.fadeoutright]="!showSearch"
+                    [class.fadeinright]="showSearch"
+                    [class.hidden]="!showSearch"
+                    class="ml-2"
+                    type="text"
+                    pInputText
+                    id="searchString_gridList"
+                    [(ngModel)]="searchString"
+                    [placeholder]="'translations.search' | translate"
+                    (ngModelChange)="config.onSearch?.($event)"/>
+
+            <p-button styleClass="p-button-plain p-button-rounded p-button-text"
+                      [icon]="showSearch ? 'fa-solid fa-times' : 'fa-solid fa-search'"
+                      (click)="showSearch = !showSearch"
+                      [label]="'translations.'+(showSearch ? 'close' : 'search') | translate">
+            </p-button>
+
+            <!-- <ng-container [ngTemplateOutlet]="searchTpl"></ng-container> -->
+
+          </ng-template>
+        </p-menubar>
+      </div>
+      <div class="flex" *ngIf="config?.subheader">
+        <span class="p-2 pt-0 subheader bold" [innerHTML]="config?.subheader"></span>
+      </div>
+    </div>
+
+    <div class="flex justify-content-between flex-wrap ml-2 surface-ground w-full" *ngSwitchCase="'tab'">
+      <div class="flex flex-grow-1 align-items-center ">
+         <!-- <h2 class="my-0 mr-4 " [innerHTML]="config?.header"></h2> -->
+         <div class="fw-500 text-2xl mr-2" *ngIf="config?.header != null" >
+          <span [innerHTML]="config?.header"></span>
+        </div>
+        <!-- <span [innerHTML]="config?.subheader"></span> -->
+
+        <p-tabMenu #containerTabMenu id="containerTabMenu" *ngIf="showSubmenu && config.items.length>0" [model]="config.items" [activeItem]="tabActiveItem" [scrollable]="true">
+          <ng-template pTemplate="item" let-item let-i="index" *ngIf="config?.menuDisplay != 'both'">
+              <span *ngIf="config?.menuDisplay == 'icon'">
+                <i [class]="item.icon"></i>
+              </span>
+              <span *ngIf="config?.menuDisplay == 'text'" [innerHTML]="item.label"></span>
+          </ng-template>
+        </p-tabMenu>
+
+
+      </div>
+      <div class="flex flex-grow-0 justify-content-center align-items-center mr-2 " *ngIf="config?.hasSearch">
+          <!-- <input #inputSearch class="ml-2" type="text" pInputText [(ngModel)]="searchString" placeholder="Search"> --> <!-- (ngModelChange)="config.onSearch($event)" -->
+          <ng-container [ngTemplateOutlet]="searchTpl"></ng-container>
+      </div>
+    </div>
+
+
+    <div class="flex justify-content-between flex-wrap surface-ground p-2" *ngSwitchCase="'tiered'">
+      <div class="flex justify-content-center flex-column">
+        <div class="flex">
+          <h2 class="my-4" [innerHTML]="config?.header"></h2>
+          <button pButton pRipple type="button" icon="pi pi-chevron-down" (click)="tieredMenu.toggle($event)" class="ml-2 p-button-rounded p-button-text"></button>
+          <p-tieredMenu  #tieredMenu [popup]="true" [model]="config?.items"></p-tieredMenu >
+        </div>
+        <div class="flex">
+          <span [innerHTML]="config?.subheader"></span>
+        </div>
+
+      </div>
+
+      <div class="flex justify-content-center align-items-center " *ngIf="config?.hasSearch">
+          <!-- <input #inputSearch type="text" pInputText [(ngModel)]="searchString" placeholder="Search"> --> <!-- (ngModelChange)="config.onSearch?.($event)" -->
+          <ng-container [ngTemplateOutlet]="searchTpl"></ng-container>
+      </div>
+    </div>
+
+    <ng-template *ngDefault>
+      <button #btn type="button" pButton icon="pi pi-bars" label="Show" (click)="tieredMenu.toggle($event)"></button>
+      <p-tieredMenu  #tieredMenu [popup]="true" [model]="config?.items"></p-tieredMenu >
+    </ng-template>
+
+  </ng-container>
+
+  <!--END: Seting up the Header of the Containers with Menubar and Headings -->
+</ng-template>
+<!--
+
+ -->

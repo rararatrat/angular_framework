@@ -1,0 +1,248 @@
+<!-- <ng-container *ngComponentOutlet="sampleComponent;inputs: {testInput: {try: 'this good'}}"></ng-container> -->
+<div class="h-full flex flex-column" *apploading="loading" >
+  <div  *ngIf="headers.description"
+        class="flex flex-column w-full text-xl pb-3  border-bottom-1"
+        [innerHTML]="headers.description"></div>
+  <div class="flex-grow-1 overflow-hidden mt-3">
+    <p-scrollPanel styleClass="w-full h-full">
+      <ng-container *ngIf="formGroup" [ngSwitch]="formType">
+        <ng-container *ngSwitchCase="'default'"         [ngTemplateOutlet]="defaultData"></ng-container>
+        <ng-container *ngSwitchCase="'included_fields'" [ngTemplateOutlet]="incl"></ng-container>
+        <ng-container *ngSwitchCase="'form_structure'"  [ngTemplateOutlet]="form_structure"></ng-container>
+      </ng-container>
+    </p-scrollPanel>
+
+  </div>
+  <div *ngIf="mode != 'view'" class="flex-grow-0 text-right my-2 " >
+    <button pButton pRipple type="button"
+        [icon]="'pi pi-times'" [label]="'translations.cancel' | translate"
+        class="p-button-outlined  p-button-danger  mr-2"
+        (click)="ref?.close()">
+    </button>
+    <button pButton pRipple type="button"
+        [icon]="'pi pi-save'" [label]="'translations.' + ((mode=='add') ? 'add' : 'save_item') | translate : {item: headers?.title}"
+        class="p-button-primary "
+        [disabled]="formGroup.invalid"
+        (click)="onSave()">
+    </button>
+  </div>
+</div>
+
+<ng-template #form_structure>
+  <table class="innerborder-table w-full">
+    <ng-container [formGroup]="formGroup" *ngFor="let fs of formStructure; trackBy: trackByFn; let i = index; let odd = odd;">
+      <ng-container [ngSwitch]="typeof(fs) == 'object'">
+        <tr>
+          <td colspan="2" class="p-0 border-bottom-none ">
+            <ng-container *ngSwitchCase="true">
+              <p-fieldset [toggleable]="true" styleClass="text-lg mb-3" (collapsedChange)="collapsedChange($event, fs)">
+                <ng-template pTemplate="header">
+                  <div class="flex flex-column">
+                    <div>
+                      <span [innerHTML]="!fs['header'] || !(fs['header'] | isNotEmpty) ? ('translations.no_title' | translate) : fs['header'] | capitalizeFirst"></span>
+                      <span *ngIf="fs['collapsed']" class="ml-1 underline font-medium"  [innerHTML]="('translations.has' | translate) + ' ' +fs['fields'].length + ' ' + ('translations.field' | translate : {count: fs['fields'].length})"></span>
+                    </div>
+                    <div *ngIf="fs['collapsed']"><small class="font-normal" *ngFor="let _f of fs['fields']; let last=last" [innerHTML]="('translations.' + _f | translate : {count: 1}) + (!last ? ', ' : '')"></small></div>
+                  </div>
+                </ng-template>
+                <div class="grid grid-nogutter gap-3">
+                  <div  [class.col-12]="fs['isTwoLine']==undefined || !fs['isTwoLine']"
+                        [class.col]="fs['isTwoLine']"
+
+                        *ngFor="let temp of fs['fields']">
+                        <ng-container [ngTemplateOutlet]="egFormTemplate"
+                                      [ngTemplateOutletContext]="{data:{key:temp,
+                                                                        value:objArray[temp]
+                                                                  },
+                                                                  isTwoLine:fs['isTwoLine']}">
+                        </ng-container>
+                  </div>
+                </div>
+              </p-fieldset>
+            </ng-container>
+          </td>
+        </tr>
+        <ng-container *ngSwitchDefault>
+          <ng-container *ngIf="hasObjInArr(formStructure)">
+            <tr>
+              <td colspan="2" class="p-0 border-bottom-none ">
+                <p-fieldset [toggleable]="true" [legend]="(fs).toString()" styleClass="text-lg mb-3 capitalize" >
+                  <ng-container [ngTemplateOutlet]="egFormTemplate"
+                                [ngTemplateOutletContext]="{data: { key:fs,
+                                                                    value:objArray[(fs).toString()]
+                                                                  },
+                                                                  isTwoLine:true}">
+                  </ng-container>
+                </p-fieldset>
+              </td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="!hasObjInArr(formStructure)"
+                        [ngTemplateOutlet]="tableFormTemplate"
+                        [ngTemplateOutletContext]="{data:{key:fs,
+                                                          value:objArray[(fs).toString()]
+                                                          }, isTwoLine:false, layout:'label'}"></ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </table>
+</ng-template>
+
+
+<ng-template #defaultData >
+  <table class="innerborder-table w-full">
+    <ng-container [formGroup]="formGroup" *ngFor="let i of objArray | keyvalue; trackBy: trackByFn">
+      <ng-container [ngTemplateOutlet]="tableFormTemplate"
+                    [ngTemplateOutletContext]="{data:{key:i.key, value:i.value }, isTwoLine:false}">
+      </ng-container>
+    </ng-container>
+  </table>
+</ng-template>
+
+<ng-template #incl>
+  using included fields change to default data
+  <table class="innerborder-table w-full">
+    <ng-container [formGroup]="formGroup" *ngFor="let i of inclFields; trackBy: trackByFn">
+      <ng-container [ngTemplateOutlet]="tableFormTemplate"
+                    [ngTemplateOutletContext]="{data:{key:i, value:objArray[i] }, isTwoLine:false}">
+      </ng-container>
+    </ng-container>
+  </table>
+</ng-template>
+
+<ng-template #egFormTemplate let-i="data" let-isTwoLine="isTwoLine" let-layout="layout">
+  <!-- ivalue {{i | json}} -->
+  <ng-container [ngSwitch]="i?.value | isNotEmpty">
+    <ng-container *ngSwitchCase="true">
+      <ng-container *ngIf="(mode=='add' || (mode=='edit' && !formGroup.get(i.value['formControlName'])?.disabled))">
+        <!-- {{i?.value | json}} -->
+        <eg-template  *ngIf="i?.key != 'id'"
+                      [field]="i?.value?.['formControlName']"
+                      [isReadonly]="isReadonly"
+                      [data]="i?.value['data']"
+                      [title]="i?.value?.['title'] || i?.label"
+                      [isTwoLine]="isTwoLine"
+                      [layout]="(layout | isNotEmpty)?layout:'grid'"
+                      [rendererType]="'name'"
+                      [egClass]="'font-semibold'"
+                      [isRequired]="i.value?.required == true"
+                      >
+          <div form>
+            <ng-container [ngTemplateOutlet]="crudForm" [ngTemplateOutletContext]="{data:i.value, label:i.key}"></ng-container>
+          </div>
+        </eg-template>
+      </ng-container>
+      <ng-container *ngIf="(mode=='view' && !formGroup.get(i.value['formControlName'])?.disabled)" class="list-simple-item">
+        <eg-template  [field]="i?.value?.['formControlName']"
+                      [isReadonly]="isReadonly"
+                      [data]="i?.value['data']"
+                      [title]="i.value['title']"
+                      [isTwoLine]="isTwoLine"
+                      [layout]="'grid'"
+                      [rendererType]="'name'"
+                      [isRequired]="i.value?.required == true">
+          <div form class="w-full">
+            <!-- {{i?.value| json}} -->
+            <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:i.value, label:i.key}"></ng-container>
+          </div>
+        </eg-template>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="noControlFoundTpl" [ngTemplateOutletContext]="{$implicit: i}"></ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #tableFormTemplate let-i="data" let-isTwoLine="isTwoLine">
+  <tr>
+    <td class="w-3">
+      <eg-template  *ngIf="i?.key != 'id'"
+                    [field]="i?.value['formControlName']"
+                    [data]="i?.value['data']"
+                    [title]="i?.value?.['title'] || i?.label"
+                    [isTwoLine]="isTwoLine"
+                    [layout]="'label'"
+                    [rendererType]="'name'"
+                    [egClass]="'font-semibold'"
+                    [isRequired]="i.value?.required == true">
+    </eg-template>
+      <!-- {{i.value['title']}} -->
+    </td>
+    <td>
+      <ng-container *ngTemplateOutlet="i.value ? toRender : noControlFoundTpl; context: {$implicit: i}"></ng-container>
+    </td>
+</tr>
+</ng-template>
+
+<ng-template #toRender let-i [ngSwitch]="true">
+  <ng-container *ngSwitchCase="i?.value && (mode=='add' || (mode=='edit' && !formGroup.get(i.value['formControlName'])?.disabled))"
+                [ngTemplateOutlet]="crudForm"
+                [ngTemplateOutletContext]="{data:i.value, label:i.key}">
+  </ng-container>
+  <ng-container *ngSwitchCase="i?.value && (mode=='view' && !formGroup.get(i.value['formControlName'])?.disabled)"
+                [ngTemplateOutlet]="inPlace"
+                [ngTemplateOutletContext]="{data:i.value, label:i.key}">
+  </ng-container>
+</ng-template>
+
+<ng-template #inPlace let-data="data" let-label="label">
+  <ng-container [formGroup]="formGroup">
+    <!-- {{data| json}} -->
+    <eg-inplace [styleClass]="'text-lg ' + (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-17rem' : 'white-space-prewrap') "
+                [data]="configData"
+                [isDisabled]="isReadonly"
+                [isEditable]="editingField == label"
+                [type]="data['type']"
+                [topic]="data['autoConfig']?.extraKey || label"
+                [displayVal]="data['displayVal']"
+                [formControlName]="data['formControlName']"
+                [placeholder]="data['placeholder']"
+                [config]="inPlaceConf"
+                [isRawText]="data['textArea']?.isRawText==true"
+                [tinyMceConfig]="data['textArea']?.tinyMceConfig"
+                [numberConfig]="data['type']=='number' ? (data['numberConfig'] || {mode: 'decimal', minFractionDigits: 1}) : null"
+                [autoConfig]="data['autoConfig']"
+                [(isChanged)]="isChanged"
+                [icon]="data['icon']"
+                (isChangedChange)="afterSaved($event)">
+    </eg-inplace>
+  </ng-container>
+</ng-template>
+
+<ng-template #crudForm let-data="data" let-label="label">
+  <ng-container [formGroup]="formGroup">
+    <!-- {{data | json}} -->
+    <eg-crud-form #egCrud
+                  [styleClass]="'text-lg w-full'"
+                  [mode]="mode"
+                  [objArray]="objArray"
+                  [files]="files"
+                  [isEditable]="isReadonly"
+                  [isDisabled]="false"
+                  [type]="data['type']"
+                  [topic]="data['autoConfig']?.extraKey || label"
+                  [displayVal]="data['displayVal']"
+                  [formGroup]="formGroup"
+                  [formControlName]="data['formControlName']"
+                  [placeholder]="data['placeholder']"
+                  [config]="inPlaceConf"
+                  [autoConfig]="data['autoConfig']"
+                  [dateConfig]="data['dateConfig']"
+                  [data]="data['data']"
+                  [options]="data['data']"
+                  [dataCallback]="data['callback']"
+                  [numberConfig]="data['type']=='number' ? (data['numberConfig'] || {mode: 'decimal', minFractionDigits: 1}) : null"
+                  [editorFieldConfigs]="editorFieldConfigs"
+                  [isRawText]="data['textArea']?.isRawText==true"
+                  [tinyMceConfig]="data['textArea']?.tinyMceConfig"
+                  [(isChanged)]="isChanged"
+                  (isChangedChange)="afterSaved($event)"
+                  (frmCtrlUpdated)="formControlUpdated($event)">
+    </eg-crud-form>
+  </ng-container>
+</ng-template>
+
+<ng-template #noControlFoundTpl let-i>
+  {{ 'translations.no_control_found' | translate : {field: (('translations.' + i?.key | translate : {count: 1}) | titlecase)} }}
+</ng-template>

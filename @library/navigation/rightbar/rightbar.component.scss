@@ -1,0 +1,24 @@
+/* General CSS Setup */
+body{
+    background-color: lightblue;
+    font-family: "Ubuntu-Italic", "Lucida Sans", helvetica, sans;
+  }
+
+/* container */
+.container {
+  padding: 5% 5%;
+}
+
+::ng-deep #sidenavInfo .p-sidebar {
+  height:98%;
+  margin:0.75rem;
+
+  .p-sidebar-content{
+    height: 100%
+  }
+}
+
+
+::ng-deep #vs .p-virtualscroller-item{
+  height: unset !important;
+}

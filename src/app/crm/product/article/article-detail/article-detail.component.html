@@ -1,0 +1,161 @@
+
+
+<div class="w-full h-full" *apploading="isLoading">
+  <eg-details-container [config]="config" [(data)]="data" [topic]="'items'" [(selectedIndex)]="activeIndex">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngSwitch]="activeIndex">
+        <ng-container *ngSwitchCase="0" [ngTemplateOutlet]="template1"></ng-container>
+        <ng-container *ngSwitchCase="1" [ngTemplateOutlet]="template2"></ng-container>
+        <ng-container *ngSwitchCase="2" [ngTemplateOutlet]="template3"></ng-container>
+        <ng-container *ngSwitchCase="3" [ngTemplateOutlet]="template4"></ng-container>
+        <ng-container *ngSwitchCase="4" [ngTemplateOutlet]="template5"></ng-container>
+      </ng-container>
+    </div>
+    <div class="w-full h-full" details>
+      <eg-template  [title]="detailsConfig?.objArray['files']['title']"
+                    [detailsConfig]="detailsConfig"
+                    [mode]="mode"
+                    [field]="'files'"
+                    [hasTitle]="false"
+                    [isTwoLine]="true"
+                    [layout]="'grid'"
+                    [rendererType]="'name'"
+                    (isChangedChange)="afterSaved($event)">
+
+        <!-- Un-Comment thsi line if you need access to the form data -->
+
+
+        <div gridForm>
+        <ng-template #formTemplate let-tplData>
+        {{tplData | json}}
+        </ng-template>
+        </div>
+
+
+        </eg-template>
+
+    </div>
+  </eg-details-container>
+</div>
+
+<ng-template #template1>
+  <div  *ngFor="let a of tplDetails; let i = index; let odd = odd"
+        [class.form-field-header]="odd">
+    <ng-container [ngTemplateOutlet]="linearTemplate" [ngTemplateOutletContext]="{index:a.id, showHeader:true, detailsConfig:detailsConfig}"></ng-container>
+  </div>
+
+</ng-template>
+
+<ng-template #template2>
+  <div class="h-full">
+    <eg-image-gallery [(images)]="detailsConfig.data.files" [type]="'gallery'"></eg-image-gallery>
+  </div>
+
+</ng-template>
+<ng-template #template3>
+  <div class="h-full">
+    <div  *ngFor="let a of tplVendor; let i = index; let odd = odd"
+          [class.form-field-header]="odd">
+      <ng-container [ngTemplateOutlet]="linearTemplate" [ngTemplateOutletContext]="{index:a.id, showHeader:true, detailsConfig:detailsConfig}"></ng-container>
+    </div>
+  </div>
+
+</ng-template>
+
+
+<ng-template #template4>
+  <div class="h-full">
+    <div  *ngFor="let a of tplStock; let i = index; let odd = odd"
+          [class.form-field-header]="odd">
+      <ng-container [ngTemplateOutlet]="linearTemplate" [ngTemplateOutletContext]="{index:a.id, showHeader:true, detailsConfig:detailsConfig}"></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #template5>
+  <eg-grid-list #gridList
+                *ngIf="gridConfig"
+                [gridListId]="'grid-task'"
+                [data]="data"
+                [type]="'grid'"
+                [showHeader]="true"
+                [(config)]="gridConfig">
+  </eg-grid-list>
+</ng-template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ng-template #linearTemplate let-index="index" let-showHeader="showHeader" let-detailsConfig="detailsConfig" let-isTwoLine="isTwoLine">
+  <div class="grid grid-nogutter p-2" [ngClass]="{'border-bottom-1 ': form['formStructure'][index]['collapsed']}">
+    <div class="col-3">
+      <div *ngIf="form['formStructure'][index]['header'] && showHeader">
+
+        <p [innerHTML]="form['formStructure'][index]['header']" class="font-medium text-xl"></p>
+
+        <span (click)="toggle(index)" class="text-gray">
+          [<span class="font-bold text-primary cursor-pointer">{{form['formStructure'][index]['collapsed']?'show':'hide'}}</span>]
+        </span>
+
+        <div  class="text-lg"
+              [innerHTML]="(!form['formStructure'][index]['subheader'])?'-':form['formStructure'][index]['subheader']">
+        </div>
+
+      </div>
+    </div>
+    <div [class]="'col-9'" >
+      <div class="grid grid-nogutter " *ngIf="!form['formStructure'][index]['collapsed']">
+        <div  [class.col-12]="form['formStructure'][index]['isTwoLine']==undefined || !form['formStructure'][index]['isTwoLine']"
+              [class.col]="form['formStructure'][index]['isTwoLine']"
+              *ngFor="let temp of form['formStructure'][index]['fields']">
+
+              <eg-template  [title]="detailsConfig?.objArray[temp]['title']"
+                            [detailsConfig]="detailsConfig"
+                            [mode]="mode"
+                            [field]="temp"
+                            [hasTitle]="(temp == 'files')?false:true"
+                            [isTwoLine]="form['formStructure'][index]['isTwoLine']"
+                            [layout]="'grid'"
+                            [rendererType]="'name'"
+                            (isChangedChange)="afterSaved($event)">
+
+                <!-- Un-Comment thsi line if you need access to the form data -->
+
+                <!--
+                  <div gridForm>
+                    <ng-template #formTemplate let-tplData>
+                      {{tplData | json}}
+                    </ng-template>
+                  </div>
+                -->
+
+              </eg-template>
+        </div>
+      </div>
+
+      <div *ngIf="form['formStructure'][index]['collapsed']">
+        <span [innerHTML]="form['formStructure'][index]['fields'].length+' field(s) in this section'"></span><br/>
+        <span [innerHTML]="form['formStructure'][index]['fields']"></span>
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-template>
+
+

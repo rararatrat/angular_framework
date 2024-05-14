@@ -1,0 +1,244 @@
+
+<!-- Handling iof accessed from mobile -->
+<div *ngIf="isMobile" class="">
+  <div class="flex flex-column flex-grow-1 h-screen w-full justify-content-center p-4 no-app-mobile">
+    <div class="text-center">
+      <img src="../../assets/img/eagna/eg_rd_black.png" alt="">
+    </div>
+    <div class="text-center mt-4 mb-2 font-bold text-6xl">
+        Sorry!
+    </div>
+    <div class="text-xl my-3">
+        Our Application is designed for larger screens, hence we are not able to render.
+        However, you can view it in any one of the below devices.
+    </div>
+    <div class="flex flex-row gap-2 w-full">
+      <div class="flex flex-column bg-white-alpha-20 align-items-center border-round p-3 justify-content-around text-black w-4">
+        <div class="flex-grow-1">
+          <i class="fa-solid fa-laptop text-6xl"></i>
+        </div>
+        <div class="flex-grow-0 mt-2 text-center">
+          <span class="text-lg">Laptop</span>
+        </div>
+        <div class="flex-grow-0 text-center">
+          <span class="text-sm">(Any Resolution)</span>
+        </div>
+      </div>
+      <div class="flex flex-column bg-white-alpha-20 align-items-center border-round p-3 justify-content-around text-black w-4">
+        <div class="flex-grow-1">
+          <i class="fa-solid fa-desktop text-6xl"></i>
+        </div>
+        <div class="flex-grow-0 mt-2 text-center">
+          <span class="text-lg">Desktop</span>
+        </div>
+        <div class="flex-grow-0 text-center">
+          <span class="text-sm">(Any Resolution)</span>
+        </div>
+      </div>
+      <div class="flex flex-column bg-white-alpha-20 align-items-center border-round p-3 justify-content-around text-black w-4">
+        <div class="flex-grow-1">
+          <i class="fa-solid fa-tablet-screen-button text-6xl rotate-90"></i>
+        </div>
+        <div class="flex-grow-0 mt-2 text-center">
+          <span class="text-lg">Tablet</span>
+        </div>
+        <div class="flex-grow-0  text-center">
+          <span class="text-sm">(Landscape mode)</span>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+<!-- handling if accessed from Tablet or Laptop -->
+<ng-container *ngIf="!isMobile">
+  <div class="flex flex-nowrap w-full h-full eagna-class"
+      *ngIf="authorized; else error"
+      [ngClass]="{'align-items-center justify-content-center': !currOrg}">
+
+    <ng-container [ngSwitch]="isAuth">
+      <ng-container *ngSwitchCase="true"  [ngTemplateOutlet]="loginScreen">
+
+      </ng-container>
+      <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="appScreen"
+        [ngTemplateOutletContext]="{breadcrumbs: (shared.globalVars?.breadcrumbs || [])}">
+      </ng-container>
+
+    </ng-container>
+  </div>
+</ng-container>
+
+
+
+
+<!--
+<div class="h-screen fadein animation-duration-300 flex flex-nowrap"
+</div>
+ -->
+ <ng-template #loginScreen>
+  <div class="flex flex-column  w-full h-full justify-content-center align-items-center m-auto login-bg"
+      *apploading="!currOrg">
+    <div class="flex-grow-1 flex flex-column h-full w-3 ">
+      <div class="flex-grow-1 w-full p-3">
+        <router-outlet></router-outlet>
+      </div>
+      <div class="flex flex-grow-0 flex-row  h-4rem pt-3 justify-content-center ">
+        <div class="mx-2">
+          <a href="">Terms & Condition</a>
+        </div>
+        <div class="mx-2">
+          <a href="">Disclaimer</a>
+        </div>
+        <div class="mx-2">
+          <a href="">Copyrights</a>
+        </div>
+        <div class="mx-2">
+          <a href="">
+            <img src="https://cdn.eagna.io/img/1x/eg_rd_black_1x.webp" width="10px" alt="">
+            eagna.io
+          </a>
+        </div>
+      </div>
+    </div>
+<!--     <div class="flex w-9 justify-content-center align-items-center h-full bg-black-alpha-10 p-5">
+      <img class="border-circle w-30rem h-30rem" [src]="'https://cdn.eagna.io/img/4x/eg_rd_black_4x.webp'" alt=""/>
+    </div> -->
+
+  </div>
+ </ng-template>
+
+<ng-template #appScreen let-breadcrumbs="breadcrumbs">
+  <div *ngIf="isTranslationDone" class=" flex flex-row eagna-class" [class.eagna-loading]="isLoading"> <!--  -->
+    <div class=" shadow-1 border-round-right h-full overflow-hidden " *ngIf="isVisible"> <!--  w-5rem thin--> <!-- w-8rem compact -->
+      <eag-sidebar>
+        <div  class="w-full" sbImage>
+          <p-avatar [image]="orgLogo || 'https://cdn.eagna.io/img/4x/eg_rd_black_4x.webp'" styleClass="" size="large" shape="circle"></p-avatar>
+        </div>
+        <div sbDetails>
+          <!-- Some Details Comes here -->
+        </div>
+
+      </eag-sidebar>
+    </div>
+
+    <div  class="flex flex-column flex-grow-1 h-full"
+          [class.pl-2]="sidebarState">
+      <div class="flex-grow-0 w-full  shadow-1  h-5rem mb-2 eagna-border surface-card "
+          [class.border-round-left]="sidebarState"
+          [class.border-round-bottom]="!sidebarState"> <!-- h-8rem -->
+
+        <div class="flex flex-row align-items-center h-full"> <!-- align-items-start pt-2  -->
+          <div class="flex-grow-0 pl-2 ml-1">
+            <p-button *ngIf="isVisible" icon="pi pi-bars" (click)="toggleSideBar()" styleClass="p-button-rounded p-button-text p-button-plain"></p-button>
+            <img *ngIf="!isVisible"  src="https://cdn.eagna.io/img/4x/eg_rd_black_4x.webp" class="w-3rem" alt="">
+          </div>
+
+          <div class="flex-grow-1">
+            <ng-container [ngSwitch]="isHome">
+
+              <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="searchBarInput"></ng-container>
+
+              <ng-container *ngSwitchCase="false">
+                <p-breadcrumb [model]="breadcrumbs || []" [home]="home" #eagBreadcrumb id="eag-breadcrumb">
+                  <ng-template pTemplate="separator"> <span class="font-semibold mx-2">/</span> </ng-template>
+                </p-breadcrumb>
+              </ng-container>
+            </ng-container>
+          </div>
+
+
+
+          <div class="flex-grow-0 mr-2">
+            <ng-container [ngTemplateOutlet]="userBar"></ng-container>
+          </div>
+        </div>
+
+      </div>
+      <div class="flex-grow-1  shadow-1 overflow-hidden  h-full eagna-border"
+          [class.border-round-left]="sidebarState"
+          [class.border-round-top]="!sidebarState"><!-- surface-card -->
+        <router-outlet> </router-outlet>
+      </div>
+    </div>
+  </div>
+  <!-- <lib-rightbar></lib-rightbar> -->
+</ng-template>
+
+
+<ng-template #error>
+
+  <div class="h-screen">
+    <eag-error [errorMessage]="{status: 401}">
+      <button type="button" pButton pRipple class="p-button-primary eg-m-x-4" label=""></button>
+    </eag-error>
+  </div>
+
+</ng-template>
+
+<ng-template #searchBarInput>
+  <div class="inline w-full">
+    <span class="p-input-icon-left"
+          [class.hidden]="isHome" id="glbSearch">
+      <i class="pi pi-search"></i>
+      <input  type="text"
+              pInputText
+              class="border-round-3xl w-full "
+
+              styleClass="pl-2"
+              [placeholder]="'translations.search' | translate"/>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #userBar>
+  <ng-container *ngIf="!isHome" [ngTemplateOutlet]="searchBarInput"></ng-container>
+  <eag-userbar *ngIf="orgMenuItems" [apps]="apps" [initials]="initials" #userBar [orgList]="orgMenuItems"></eag-userbar>
+</ng-template>
+
+
+<ng-template #loginScreen2>
+  <div class="h-full grid grid-nogutter">
+    <div class="col-6 p-0">
+      <!-- <div class="map-container">
+        <div class="map-frame">
+          <div id="map"></div>
+        </div>
+      </div> -->
+    </div>
+    <div class="col-6 p-0 text-center">
+      <div class="grid grid-nogutter login-body">
+        <div class="col-2"></div>
+        <div class="col-8 pt-4">
+          <router-outlet></router-outlet>
+
+        </div>
+        <div class="col-1"></div>
+        <div class="col-1 ">
+          <div class="login-side h-full pull-right">
+            <div class="login-social">
+              <div class="mb-3" *ngIf="currOrg?.__data__?.branding?.instagram != null" [pTooltip]="'@'+currOrg?.__data__?.branding?.instagram" tooltipPosition="left"> <a class="font-medium no-underline" [href]="'https://www.instagram.com/'+currOrg.__data__.branding.instagram" target="popup"><i class="fa-brands fa-instagram"></i></a></div>
+              <div class="mb-3" *ngIf="currOrg?.__data__?.branding?.facebook != null"  [pTooltip]="currOrg?.__data__?.branding?.facebook" tooltipPosition="left">  <a class="font-medium no-underline" [href]="'https://www.facebook.com/'+currOrg.__data__.branding.facebook" target="popup"><i class="fa-brands fa-facebook"></i></a></div>
+              <div class="mb-3" *ngIf="currOrg?.__data__?.branding?.linkedin != null"  [pTooltip]="currOrg?.__data__?.branding?.linkedin" tooltipPosition="left">  <a class="font-medium no-underline" [href]="'https://www.linkedin.com/in/'+currOrg.__data__.branding.linkedin" target="popup"><i class="fa-brands fa-linkedin"></i></a></div>
+              <div class="mb-3" *ngIf="currOrg?.__data__?.branding?.twitter != null"   [pTooltip]="currOrg?.__data__?.branding?.twitter" tooltipPosition="left">   <a class="font-medium no-underline" [href]="'https://twitter.com/'+currOrg.__data__.branding.twitter" target="popup"><i class="fa-brands fa-twitter"></i></a></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="login-footer  flex  flex-nowrap justify-content-center gap-3">
+        <div class="flex align-items-center justify-content-center">
+          <a class="font-medium no-underline  text-primary" [href]="currOrg?.terms_conditions" target="popup">Terms & Conditions</a>
+        </div>
+        <div class="flex align-items-center justify-content-center">
+          <a class="font-medium no-underline  text-primary" [href]="currOrg?.data_privacy" target="popup">Data Privacy</a>
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </div>
+
+  </ng-template>

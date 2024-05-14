@@ -1,0 +1,56 @@
+.step{
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--gray-faded);
+  color: var(--gray);
+
+  .approved{
+    background-color: var(--success-faded);
+    color: var(--success)
+  }
+  .pending{
+    background-color: var(--warn-faded);
+    color: var(--warn-contrast)
+  }
+  .rejected{
+    background-color: var(--danger-faded);
+    color: var(--danger)
+  }
+}
+
+
+
+
+
+#pointer {
+  width: 200px;
+  height: 40px;
+  position: relative;
+  background: red;
+  margin-left: 2rem;
+}
+#pointer:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 20px solid white;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+
+}
+#pointer:before {
+  content: "";
+  position: absolute;
+  right: -20px;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 20px solid red;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+
+}

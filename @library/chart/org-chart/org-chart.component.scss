@@ -1,0 +1,100 @@
+
+::ng-deep #orgChart .p-organizationchart ::after{
+  width: 100% !important;
+}
+
+::ng-deep #orgChart .p-organizationchart {
+
+  height: 100%;
+  max-height: 100%;
+  width: 54vw;
+  max-width: 100%;
+  overflow: auto;
+
+  table{
+    width: 100%;
+  }
+
+  .p-person {
+      padding: 0;
+      border: 0 none;
+  }
+
+  .node-header, .node-content {
+      padding: .5em .7rem;
+
+  }
+
+  .node-header {
+      background-color: #495ebb;
+      color: #ffffff;
+  }
+
+  .node-content {
+      text-align: center;
+      margin: auto;
+      border: 0px;
+      outline: none;
+  }
+
+  .node-content img {
+      border-radius: 50%;
+  }
+
+
+  .p-organizationchart-node-content{
+    font-size: 1rem;
+    border: 0px;
+    border-radius: 7px;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    padding: 0rem;
+    &:hover{
+      background-color: var(--primary-faded) ;
+    }
+    .p-organizationchart-selectable-node{
+      width:100%;
+      &:hover{
+        background-color: var(--primary-faded)  ;
+      }
+      &:active{
+        background-color: var(--primary-faded)  ;
+      }
+    }
+
+  }
+  .p-node-toggler{
+    font-size: 0.75rem;
+    background-color: var(--form-color);
+    border-radius: 50%;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 14%), 0 1px 3px 0 rgb(0 0 0 / 12%);
+    &:hover{
+      background-color: var(--primary-faded)  ;
+    }
+  }
+
+  .dept-text{
+    font-weight: 500 !important;
+    font-size: 1rem;
+  }
+  .dept-img{
+    border: 0px;
+    outline: none;
+  }
+  .p-organizationchart-table{
+    .p-organizationchart-lines{
+      border: 10px soli pink;
+    }
+    .p-organizationchart-node-hidden{
+      display: block;
+    }
+  }
+
+
+  .active{
+    background-color: var(--primary-faded)  ;
+    color: var(--primary);
+  }
+
+}
+
+

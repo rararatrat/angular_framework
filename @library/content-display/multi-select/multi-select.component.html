@@ -1,0 +1,133 @@
+<ng-container [ngSwitch]="formGroup">
+  <ng-container *ngSwitchCase="null" [ngTemplateOutlet]="selectNormal"></ng-container>
+  <ng-container *ngSwitchDefault [ngTemplateOutlet]="selectFormControl" ></ng-container>
+</ng-container>
+
+<ng-template #selectFormControl>
+  <ng-container [formGroup]="formGroup">
+    <!-- <p-dropdown id="contentDispSelect"
+                [options]="results"
+                [formControlName]="formControlName"
+                [optionValue]="attribute?.title"
+                [filter]="true"
+                [filterBy]="filterFields"
+                [showClear]="true"
+                [placeholder]="placeholder"
+                [styleClass]="styleClass"
+                [panelStyleClass]="'w-fit'"
+                (onChange)="onSelect($event)"
+                >
+
+    <ng-template let-selItem pTemplate="selectedItem">
+      <div class="flex">
+        <div class="flex-initial mr-2" *ngIf="attribute?.icon != null">
+          <i class="{{attribute?.icon.iconPrefix}}{{selItem[attribute?.icon.iconSuffix] | lowercase }} border-circle"></i>
+        </div>
+        <div class="flex-initial">{{selItem[attribute?.title]}}</div>
+      </div>
+    </ng-template>
+    <ng-template let-optionItem pTemplate="item">
+      <div class="flex">
+        <div class="flex-initial align-items-center mr-2" *ngIf="attribute?.icon != null">
+          <i class="{{attribute?.icon.iconPrefix}}{{optionItem[attribute?.icon.iconSuffix] | lowercase }} border-circle"></i>
+        </div>
+        <div class="flex-initial align-items-center my-auto">{{optionItem[attribute?.title]}}</div>
+      </div>
+    </ng-template>
+    </p-dropdown> -->
+    <!-- {{(((nodes || []) | pluck : 'data') | pluck : 'id') | filterBy : {value: '!empty'} | json}} -->
+    <p-treeSelect *ngIf="tree"
+                  #treeSelectForm
+                  [(ngModel)]="nodes"
+                  [ngModelOptions]="{standalone: true}"
+                  [containerStyleClass]="styleClass"
+                  [panelStyleClass]="styleClass"
+                  [options]="results"
+                  display="chip"
+                  [metaKeySelection]="false"
+                  selectionMode="checkbox"
+                  placeholder="{{'Select ' + topic | capitalizeFirst}}"
+                  (onNodeSelect)="onSelect($event)"
+                  (onNodeUnselect)="onSelect($event)"
+                  [appendTo]="'body'">
+    </p-treeSelect>
+
+    <p-multiSelect  *ngIf="!tree"
+                    #multiSelectForm
+                    [(ngModel)]="nodes"
+                    [ngModelOptions]="{standalone: true}"
+                    [styleClass]="styleClass"
+                    [panelStyleClass]="styleClass"
+                    [options]="results"
+                    defaultLabel="{{'Select ' + topic | capitalizeFirst}}"
+                    [optionLabel]="attribute?.title"
+                    display="chip"
+                    [showToggleAll]="true"
+                    (onChange)="onSelect($event)"
+                    (onClick)="onSelect($event)"
+                    [appendTo]="'body'">
+
+
+      <ng-template let-data pTemplate="item">
+        <ng-container [ngTemplateOutlet]="selectResultsTemplate"  [ngTemplateOutletContext]="{$implicit:data}"></ng-container>
+      </ng-template>
+
+    </p-multiSelect>
+
+
+<!-- [(ngModel)]="selectedNodes" -->
+
+  </ng-container>
+</ng-template>
+
+<ng-template #selectNormal>
+
+  <p-dropdown id="contentDispSelect"
+              [options]="results"
+              optionValue="name"
+              [filter]="true"
+              [filterBy]="filterFields"
+              [showClear]="true"
+              placeholder="Country">
+
+      <ng-template let-selItem pTemplate="selectedItem">
+        <div class="flex">
+          <div class="flex-initial mr-2"><i class="fi fis fi-{{selItem.code | lowercase }} border-circle"></i></div>
+          <div class="flex-initial" [innerHTML]="selItem.name"></div>
+        </div>
+      </ng-template>
+
+      <ng-template let-optionItem pTemplate="item">
+        <div class="flex">
+          <div class="flex-initial align-items-center mr-2"><i
+              class="fi fis fi-{{optionItem.code | lowercase }} border-circle fs-2-em"></i></div>
+          <div class="flex-initial align-items-center my-auto" [innerHTML]="optionItem.name"></div>
+        </div>
+      </ng-template>
+
+  </p-dropdown>
+
+</ng-template>
+
+
+<ng-template #selectResultsTemplate let-data>
+  <div class="flex overflow-hidden">
+    <div class="flex-none flex align-items-center justify-content-center"
+      *ngIf="attribute?.image?.linkToImage != null || attribute?.image?.name != null">
+      <ng-container *ngIf="attribute?.image?.linkToImage != null">
+        <p-avatar (onImageError)="imageErr($event)" [image]="data[attribute?.image?.linkToImage]" shape="circle"></p-avatar>
+      </ng-container>
+    </div>
+    <div class="flex-grow-1 flex align-items-center pl-2">
+      <div class="flex flex-column">
+        <!-- <div class="flex align-items-center fw-500" [innerHTML]="data[attribute?.title]"></div> -->
+        <div class="flex align-items-center fw-500">
+  <span [innerHTML]="data[attribute?.title]"></span>
+
+
+
+        </div>
+        <div class="flex align-items-center" [innerHTML]="data[attribute?.description]"></div>
+      </div>
+    </div>
+  </div>

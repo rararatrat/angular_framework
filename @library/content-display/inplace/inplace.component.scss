@@ -1,0 +1,110 @@
+::ng-deep #egInPlace .p-inplace {
+.p-button{
+  padding-right:1rem;
+  padding-left:1rem;
+}
+
+ .p-inplace-display {
+    padding: unset;
+    border: 0px;
+/*     :before {
+      font: var(--fa-font-solid);
+      content: '\f111';
+      color: transparent;
+      position: relative;
+    } */
+    &:hover{
+      background: var(--default-grey);
+      font-weight: 600;
+      color: unset;
+
+    }
+
+    .locked{
+      &:hover{
+      background: none;
+      font-weight: 400;
+      color: unset;
+      :before {
+        color: var(--danger);
+      }
+    }
+  }
+}
+
+}
+
+.eg-inplace{
+  /* padding: 0.5rem;
+  padding-left: 0rem; */
+  /* min-height: 3rem; */
+  position: relative;
+  &.active{
+    background: var(--surface-ground);
+    border-radius: var(--eg-border-radius);
+    /* padding-left: 0.5rem; */
+  }
+
+  #editIcon{
+    display: none;
+    position: absolute;
+    font-weight: bold;
+    color: var(--primary);
+    cursor: pointer;
+    top: -2px;
+    background: var(--primary-faded);
+    padding:0.5rem;
+    border-radius: var(--border-radius);
+  }
+
+  &.editable{
+    &:not(.locked):hover{
+      /* background: var(--gray-faded);
+      border-radius: var(--eg-border-radius);
+      padding-left: 0.5rem; */
+      #editIcon{
+        display: inline-flex;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  &.locked{
+    cursor: not-allowed;
+    //pointer-events: none;
+  }
+}
+
+.eg-input-addon{
+  background-color: var(--primary);
+  color: var(--primary-contrast);
+  border-color: var(--primary);
+}
+
+::ng-deep #colorpicker .p-colorpicker-preview{
+
+  height: 4rem;
+  width: 100%;
+}
+
+
+
+::ng-deep #editViewCalendar{
+  &.p-inputwrapper-focus{
+    .p-inputtext{
+      border-bottom-left-radius: 0px;
+    }
+
+  }
+  .p-calendar-w-btn{
+    .p-inputtext{
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .p-datepicker-trigger{
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+}

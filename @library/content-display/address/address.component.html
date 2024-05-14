@@ -1,0 +1,111 @@
+<!-- {{isLoading}} {{type | json}} -->
+<ng-container [ngSwitch]="type"  *ngIf="!isLoading">
+  <ng-container *ngSwitchCase="'map'" [ngTemplateOutlet]="map"></ng-container>
+  <ng-container *ngSwitchCase="'address'" [ngTemplateOutlet]="addressData" ></ng-container>
+  <ng-container *ngSwitchCase="'edit'" [ngTemplateOutlet]="editAddress" ></ng-container>
+</ng-container>
+
+<ng-template #map>
+    <eg-map [(data)]="address" [mapType]="'leaflet'"></eg-map>
+</ng-template>
+
+<ng-template #addressData>
+  <div class="address-detail" *ngIf="address != null">
+    <div class="flex card-container blue-container overflow-hidden  address-list-item" *ngFor="let a of address; trackBy: trackByFn">
+        <div class="flex-grow-1 flex-column align-items-center">
+          <ng-container [ngTemplateOutlet]="addressTemplate"  [ngTemplateOutletContext]="{$implicit:a}"></ng-container>
+        </div>
+        <div class="flex-none align-items-center address-list-item-editable">
+          <button pButton pRipple type="button" label="Edit" class="p-button-text"  (click)="editAdddress(a)"></button>
+        </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #editAddress>
+  <button *ngIf="state == 'new'" pButton pRipple type="button" icon="pi pi-search" [label]="'Search Address'" class="p-button-text"  (click)="editAdddress(data)"></button>
+  <div *ngIf="state == 'edit'" class="address-detail">
+    <span *ngIf="(data?.bldgNumber ? data.bldgNumber + ', ' : '') + (data?.street ? data.street + ', ' : '') + (data?.city ? data.city + ', ' : '') + (data?.country || '') as _add; else noAddressData" class="m-2" [innerHTML]="_add || '&nbsp;'"></span>
+    <a class="editToggle ml-2 "  (click)="editAdddress(data)">
+      <i class="pi pi-pencil"></i> <span class="ml-1">edit</span>
+    </a>
+  </div>
+</ng-template>
+
+<ng-template #addressTemplate let-address>
+  <ng-container *ngIf="address && (address.name || address.bldgNumber || address.street || address.city || address.state || address.zipcode || address.country); else noAddressData">
+    <div *ngIf="address.name" class="flex address-name bold" [innerHTML]="address.name"></div>
+    <div *ngIf="address.bldgNumber || address.street" class="flex address-street" [innerHTML]="(address.bldgNumber ? (address.bldgNumber + ', ') : '') + (address.street || '')"></div>
+    <div *ngIf="address.city || address.state || address.zipcode" class="flex address-street" [innerHTML]="(address.city ? (address.city + ', ') : '') + ( address.state ? (address.state + ' ') : '' ) + (address.zipcode || '')"></div>
+    <div *ngIf="address.country" class="flex address-country" [innerHTML]="address.country"></div>
+  </ng-container>
+</ng-template>
+
+<ng-template #noAddressData><span class="m-2" [innerHTML]="'translations.noDataAvailable' | translate"></span></ng-template>
+
+<p-dialog header="Add / Edit Address" [(visible)]="overlay" [position]="'top'" [modal]="true" [style]="{width: '30vw'}"
+    [draggable]="false" [resizable]="false">
+    <div class="grid mt-2" *ngIf="state == 'edit' ">
+      <div class="col-12 p-0 text-left">
+        <h3 class="m-0 mb-2" [innerHTML]="'translations.currentAddress' | translate"></h3>
+        <ng-container [ngTemplateOutlet]="addressTemplate"  [ngTemplateOutletContext]="{$implicit:data}"></ng-container>
+      </div>
+    </div>
+    <p-divider align="center" type="dashed" *ngIf="state == 'edit'">
+        <b>New Address</b>
+    </p-divider>
+    <div class="grid mt-3">
+      <div class="col-12 p-0">
+        <eg-auto-complete [topic]="'ext_address'" (callback)="setAddress($event)" [(selected)]="address" [attribute]="{title: 'name', description: 'formatted_address', image:{linkToImage: 'icon'}}" [styleClass]="'w-full'"></eg-auto-complete>
+      </div>
+    </div>
+    <div class="grid mt-3" *ngIf="addressForm != null" [formGroup]="addressForm">
+      <div class="col-12 p-0">
+        <div class="field">
+          <input id="name" type="text" formControlName="name" [placeholder]="'translations.aReferenceName' | translate" aria-describedby="name-help" pInputText class="w-full"/>
+          <small id="name" class="block" [innerHTML]="'translations.aReferenceName' | translate"></small>
+        </div>
+      </div>
+      <div class="col-3 pl-0 py-0">
+        <div class="field">
+          <input id="bldg_no" type="text" formControlName="bldgNumber"  [placeholder]="'translations.bldgHouseNo' | translate" aria-describedby="bldg_no-help" pInputText class="w-full"/>
+          <small id="bldg_no-help" class="block" [innerHTML]="'translations.bldgHouseNo' | translate"></small>
+        </div>
+      </div>
+      <div class="col-9 pr-0 py-0">
+        <div class="field">
+          <input id="street" type="text" formControlName="street"  [placeholder]="'translations.street' | translate" aria-describedby="street-help" pInputText class="w-full"/>
+          <small id="street-help" class="block" [innerHTML]="'translations.street' | translate"></small>
+        </div>
+      </div>
+      <div class="col-4 pl-0 py-0">
+        <div class="field">
+          <input id="city" type="text" formControlName="city"  [placeholder]="'translations.city' | translate" aria-describedby="city-help" pInputText class="w-full"/>
+          <small id="city-help" class="block" [innerHTML]="'translations.city' | translate"></small>
+        </div>
+      </div>
+      <div class="col-4 py-0">
+        <div class="field">
+          <input id="postcode" type="text" formControlName="zipcode"  [placeholder]="('translations.postCode' | translate) + ' / ' + ('translations.pinCode' | translate)"  aria-describedby="postcode-help" pInputText class="w-full"/>
+          <small id="postcode-help" class="block" [innerHTML]="('translations.postCode' | translate) + ' / ' + ('translations.pinCode' | translate)"></small>
+        </div>
+      </div>
+      <div class="col-4 pr-0 py-0">
+        <div class="field">
+          <input id="state" type="text" formControlName="state"  [placeholder]="'translations.state' | translate"  aria-describedby="state-help" pInputText class="w-full"/>
+          <small id="state-help" class="block" [innerHTML]="'translations.state' | translate"></small>
+        </div>
+      </div>
+      <div class="col-12 p-0">
+        <div class="field">
+          <input id="country" type="text" formControlName="country"  [placeholder]="'translations.country' | translate"  aria-describedby="country-help" pInputText class="w-full" />
+          <small id="country-help" class="block" [innerHTML]="'translations.country' | translate"></small>
+        </div>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-times" (click)="overlay=false" label="Cancel" styleClass="p-button-text"></p-button>
+        <p-button icon="pi pi-check" (click)="updateAddress($event)" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,494 @@
+
+<ng-container [ngSwitch]="type">
+  <ng-container *ngSwitchCase="'image'"   [ngTemplateOutlet]="image"></ng-container>
+  <ng-container *ngSwitchCase="'address'" [ngTemplateOutlet]="address"></ng-container>
+  <ng-container *ngSwitchCase="'file'"    [ngTemplateOutlet]="file"></ng-container>
+  <!-- <ng-container *ngSwitchCase="'multiselect'"    [ngTemplateOutlet]="multiselect"></ng-container> -->
+  <ng-container *ngSwitchDefault          [ngTemplateOutlet]="inPlaceFormComponent"></ng-container>
+</ng-container>
+
+<ng-template #inPlaceFormComponent>
+  <div  class="w-full eg-inplace editable "
+        [class.locked]="canEdit || isDisabled"
+        [class.active]="editMode" *ngIf="config.formGroup?.get(formControlName) | isNotEmpty; else noControlFoundTpl">
+
+    <ng-container [ngSwitch]="editMode">
+      <ng-container *ngSwitchCase="true" [ngTemplateOutlet]="formContent"></ng-container>
+      <ng-container *ngSwitchDefault     [ngTemplateOutlet]="dataRender"></ng-container>
+    </ng-container>
+
+    <ng-template #dataRender>
+      <div class="flex flex-no-wrap w-full ">
+        <div class="flex-grow-1 data-render" #displayValData>
+          <p-skeleton styleClass="fadeout animation-duration-600 w-full" *ngIf="fcLoader == null" ></p-skeleton>
+          <span  class="fadein animation-duration-600" *ngIf="fcLoader != null">
+            <ng-container [ngSwitch]="type">
+              <ng-container *ngSwitchCase="'multiselect'" [ngTemplateOutlet]="multiselectrender"></ng-container>
+              <ng-container *ngSwitchDefault>
+                <div class="flex flex-row w-full flex-nowrap">
+                  <ng-container *ngIf="displayVal != null">
+                    <ng-container *ngIf="config?.formGroup.get(formControlName).value[autoConfig?.image?.linkToImage] as _linkedImg">
+                      <div *ngIf="(autoConfig?.image?.linkToImage != null || autoConfig?.image?.name != null)" class="flex-grow-0 mr-2">
+                        <p-avatar (onImageError)="imageErr($event, null)" [image]="_linkedImg" shape="circle" [styleClass]="styleClass"></p-avatar>
+                      </div>
+                    </ng-container>
+                      <div *ngIf="numberConfig">
+                        <ng-container [ngSwitch]="numberConfig?.mode">
+                            <ng-container *ngSwitchCase="'currency'">
+                              <span class="mr-1" [innerHTML]="displayVal | currency:numberConfig?.currency:numberConfig?.currencyDisplay:null:locale_saved"></span>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'decimal'">
+                              <ng-container *ngIf="numberConfig.prefix">
+                                <span [innerHTML]="numberConfig.prefix"></span>
+                              </ng-container>
+
+                              <ng-container *ngSwitchDefault>
+                                <span [innerHTML]="displayVal  | number:'.' + (numberConfig.minFractionDigits || '1') : locale_saved"></span>
+                              </ng-container>
+
+                              <ng-container *ngIf="numberConfig.suffix">
+                                <span class="ml-1" [innerHTML]="numberConfig.suffix"></span>
+                              </ng-container>
+                            </ng-container>
+                        </ng-container>
+                      </div>
+
+                    <div [class]="'flex-grow-1 m-auto ' + ((autoConfig?.colors | isNotEmpty) && displayVal) ? 'p-1 pl-0 ' + displayVal : ''">
+                      <!-- <p *ngIf="numberConfig == null" [innerHTML]="displayVal ||  'No Data Available'"></p> -->
+                      <ng-container [ngSwitch]="true">
+                        <p *ngSwitchCase="(type != 'json' || !displayVal) && type != 'color'" [innerHTML]="displayVal || ('translations.noDataAvailable' | translate)"></p>
+                        <pre *ngSwitchCase="type == 'json'">{{displayVal | json}}</pre>
+                        <p-colorPicker *ngSwitchCase="type == 'color'" styleClass="w-12" id="colorpicker" [(ngModel)]="modelValue" [disabled]="true"></p-colorPicker>
+                      </ng-container>
+
+                      <a id="editIcon" class="" (click)="toggleEditor('edit')">
+                        <i class="fa-solid fa-pencil" pTooltip="edit"></i>
+                      </a>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="displayVal == null">
+                    <div class="flex-grow-1 m-auto">
+                      <span *ngIf="type == 'date'"
+                            [class]="styleClass"
+                            [innerHtml]="config.formGroup.get(formControlName)?.value | date: 'mediumDate'"></span>
+                      <span *ngIf="type != 'date'"
+                            [class]="styleClass"
+                            [innerHtml]="('translations.noDataAvailable' | translate)"></span>
+
+                      <a id="editIcon" class="" (click)="toggleEditor('edit')">
+                        <i class="fa-solid fa-pencil" pTooltip="edit"></i>
+                      </a>
+                    </div>
+
+                  </ng-container>
+
+
+                </div>
+
+
+              </ng-container>
+            </ng-container>
+          </span>
+          <p-contextMenu [target]="displayValData" [model]="items"></p-contextMenu>
+        </div>
+       <!--  <div class="flex-grow-0 msg-col">
+          <p-button id="editIcon" label="Edit" icon="fa-solid fa-pencil" styleClass="p-button-sm" </p-button>
+        </div> -->
+      </div>
+    </ng-template>
+
+    <ng-template #formContent>
+      <div class="flex flex-column w-full">
+        <div class="w-full ">
+          <ng-container [ngSwitch]="type">
+            <ng-container *ngSwitchCase="'mask'"          [ngTemplateOutlet]="mask" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'number'"        [ngTemplateOutlet]="number" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'text'"          [ngTemplateOutlet]="text" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'textarea'"      [ngTemplateOutlet]="textarea" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'password'"      [ngTemplateOutlet]="password" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'date'"          [ngTemplateOutlet]="date" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'autocomplete'"  [ngTemplateOutlet]="autocomplete" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'select'"        [ngTemplateOutlet]="select" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'boolean'"       [ngTemplateOutlet]="boolean" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'multiselect'"   [ngTemplateOutlet]="multiselect" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'file'"          [ngTemplateOutlet]="file" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'radio'"         [ngTemplateOutlet]="radio" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'chips'"         [ngTemplateOutlet]="chips" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'json'"          [ngTemplateOutlet]="textarea" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+            <ng-container *ngSwitchCase="'color'"         [ngTemplateOutlet]="colorPicker" [ngTemplateOutletContext]="{hasIcon: (icon | isNotEmpty)}"></ng-container>
+          </ng-container>
+        </div>
+        <!-- <div class="flex flex-row justify-content-end my-2 mr-2">
+          <div class="flex ml-2">
+            <p-button [pTooltip]="'Cancel'" icon="pi pi-times" styleClass="p-button-rounded p-button-outlined p-button-danger" (click)="toggleEditor('cancel')"></p-button>
+          </div>
+          <div class="flex ml-2">
+            <p-button [pTooltip]="'Save'" icon="pi pi-check" styleClass="p-button-rounded" (click)="toggleEditor('save')"></p-button>
+          </div>
+
+        </div> -->
+        <div class="flex justify-content-end mt-2" *ngIf="!this.nonToggable">
+          <div class="flex ml-2">
+            <!-- label="Cancel" -->
+            <p-button [pTooltip]="'Cancel'" icon="pi pi-times" styleClass="p-button-rounded p-button-outlined p-button-danger" (click)="toggleEditor('cancel')"></p-button>
+          </div>
+          <div class="flex ml-2">
+            <!-- label="Save" -->
+            <p-button [disabled]="(config.formGroup?.[formControlName]?.invalid)" [pTooltip]="'Save'" icon="pi pi-check" styleClass="p-button-rounded" (click)="toggleEditor('save')"></p-button> <!-- type == 'json' && -->
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+  </div>
+
+
+</ng-template>
+
+<ng-template #noControlFoundTpl>
+  {{ 'translations.no_control_found' | translate : {field: (('translations.' + formControlName | translate : {count: 1}) | titlecase)} }}
+</ng-template>
+
+<!-- Mask Template -->
+<ng-template #mask let-hasIcon="hasIcon">
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <span class="p-inputgroup-addon" *ngIf="hasIcon" >
+      <i [class]="icon"></i>
+    </span>
+
+    <p-inputMask  [type]="type"
+                  [placeholder]="placeholder || ''"
+                  [mask]="mask_string"
+                  [formControlName]="formControlName"
+                  [class]="styleClass + ' '">
+    </p-inputMask>
+  </div>
+  <small class="p-invalid"><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+</ng-template>
+
+<!-- Number Template  -->
+<ng-template #number let-hasIcon="hasIcon">
+
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <span class="p-inputgroup-addon" *ngIf="hasIcon" >
+      <i [class]="icon"></i>
+    </span>
+      <p-inputNumber  *ngIf="numberConfig"
+                      [placeholder]="placeholder || ''"
+                      [mode]="numberConfig?.mode"
+                      [currency]="numberConfig?.currency"
+                      [currencyDisplay]="numberConfig?.currencyDisplay"
+                      [locale]="locale_saved"
+                      [format]="true"
+                      [minFractionDigits]="numberConfig?.minFractionDigits"
+                      [maxFractionDigits]="numberConfig?.maxFractionDigits"
+                      [prefix]="numberConfig?.prefix"
+                      [suffix]="numberConfig?.suffix"
+                      [formControlName]="formControlName"
+                      [styleClass]=" styleClass + ' '"
+                      [inputStyleClass]="styleClass + ''"
+                      class="w-full"
+                      >
+      </p-inputNumber>
+  </div>
+  <small class="p-invalid"><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+
+</ng-template>
+
+
+<!-- Text Template -->
+<ng-template #text let-hasIcon="hasIcon">
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <ng-container [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{$implicit:{hasIcon: hasIcon, title: formControlName}}"></ng-container>
+    <input  pInputText
+            [type]="type"
+            [placeholder]="placeholder"
+            [formControlName]="formControlName"
+            [class]="styleClass + ' '"
+            [pStyleClass]="''"/>
+  </div>
+
+</ng-template>
+
+<!-- Text Area -->
+<ng-template #textarea>
+  <!-- <ng-container [formGroup]="config?.formGroup">
+    <textarea rows="1" class="w-full" [placeholder]="placeholder" pInputTextarea [autoResize]="true" [formControlName]="formControlName" style="min-height: 35px"></textarea>
+  </ng-container> -->
+
+  <ng-container *ngIf="config?.formGroup"  [formGroup]="config?.formGroup">
+    <eg-text-area [formGroup]="config?.formGroup"
+      [type]="type"
+      [formControlName]="formControlName"
+      [isRawText]="isRawText==true" [config]="tinyMceConfig"
+      class="flex-grow-1 max-w-full w-full"></eg-text-area>
+  </ng-container>
+
+</ng-template>
+
+<ng-template #password>
+  <ng-container [formGroup]="config?.formGroup">
+    <p-password [formControlName]="formControlName" [styleClass]="styleClass"></p-password>
+  </ng-container>
+</ng-template>
+
+<!-- Calendar -->
+<ng-template #date let-hasIcon="hasIcon">
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <ng-container [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{$implicit:{hasIcon: hasIcon, title: formControlName}}"></ng-container>
+    <p-calendar id="editViewCalendar"
+                [appendTo]="'body'"
+                [formControlName]="formControlName"
+                [inputId]="formControlName"
+                [styleClass]="'form-control ' + styleClass"
+                [dateFormat]="'dd/mm/yy'"
+                [showIcon]="true"
+                [icon]="icon"
+                [inputStyleClass]="inputIconClass + ' ' + (config.formGroup?.get(formControlName).invalid?'ng-invalid':'ng-valid')"
+    ></p-calendar>
+  </div>
+
+</ng-template>
+
+<!-- Autocomplete -->
+<ng-template #autocomplete let-hasIcon="hasIcon">
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <ng-container [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{$implicit:{hasIcon: hasIcon, title: formControlName}}"></ng-container>
+    <eg-auto-complete
+                      [icon]="icon"
+                      [topic]="topic"
+                      (callback)="handleCallback($event)"
+                      [formGroup]="config?.formGroup"
+                      [formControlName]="formControlName"
+                      [attribute]="autoConfig"
+                      [styleClass]="styleClass"
+                      [class]="styleClass">
+    </eg-auto-complete>
+  </div>
+
+</ng-template>
+
+<!-- Select Drop Down  -->
+<ng-template #select let-hasIcon="hasIcon" >
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <ng-container [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{$implicit:{hasIcon: hasIcon, title: formControlName}}"></ng-container>
+    <eg-select  [icon]="icon"
+                [topic]="topic"
+                (callback)="handleCallback($event)"
+                [formGroup]="config?.formGroup"
+                [formControlName]="formControlName"
+                [attribute]="autoConfig"
+                [placeholder]="placeholder"
+                [styleClass]="styleClass + ((hasIcon)?' border-round-left-xs':'')"
+                [class]="styleClass">
+    </eg-select>
+  </div>
+</ng-template>
+
+
+<!-- Boolean Template -->
+<ng-template #boolean let-hasIcon="hasIcon">
+  <ng-container [formGroup]="config?.formGroup">
+    <input type="hidden" [formControlName]="formControlName" />
+    <!-- [classList]="icon ? [icon] : []" -->
+    <p-inputSwitch [(ngModel)]="modelValue" (ngModelChange)="switchChanged($event)" [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+  </ng-container>
+</ng-template>
+
+<ng-template #image>
+  <p-skeleton shape="circle" size="7rem"  *ngIf="fcLoader == null"></p-skeleton>
+  <ng-container [formGroup]="config?.formGroup" *ngIf="fcLoader != null">
+    <eg-image [imageClass]="styleClass"
+              [styleClass]="styleClass"
+              [formGroup]="config?.formGroup"
+              [formControlName]="formControlName"
+              [config]="config"
+              [filesArr]="savedData[formControlName]"
+              [src]="config?.formGroup.get(formControlName).value"
+              [preview]="!isDisabled"
+              [isEditable]="!canEdit"
+              (callback)="handleCallback($event, 'uploadApiCallback')">
+    </eg-image>
+  </ng-container>
+</ng-template>
+
+<ng-template #address>
+  <div class=" w-full eg-inplace editable">
+    <p-skeleton styleClass="fadeout animation-duration-600 w-full" *ngIf="fcLoader == null" ></p-skeleton>
+    <ng-container [formGroup]="config?.formGroup" *ngIf="fcLoader != null">
+      <eg-address type="edit"
+                  [format]="'object'"
+                  (callback)="handleCallback($event)"
+                  [formGroup]="config?.formGroup"
+                  [formControlName]="formControlName"
+                  [topic]="topic"
+                  [data]="data">
+      </eg-address>
+      <ng-template #emptyAddress class="m-2">&nbsp;</ng-template>
+    </ng-container>
+  </div>
+
+</ng-template>
+
+<ng-template #file>
+  <ng-container [formGroup]="config?.formGroup" *ngIf="fcLoader != null"> <!-- [formGroup]="config?.formGroup" [formControlName]="formControlName" -->
+    <eag-uploader class="w-full" #fileUploader
+                  [filesArr]="savedData[formControlName]"
+                  [config]="config"
+                  [label]="formControlName" [formGroup]="config?.formGroup"
+                  (imgApiCallback)="handleCallback($event, 'uploadApiCallback')"
+                  (callback)="handleCallback($event, 'uploadApiCallback')"
+                  (ngModelChange)="handleCallback($event, 'ngModelChange')"
+      ></eag-uploader><!-- [autoUpload]="false"
+        [showCancelButton]="!canEdit || isDisabled"
+        [showUploadButton]="!canEdit || isDisabled" -->
+      <small class="p-invalid" ><span [innerHTML]="config?.formGroup?.get(formControlName)?.errors?.['err']"></span></small>
+  </ng-container>
+</ng-template>
+
+<!-- Multiselect Template -->
+<ng-template #multiselect let-hasIcon="hasIcon">
+  <div class="flex flex-column flex-no-wrap w-full">
+    <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+      <ng-container [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{$implicit:{hasIcon: hasIcon, title: formControlName}}"></ng-container>
+      <eg-multi-select [topic]="topic"
+                      (callback)="handleCallback($event)"
+                      [formGroup]="config?.formGroup"
+                      [formControlName]="formControlName"
+                      [attribute]="autoConfig"
+                      [placeholder]="placeholder"
+                      [styleClass]="styleClass + ((hasIcon)?' border-round-left-xs':'')"
+                      [class]="styleClass"
+                      [displayVal]="displayVal">
+      </eg-multi-select>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #multiselectrender>
+  <ng-container *ngIf="displayVal">
+    </ng-container>
+    <ng-container [ngSwitch]="autoConfig.hasOwnProperty('image') && autoConfig?.image.hasOwnProperty('avatarGroup') && autoConfig?.image?.avatarGroup">
+    <ng-container *ngSwitchCase="true">
+      <p-avatarGroup styleClass="">
+        <p-avatar *ngFor="let a of (displayVal); trackBy: trackByFn"
+                  (onImageError)="imageErr($event, a)"
+                  [image]="a[autoConfig?.image?.linkToImage]"
+                  [pTooltip]="a?.[autoConfig.title] | titlecase"
+                  shape="circle"
+                  size="large"></p-avatar>
+        <p-avatar *ngIf="displayVal != null && displayVal?.length > 0"  id="editIcon" (click)="toggleEditor('edit')"
+                  icon="fa-solid fa-pencil"
+                  pTooltip="Edit"
+                  shape="circle"
+                  size="large"
+                  styleClass="text-primary"></p-avatar>
+        <p-avatar *ngIf="displayVal == null || displayVal?.length == 0" id="addIcon" (click)="toggleEditor('edit')"
+                  icon="fa-solid fa-add"
+                  pTooltip="Add"
+                  shape="circle"
+                  size="large"
+                  styleClass="text-primary"></p-avatar>
+      </p-avatarGroup>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <div class="list-simple-item flex" *ngFor="let a of (displayVal); trackBy: trackByFn">
+        <div class="flex-grow-0 align-items-center justify-content-center pr-1 m-auto"
+          *ngIf="autoConfig?.image?.linkToImage != null || autoConfig?.image?.name != null">
+          <ng-container *ngIf="autoConfig?.image?.linkToImage != null">
+            <p-avatar (onImageError)="imageErr($event, a)" [image]="a[autoConfig?.image?.linkToImage]" shape="circle"></p-avatar>
+          </ng-container>
+        </div>
+        <div class="flex-grow-1 align-items-center justify-content-center pr-1 m-auto">
+          <span [innerHTML]="a?.[(autoConfig.title || 'name')] | titlecase"></span>
+        </div>
+        <div class="flex-grow-0 align-items-center justify-content-center m-auto"  id="editIcon">
+          <a class=" " (click)="toggleEditor('edit')">
+            <i class="fa-solid fa-pencil" pTooltip="edit"></i>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+
+  </ng-container>
+  <ng-container *ngIf="!displayVal">{{'translations.noDataAvailable' | translate}} <a id="editIcon" class="" (click)="toggleEditor('edit')">
+    <i class="fa-solid fa-pencil" pTooltip="edit"></i>
+  </a></ng-container>
+</ng-template>
+
+<!-- radiobutton renderer -->
+<ng-template #radio let-hasIcon="hasIcon">
+  <!-- {{config?.formGroup?.get(formControlName)?.value | json}} -->
+  <div [formGroup]="config?.formGroup" class="w-full " [class.p-inputgroup]="hasIcon">
+    <!-- <ng-container [ngTemplateOutlet]="formIcon" [ngTemplateOutletContext]="{$implicit:{hasIcon: hasIcon, title: formControlName}}"></ng-container> -->
+    <div [class]="styleClass + ' flex gap-3'" [formGroup]="config?.formGroup"> <!-- flex-column -->
+      <div *ngFor="let opt of options" class="field-checkbox">
+        <!-- {{opt | json}} -->
+        <!-- <p-radioButton [inputId]="opt.id" [value]="opt" [formControlName]="formControlName"></p-radioButton> -->
+        <!-- TODO: use valueKey -->
+        <!-- <p-radioButton [inputId]="opt.id" [value]="opt?.id" [formControlName]="formControlName"></p-radioButton> -->
+        <p-radioButton  [inputId]="opt.id"
+                      [value]="opt.hasOwnProperty('value') ? opt?.value : opt?.id"
+                      [formControlName]="formControlName"></p-radioButton>
+        <label [for]="opt.id" class="ml-2">{{ opt.label }}</label>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+
+<ng-template #chips let-hasIcon="hasIcon">
+  <div [class]="styleClass + ''" [formGroup]="config?.formGroup"> <!-- flex-column -->
+    <p-chips  [formControlName]="formControlName"
+              [pStyleClass]="'w-full'"
+              [addOnBlur]="true"
+              [addOnBlur]="false"
+              [showClear]="true"
+              [allowDuplicate]="false"
+              [separator]="';'">
+    </p-chips>
+  </div>
+</ng-template>
+
+<!-- Color Picker -->
+<!-- Color Picker -->
+<ng-template #colorPicker>
+  <div [class]="styleClass + ' flex flex-row align-items-center'" [formGroup]="config?.formGroup">
+    <div class="flex-grow-0">
+      <p-colorPicker  #colorPicker id="colorPicker"
+                      [formControlName]="formControlName"
+                      [(ngModel)]="modelValue"
+                      (onChange)="config?.formGroup.get(formControlName).setValue($event.value)"
+                      (onShow)="config?.formGroup.get(formControlName).value">
+      </p-colorPicker>
+    </div>
+    <div  class="flex-grow-1 ml-2">
+      <input  pInputText
+              #colorPickerText
+              type="text"
+              [formControlName]="formControlName"
+              [placeholder]="placeholder"
+              class="w-full"
+              [(ngModel)]="modelValue"/>
+
+    </div>
+  </div>
+</ng-template>
+
+
+<!-- Context menu -->
+
+
+
+<!-- icon for forms -->
+<ng-template #formIcon let-data>
+  <span class="p-inputgroup-addon surface-card" *ngIf="data.hasIcon" >
+    <i [class]="icon" [title]="(data.title || '') | capitalizeFirst"></i>
+  </span>
+  <!-- <span class="p-inputgroup-addon surface-card" *ngIf="!hasIcon" >
+    <b [innerHTML]="formControlName"></b>
+  </span> -->
+</ng-template>
+

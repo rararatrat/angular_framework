@@ -1,0 +1,35 @@
+<ng-container *ngIf="formGroup != null && formControlName != null" [ngSwitch]="isRawText==true">
+  <div [formGroup]="formGroup" class="editor-div w-full" *ngSwitchCase="false">
+    <!-- <p-editor
+          #editor
+          id="editor"
+          placeholder="Enter Text"
+          styleClass="h-full"
+          [formControlName]="formControlName"
+          [required]="false"
+          [modules]="config"
+          (onInit)="onContentChanged($event)"
+          (onSelectionChange)="onEditorChanged($event)"
+          (onTextChange)="onEditorCreated($event)">
+      <ng-template pTemplate="header"></ng-template>
+    </p-editor> -->
+    <editor
+      #tinyMce
+      [apiKey]="apiKey"
+      [plugins]="tinyMCEPlugins"
+      [initialValue]="initialValue"
+      (onChange)="onEditorChanged($event)"
+      [toolbar]="toolbar"
+      [init]="initTinyMce"
+    ></editor>
+    <!-- (onInit)="textOnInit($event)" -->
+    <!-- (onActivate)="textOnInit($event)" -->
+  </div>
+  <div class="w-full h-full" *ngSwitchCase="true" [formGroup]="formGroup">
+    <textarea  [formControlName]="formControlName" [class]="'w-full w-height'"
+              pInputTextarea [autoResize]="false"
+              [placeholder]="'Enter text...'" rows="1" cols="50"
+  ></textarea>
+  </div>
+</ng-container>
+

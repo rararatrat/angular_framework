@@ -1,0 +1,53 @@
+.grid-innerborder {
+  display: grid;
+
+}
+
+.grid-innerborder > * {
+  position: relative; /* Parent must be positioned for aboslute positioning of pseudo-elements to work */
+  overflow: visible; /* overflow: hidden will hide borders */
+  background-color: #ccc;
+}
+
+/* Vertical lines to the left of cells in the top row */
+.grid-innerborder > :nth-child(2)::before,
+.grid-innerborder > :nth-child(3)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -10px;
+  height: 100%;
+  border-left: 1px solid red;
+}
+
+/* Vertical lines to the left of cells in all other rows */
+.grid-innerborder > :nth-child(3n+5)::before,
+.grid-innerborder > :nth-child(3n+6)::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -10px;
+  height: calc(100% + 20px);
+  border-left: 1px solid red;
+}
+
+/* Horizontal lines above cells in the first column */
+.grid-innerborder > :nth-child(3n+4)::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid red;
+}
+
+/* Horizontal lines above cells in all other columns */
+.grid-innerborder > :nth-child(3n+5)::after,
+.grid-innerborder > :nth-child(3n+6)::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -20px;
+  width: calc(100% + 20px);
+  border-top: 1px solid red;
+}

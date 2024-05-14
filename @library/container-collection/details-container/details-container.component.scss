@@ -1,0 +1,208 @@
+.disabled{
+  pointer-events: none;
+  background-color: var(--gray-faded) !important;
+  background: var(--gray-faded)  !important;
+  color: var(--gray)  !important;
+}
+
+.cur-container-card{
+  background: var(--bg-color) !important;
+  padding : 0.5rem;
+  padding-top: 0rem;
+  border-radius: var(--eg-border-radius);
+}
+
+::ng-deep #actionColumnDivider .p-divider-content{
+  background-color: var(--surface-card);
+}
+
+.w-item{
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 4rem;
+  border-radius: var(--eg-border-radius);
+  background-color: var(--surface-card);
+  justify-content: center;
+  align-items: center;
+  cursor:pointer;
+  transition: all 0.25s ease-in-out;
+
+  &:hover{
+    font-weight: 900;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.02), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 1px 4px rgba(0, 0, 0, 0.08) !important;
+  }
+}
+
+
+
+
+.detail-action-column,
+.detail-action-column-collapsed {
+  border-radius: var(--eg-border-radius);
+  transition: width 0.2s ease-in-out; /* add a transition animation to the width property */
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* max-height: 100%;
+  overflow-y: scroll; */
+}
+
+.detail-action-column {
+  width: 30rem;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  /* margin-top: 0.5rem; */
+  /* padding: 0.5rem; */
+  /* margin-right: 0.5rem; */
+  display: flex;
+}
+
+.detail-action-column-collapsed {
+  width: 0rem;
+  padding: 0rem;
+  margin-right: 0rem;
+  display: none;
+
+
+}
+.detail-content-column,
+.detail-content-column-collapsed {
+  transition: width 0.2s ease-in-out;
+  overflow: hidden;
+  &:hover{
+      overflow-y: overlay;
+  }
+}
+
+.detail-content-column {
+  width: calc(100% - 30rem);
+
+}
+
+.detail-content-column-collapsed {
+  width: 100%;
+}
+
+
+
+::ng-deep #detailsContainerActionMenu .p-slidemenu {
+  width:100% !important;
+  height: 100%;
+
+  .p-slidemenu-rootlist {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .p-slidemenu-wrapper{
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .p-slidemenu-content{
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .p-menuitem-link{
+    padding: 0.5rem;
+    height: 2.5rem;
+  }
+}
+
+
+::ng-deep #actionMenuItems{
+  .p-panelmenu{
+
+    transition: all 0.25s ease-in-out;
+    .p-menuitem-icon{
+      padding: 0.5rem;
+    }
+    .p-menuitem-text{
+      padding: 0.5rem;
+      flex-grow: 1;
+    }
+    .p-icon-wrapper{
+      order: 1;
+    }
+  /* .p-panelmenu-header[aria-expanded="true"]{
+    .p-panelmenu-header-action{
+      background-color: var(--primary-faded);
+      color: var(--primary);
+      font-weight: 500;
+    }
+  } */
+
+  .p-panelmenu-expanded{
+    .p-panelmenu-content{
+      background: transparent;
+      border: 0.15rem solid var(--border-color);
+      border-radius: var(--eg-border-radius);
+      margin-top: 0.25rem;
+
+      .p-submenu-list{
+        padding: 0.5rem 0;
+        .p-menuitem-icon{
+          font-size: 1.05rem;
+        }
+        .p-menuitem-text {
+          padding-left: 0;
+          font-size: 1.05rem;
+        }
+      }
+      .p-menuitem-link{
+        padding: 0.25rem;
+        &:hover{
+          background-color: var(--primary-faded);
+          color: var(--primary);
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+   .p-panelmenu-header-action{
+    padding: 0.25rem;
+    border-radius: var(--eg-border-radius);
+    font-size: 1.05rem;
+    font-weight: 500;
+
+    &:hover{
+      background-color: var(--primary-faded);
+      color: var(--primary);
+      font-weight: 500;
+    }
+    &:active{
+      background-color: var(--primary-faded);
+      color: var(--primary);
+    }
+   }
+  }
+}
+
+.action-item{
+  width: 6rem;
+  height: 6rem;
+  border-radius: var(--eg-border-radius);
+  background-color: var(--surface-ground);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+
+  .icon{
+    font-size: x-large;
+  }
+  &:hover{
+    background-color: var(--primary-faded);
+  }
+}
+
+
+
+img {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+p {
+  flex-shrink: 0;
+}

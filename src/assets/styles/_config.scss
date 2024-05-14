@@ -1,0 +1,184 @@
+@function contrast-color($color:#ffffff, $threshold) {
+  @return if(lightness($color) < $threshold, #ffffff, #000000);
+}
+
+@function saturate-color($color:#ffffff, $threshold) {
+  @return saturate($color, $threshold);
+}
+
+@function fade-color($color, $threshold) {
+  @return mix(white, $color, $threshold);
+  /* @return hsla(hue($color), saturation($color), lightness($color), 0.1); */
+}
+
+$colorArray :(
+    primary           :#006dff,
+    secondary         :#10069f,
+    danger            :#9f0000,
+    success           :#034f00,
+    warn              :#ffc107,
+    helpColor         :#720000,
+    info              :#262626,
+    plain             :#0c0c0a,
+    gray              :#a2a2a2
+  );
+
+ :root{
+  $contrast-threshold         : 55%;
+  $saturate-threshold         : 80%;
+  $fade-threshold             : 90%;
+   /* New Variables : Start */
+   --resolution               : 13px;
+   --min-width                : 100vw;
+   --min-height               : 100vh;
+
+   --eg-container-body-height         : None;
+   --eg-container-header-height       : None;
+   --eg-container-breadcrumbs-height  : 0px;
+   --eg-container-left-margin         : None;
+   --eg-container-modal-left-margin   : None;
+   --eg-container-scroll              : scroll;
+   --eg-component-border-radius       : 1rem;
+
+
+   #{--primary}                : map-get($colorArray, primary);
+   #{--primary-color}          : map-get($colorArray, primary);
+   #{--primary-contrast}       : contrast-color(map-get($colorArray, primary), $contrast-threshold);
+   #{--primary-faded}          : fade-color(map-get($colorArray, primary), $fade-threshold);
+
+   #{--secondary}              : map-get($colorArray, secondary);
+   #{--secondary-color}        : map-get($colorArray, secondary);
+   #{--secondary-contrast}     : contrast-color(map-get($colorArray, secondary), $contrast-threshold);
+   #{--secondary-faded}        : fade-color(map-get($colorArray, secondary), $fade-threshold);
+
+   #{--danger}                 : map-get($colorArray, danger);
+   #{--danger-color}           : map-get($colorArray, danger);
+   #{--danger-contrast}        : contrast-color(map-get($colorArray, danger), $contrast-threshold);
+   #{--danger-faded}           : fade-color(map-get($colorArray, danger), $fade-threshold);
+
+   #{--success}                : map-get($colorArray, success);
+   #{--success-color}          : map-get($colorArray, success);
+   #{--success-contrast}       : contrast-color(map-get($colorArray, success), $contrast-threshold);
+   #{--success-faded}          : fade-color(map-get($colorArray, success), $fade-threshold);
+
+   #{--warn}                   : map-get($colorArray, warn);
+   #{--warn-color}             : map-get($colorArray, warn);
+   #{--warn-contrast}          : contrast-color(map-get($colorArray, warn), $contrast-threshold);
+   #{--warn-faded}             : fade-color(map-get($colorArray, warn), $fade-threshold);
+
+   #{--help}                   : map-get($colorArray, helpColor);
+   #{--help-color}             : map-get($colorArray, helpColor);
+   #{--help-contrast}          : contrast-color(map-get($colorArray, helpColor), $contrast-threshold);
+   #{--help-faded}             : fade-color(map-get($colorArray, helpColor), $fade-threshold);
+
+   #{--info}                   : map-get($colorArray, info);
+   #{--info-color}             : map-get($colorArray, info);
+   #{--info-contrast}          : contrast-color(map-get($colorArray, info), $contrast-threshold);
+   #{--info-faded}             : fade-color(map-get($colorArray, info), $fade-threshold);
+
+   #{--gray}                   : map-get($colorArray, gray);
+   #{--gray-color}             : map-get($colorArray, gray);
+   #{--gray-contrast}          : contrast-color(map-get($colorArray, gray), $contrast-threshold);
+   #{--gray-faded}             : fade-color(map-get($colorArray, gray), $fade-threshold);
+
+   #{--plain}                  : map-get($colorArray, plain);
+   #{--plain-contrast}         : contrast-color(map-get($colorArray, plain), $contrast-threshold);
+   #{--plain-faded}            : fade-color(map-get($colorArray, plain), $fade-threshold);
+
+   #{--border-color}           :   #cccccc;
+   #{--disabled-color}         :   #fcfcfc;
+   #{--active-font-weight}     :   bold;
+
+   #{--eg-icon-font}           :   'PrimeIcons';
+   #{--font-family}            :   'Roboto';
+   #{--eg-opacity}             :   0.1;
+   #{--eg-border-radius}       :   1rem; //RT $border-radius;
+   #{--border-radius}          :   1rem; //RT $border-radius;
+   /* #{--overlay-bg}             :   rgb(0 0 0 / 73%); */
+
+   #{--menuWidth}              : 20rem;
+   #{--menuCompactWidth}       : 8rem;
+   #{--menuThinWidth}          : 5rem;
+
+   #{--sidebar}                : #1d1d1d;
+   #{--sidebar-width}          : 0rem;
+   #{--sidebar-contrast}       : contrast-color(#1d1d1d, 55%);
+   #{--sidebar-tint}           : rgb(255 255 255 / 0.07);
+
+  }
+
+  $customClasses: "primary",
+                  "primary-color",
+                  "primary-contrast",
+                  "primary-faded",
+                  "secondary",
+                  "secondary-color",
+                  "secondary-contrast",
+                  "secondary-faded",
+                  "danger",
+                  "danger-color",
+                  "danger-contrast",
+                  "danger-faded",
+                  "success",
+                  "success-color",
+                  "success-contrast",
+                  "success-faded",
+                  "warn",
+                  "warn-color",
+                  "warn-contrast",
+                  "warn-faded",
+                  "help",
+                  "help-color",
+                  "help-contrast",
+                  "help-faded",
+                  "info",
+                  "info-color",
+                  "info-contrast",
+                  "info-faded",
+                  "plain",
+                  "plain-contrast",
+                  "plain-faded",
+                  "gray",
+                  "gray-color",
+                  "gray-contrast",
+                  "gray-faded";
+
+  @each $clas in $customClasses {
+    .bg-#{$clas} {
+      background-color: var(--#{$clas}) !important;
+    }
+    .text-#{$clas} {
+      color: var(--#{$clas}) !important;
+    }
+    .border-#{$clas} {
+      border-color: var(--#{$clas}) !important;
+    }
+  }
+
+
+  $theme-primary:#10069f;
+  $theme-secondary:lighten($theme-primary, 3%);
+  $message-font:#333;
+  $alert-font:#d83b01;
+  $error-font:#a80000;
+  $success-font:#107c10;
+  $border-radius: 1rem !important;
+  $border-left-radius: 1rem !default;
+  $border-right-radius: 1rem !default;
+  $border-top-radius: 1rem !default;
+  $border-bottom-radius: 1rem !default;
+
+
+/*   @import "ej2/styles/compatibility/fabric.scss"; */
+
+
+
+
+
+
+
+
+
+
+
+

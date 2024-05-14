@@ -1,0 +1,191 @@
+<div class="w-full h-full" *apploading="detailsConfig?.isLoading">
+  <eg-details-container [(config)]="config" [(data)]="data" [topic]="'company'">
+    <div class="w-full h-full max-w-full" content>
+      <ng-container [ngSwitch]="activeIndex">
+
+        <ng-container *ngSwitchCase="0" [ngTemplateOutlet]="overview"></ng-container>
+        <ng-container *ngSwitchCase="1">
+          <eg-project [(param)]="config.params"></eg-project>
+        </ng-container>
+        <ng-container *ngSwitchCase="2">
+          <eg-task [(param)]="config.params"></eg-task>
+        </ng-container>
+        <ng-container *ngSwitchCase="3">
+          <eg-bills [(param)]="config.params"></eg-bills>
+        </ng-container>
+        <ng-container *ngSwitchCase="4">
+          <eg-expenses [(param)]="config.params"></eg-expenses>
+        </ng-container>
+        <ng-container *ngSwitchCase="5">
+          <eg-purchase-order [(param)]="config.params"></eg-purchase-order>
+        </ng-container>
+        <ng-container *ngSwitchCase="6">
+          <eg-orders [(param)]="config.params"></eg-orders>
+        </ng-container>
+        <ng-container *ngSwitchCase="7">
+          <eg-quotes [(param)]="config.params"></eg-quotes>
+        </ng-container>
+        <ng-container *ngSwitchCase="8">
+          <eg-credit-notes [(param)]="config.params"></eg-credit-notes>
+        </ng-container>
+      </ng-container>
+    </div>
+  </eg-details-container>
+</div>
+
+
+<ng-template #overview>
+
+
+  <div class="flex flex-nowrap w-full h-full gap-2">
+
+    <div class="flex flex-column flex-grow-0 card-layout w-3 h-full">
+
+      <div class="flex-grow-0">
+        <ng-container [ngTemplateOutlet]="dogtag"
+          [ngTemplateOutletContext]="{$implicit:detailsConfig.data}"></ng-container>
+      </div>
+      <div class="flex-grow-1 overflow-hidden">
+
+        <p-scrollPanel styleClass="h-full">
+          <div *ngFor="let fs of formProperties['formStructure']; trackBy: trackByFn">
+            <ng-container [ngSwitch]="detailsConfig.typeof(fs) == 'object'">
+              <ng-container *ngSwitchCase="true">
+
+                <p-panel #egPanel id="eg-panel" [header]="fs['header']" [iconPos]="'start'" [toggler]="'header'"
+                  [toggleable]="true" styleClass="mt-2 pr-2 ">
+                  <div class="w-full" *ngFor="let temp of fs['fields']">
+                    <ng-container [ngTemplateOutlet]="form_structure"
+                      [ngTemplateOutletContext]="{$implicit:{label:temp, data:temp}}"></ng-container>
+                  </div>
+                </p-panel>
+
+              </ng-container>
+            </ng-container>
+          </div>
+        </p-scrollPanel>
+      </div>
+    </div>
+
+
+    <!-- Main Content Column -->
+    <div class="flex flex-row flex-grow-1 gap-2 h-full overflow-auto">
+      <div class="flex flex-column flex-grow-1 gap-2">
+        <div class="card-layout h-30rem">
+          <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[0]"></eg-chart-wrapper>
+        </div>
+        <div class="card-layout h-30rem">
+          <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[1]"></eg-chart-wrapper>
+        </div>
+      </div>
+      <div class="flex flex-column flex-grow-0 w-4 gap-2">
+        <div class="card-layout ">
+
+            <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[2]">
+              <div class="flex list-item " *ngFor="let con of detailsConfig?.data?.__data__?.contacts ; trackBy: trackByFn">
+                <div class="flex-grow-0">
+                  <p-avatar size="large" shape="circle" [image]="con['picture']"
+                    (onImageError)="imageErr($event)"></p-avatar>
+                </div>
+                <div class="flex-grow-1 flex-column m-auto pl-2">
+                  <div [innerHTML]="con.name" class="text-lg font-medium"></div>
+                  <div [innerHTML]="con.job" class="text-md"></div>
+                </div>
+              </div>
+            </eg-chart-wrapper>
+
+        </div>
+        <div class="card-layout h-30rem">
+          <eg-chart-wrapper *ngIf="statistics != null" [config]="statistics[3]">
+            <eg-bank [viewType]="'list'" *ngIf="detailsConfig?.data?.__data__?.banking?.length > 0"></eg-bank>
+          </eg-chart-wrapper>
+        </div>
+      </div>
+    </div>
+
+    <!-- Last Column -->
+
+    <!-- <div class="flex flex-column flex-grow-0 w-3 gap-2">
+
+    </div> -->
+  </div>
+</ng-template>
+
+
+
+
+<ng-template #dogtag let-template_data>
+  <div class="flex flex-column w-full ">
+    <div class="flex align-items-center">
+      <div class="flex-none flex align-items-center justify-content-center">
+        <div class="border-circle w-6rem h-6rem overflow-hidden mr-3">
+          <!-- <ng-container [ngTemplateOutlet]="gridItem" [ngTemplateOutletContext]="{$implicit:{label:'logo', data:'logo'}}"></ng-container> -->
+          <ng-container [ngTemplateOutlet]="inPlace"
+            [ngTemplateOutletContext]="{data:detailsConfig?.objArray['logo'], label:'logo'}"></ng-container>
+        </div>
+      </div>
+      <div class="flex-grow-1 flex flex-column">
+        <div class="flex"><span class="text-xl font-bold mx-1 text-overflow-contain"
+            [innerHTML]="template_data['name']"></span></div>
+        <div class="flex"><span class="text-base m-1 font-semibold text-overflow-contain"
+            [innerHTML]="template_data['legal_form']"></span></div>
+        <div class="flex mt-1">
+          <span class="mr-3" *ngIf="template_data.instagram != null" [pTooltip]="template_data.instagram"
+            tooltipPosition="bottom"> <a class="font-medium no-underline"
+              [href]="'https://www.instagram.com/'+template_data.instagram" target="popup"> <i
+                class="text-xl fa-brands fa-instagram"></i></a></span>
+          <span class="mr-3" *ngIf="template_data.facebook  != null" [pTooltip]="template_data.facebook"
+            tooltipPosition="bottom"> <a class="font-medium no-underline"
+              [href]="'https://www.facebook.com/'+template_data.facebook" target="popup"> <i
+                class="text-xl fa-brands fa-facebook"></i></a></span>
+          <span class="mr-3" *ngIf="template_data.linkedin  != null" [pTooltip]="template_data.linkedin"
+            tooltipPosition="bottom"> <a class="font-medium no-underline"
+              [href]="'https://www.linkedin.com/in/'+template_data.linkedin" target="popup"><i
+                class="text-xl fa-brands fa-linkedin"></i></a></span>
+          <span class="mr-3" *ngIf="template_data.twitter   != null" [pTooltip]="template_data.twitter"
+            tooltipPosition="bottom"> <a class="font-medium no-underline"
+              [href]="'https://twitter.com/'+template_data.twitter" target="popup"> <i
+                class="text-xl fa-brands fa-twitter"></i></a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #form_structure let-content>
+  <!-- {{content | json}} -->
+  <eg-template
+              [detailsConfig]="detailsConfig"
+              [field]="content.data"
+              [title]="content.data"
+              [isTwoLine]="false"
+              [layout]="'flex'"
+              [rendererType]="'icon'"
+              >
+    <!-- <div class="w-full" flexForm>
+      <ng-container [ngTemplateOutlet]="inPlace" [ngTemplateOutletContext]="{data:detailsConfig?.objArray[content.data], label:content.data}"></ng-container>
+    </div> -->
+  </eg-template>
+  <!-- <eg-template [title]="content.data" [isTwoLine]="false" [layout]="'flex'" [rendererType]="'icon'"
+    [icon]="detailsConfig?.objArray[content.data]['icon']">
+    <div class="w-full" flexForm>
+      <ng-container [ngTemplateOutlet]="inPlace"
+        [ngTemplateOutletContext]="{data:detailsConfig?.objArray[content.data], label:content.data}"></ng-container>
+    </div>
+  </eg-template> -->
+</ng-template>
+
+<ng-template #inPlace let-data="data" let-label="label">
+  <!-- [styleClass]="'text-lg ' + (data['type'] != 'textarea' && data['type'] != 'file' ? 'w-full' : 'white-space-prewrap') " -->
+  <ng-container *ngIf="detailsConfig && data" [formGroup]="detailsConfig.formGroup">
+    <eg-inplace [styleClass]="'text-lg w-full ' + data['styleClass']" [isDisabled]="false" class="text-lg"
+      [isEditable]="detailsConfig.permission.update" [type]="data['type']"
+      [topic]="data['autoConfig']?.extraKey || label" [displayVal]="data['displayVal']"
+      [formControlName]="data['formControlName']" [placeholder]="data['placeholder']"
+      [(config)]="detailsConfig.inPlaceConf" [autoConfig]="data['autoConfig']" [(isChanged)]="isChanged"
+      (isChangedChange)="afterSaved($event)">
+    </eg-inplace>
+  </ng-container>
+
+</ng-template>

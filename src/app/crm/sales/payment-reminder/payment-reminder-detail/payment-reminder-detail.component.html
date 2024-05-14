@@ -1,0 +1,65 @@
+<eg-details-container *apploading="loading" [config]="config" [data]="data" [topic]="'sales-payment-reminder'">
+    <div class="h-full flex flex-column p-1 w-full h-full max-w-full" content>
+        <div class="flex-grow-1 overflow-y-auto pr-2" *ngIf="detailsConfig?.formGroup">
+            <ng-container [formGroup]="detailsConfig.formGroup" *ngFor="let fs of fp.formStructure; trackBy: trackByFn; let i = index; let odd = odd;">
+                <div class="flex flex-column" [class.form-field-header]="odd" [ngSwitch]="fs['fields'] | isNotEmpty">
+                    <ng-container *ngSwitchCase="true">
+                        <div class="grid grid-nogutter p-2" [ngClass]="{'border-bottom-1 ': fs['collapsed']}">
+                            <div class="col-12">
+                                <div *ngIf="fs['header']">
+                                <p [innerHTML]="fs['header']" class="font-medium text-xl"></p>
+                                <div (click)="toggle(i)" class="text-gray">
+                                    [<span class="font-bold text-primary cursor-pointer">{{fs['collapsed']?'show':'hide'}}</span>]
+                                </div>
+                                <div  class="text-lg" [innerHTML]="(!fs['subheader']) ? '' : '-' + fs['subheader']"> </div>
+                                </div>
+                            </div>
+                            <div [class]="'col-12'" >
+                                <div class="grid grid-nogutter " *ngIf="!fs['collapsed']">
+                                <div  [class.col-12]="fs['isTwoLine']==undefined || !fs['isTwoLine']"
+                                        [class.col]="fs['isTwoLine']"
+                                        *ngFor="let temp of fs['fields']">
+                                        <ng-container [ngTemplateOutlet]="egFormTemplate" [ngTemplateOutletContext]="{data: {key:temp, value: detailsConfig.objArray[temp] }, isTwoLine:fs['isTwoLine'], index: i}"></ng-container>
+                                </div>
+                                </div>
+                                <div *ngIf="fs['collapsed']">
+                                <span [innerHTML]="fs['fields'].length+' field(s) in this section'"></span><br/>
+                                <span [innerHTML]="fs['fields']"></span>
+                                </div>
+                            </div>
+                            </div>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="false">
+                        <ng-container [ngTemplateOutlet]="egFormTemplate" [ngTemplateOutletContext]="{data: {key:fs, value: detailsConfig.objArray[fs + ''] }, isTwoLine:fs['isTwoLine'], index: i}"></ng-container>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </div>
+        <div class="flex-grow-0 text-right my-2 " *ngIf="mode != 'view'">
+            <button pButton pRipple type="button"
+                [icon]="'pi pi-times'" [label]="'Cancel'"
+                class="p-button-outlined  p-button-danger  mr-2"
+                (click)="ref?.close()">
+            </button>
+            <button pButton pRipple type="button"
+                [icon]="'pi pi-save'" [label]="'Send'"
+                class="p-button-primary "
+                (click)="onSend()" [disabled]="detailsConfig?.formGroup?.invalid">
+            </button>
+        </div>
+    </div>
+</eg-details-container>
+
+<ng-template #egFormTemplate let-i="data" let-isTwoLine="isTwoLine" let-index="index" let-key="key">
+    <eg-template *ngIf="i?.value" [title]="i?.value?.['title']"
+        [detailsConfig]="detailsConfig"
+        [mode]="mode"
+        [field]="i.key"
+        [hasTitle]="(i.key == 'files')?false:true"
+        [isTwoLine]="fp.formStructure[index]['isTwoLine']"
+        [layout]="'grid'"
+        [rendererType]="'name'"
+        [isRequired]="i.value?.required == true"
+        (frmCtrlUpdated)="frmCtrlUpdated($event)">
+    </eg-template>
+</ng-template>

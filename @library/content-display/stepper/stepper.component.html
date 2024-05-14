@@ -1,0 +1,38 @@
+<div class="grid grid-nogutter w-full bg-white">
+
+  <div class="col step snipper m-1" *ngFor="let s of steps">
+
+    <div  class="snipper p-2 h-full"
+          [class.approved]="s.status == 'approved'"
+          [class.pending]="s.status == 'pending'"
+          [class.rejected]="s.status == 'rejected'">
+      <i class="font-bold fa-solid fa-times-circle"></i>
+      <span class="font-bold ml-2" [innerHTML]="s.title"></span>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="grid grid-nogutter w-full bg-white">
+
+  <div class="col step snipper h-6rem m-1" *ngFor="let s of steps">
+
+    <div  class="snipper p-2 h-full"
+          (click)="s.onClick('asd', $event)"
+          [class.approved]="s.status == 'approved'"
+          [class.pending]="s.status == 'pending'"
+          [class.rejected]="s.status == 'rejected'">
+
+      <i class="font-bold fa-solid fa-times-circle"></i>
+      <span class="font-bold ml-2" [innerHTML]="s.title"></span>
+      <div class="mt-1 snipper">
+        <span [innerHTML]="s.description"></span>
+      </div>
+      <div class="mt-1 snipper" *ngIf="s.user" [innerHTML]="s.user.first_name + ' ' + s.user.last_name"></div>
+      <div class="mt-1 snipper" *ngIf="s.time_stamp" [innerHTML]="s.time_stamp"></div>
+    </div>
+
+  </div>
+
+</div>

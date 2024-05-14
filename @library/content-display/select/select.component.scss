@@ -1,0 +1,23 @@
+::ng-deep #contentDispSelect .p-dropdown-filter-container{
+  text-align: left;
+}
+
+::ng-deep #contentDispSelect .p-dropdown-filter {
+  padding-right: 1.5rem;
+  margin-right: -1.5rem;
+  width: 100%;
+}
+
+/* ::ng-deep #contentDispSelect .p-dropdown {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+} */
+
+::ng-deep .p-dropdown-colors{
+  .p-dropdown-item{
+    padding: 0px !important;
+  }
+  .p-dropdown-label{
+    padding: 0px !important;
+  }
+}

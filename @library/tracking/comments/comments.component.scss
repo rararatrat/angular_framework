@@ -1,0 +1,6 @@
+::ng-deep #vs .p-virtualscroller-item{
+  height: unset !important;
+}
+::ng-deep #vs .p-virtualscroller .p-virtualscroller-content{
+  background-color: transparent;
+}

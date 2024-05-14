@@ -1,0 +1,19 @@
+<div class="h-full w-full">
+  <div class="grid grid-nogutter h-full">
+    <div class="col-6">
+      <eg-grid-list #inventoryGrid
+                    [gridListId]="'grid-inventory-location'"
+                    [type]="type"
+                    [showHeader]="true"
+                    [(config)]="config">
+      </eg-grid-list>
+    </div>
+    <div class="col-6">
+      <eg-address *ngIf="!isMapLoading"
+                  type="map"
+                  [format]="'array'"
+                  [data]="data"></eg-address>
+    </div>
+  </div>
+
+</div>

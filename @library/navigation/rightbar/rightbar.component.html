@@ -1,0 +1,203 @@
+<p-sidebar id="sidenavInfo" #sidenavInfo
+          [(visible)]="isVisible"
+          [position]="rbPosition"
+          [styleClass]="rbClass + ' border-round'"
+          [modal]="true"
+          [fullScreen]="rbfullScreen"
+          [blockScroll]="rbBlockScroll">
+
+  <ng-template pTemplate="header">
+    <div class="flex flex-row flex-wrap pl-3 pt-4 pb-2">
+      <ng-container [ngSwitch]="rbType">
+        <ng-container *ngSwitchCase="'contacts'">
+          <span class=" font-bolder text-3xl" [innerHTML]="currContactMenu.label"></span>
+        </ng-container>
+        <ng-container *ngSwitchCase="'notification'">
+          <span class="font-bolder text-3xl" [innerHTML]="'translations.notification' | translate : {count:2}"></span>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="content">
+    <div class="content-container h-full" *apploading="cc.isLoading">
+      <ng-container [ngSwitch]="rbType">
+        <ng-container *ngSwitchCase="'contacts'" [ngTemplateOutlet]="contacts"></ng-container>
+      </ng-container>
+      <ng-container [ngSwitch]="rbType">
+        <ng-container *ngSwitchCase="'notification'" [ngTemplateOutlet]="notification"></ng-container>
+      </ng-container>
+
+    </div>
+  </ng-template>
+
+
+
+</p-sidebar>
+
+
+
+<ng-template #contacts let-conts="conts">
+  <p-virtualScroller id="vs" #vs scrollHeight="100%"
+                     minBufferPx="1000"
+                    [value]="virtualList"
+                    [itemSize]="50"
+                    [lazy]="true"
+                    [delay]="250"
+                    (onLazyLoad)="lazyLoadData($event)">
+
+    <ng-template pTemplate="header">
+
+      <div class="flex card-container overflow-hidden">
+        <div class="flex-none flex align-items-center">
+          <div  class="flex align-items-center justify-content-center detail-nav-list-item m-1"
+          *ngFor="let s of contactMenu; trackBy: trackByFn"
+          [ngClass]="{'detail-nav-list-item-active': s.value == currContactMenu?.value}"
+          (click)="toggleContact(s.value)"
+          >
+      <i [class]="s?.icon"></i> <span class="ml-2" [innerHTML]="s?.label"></span>
+    </div>
+        </div>
+        <div class="align-items-center flex flex-grow-1 justify-content-end ">
+
+      <span class="p-input-icon-left" id="glbSearch" >
+        <i class="pi pi-search"></i>
+        <input type="text" pInputText [placeholder]="'translations.search' | translate" [formControl]="search"/>
+      </span>
+        </div>
+
+    </div>
+
+    </ng-template>
+
+    <ng-template let-data pTemplate="item" let-scrollOptions="options">
+      <div  class="flex overflow-hidden mini-card-layout  my-2 cursor-pointer"
+            (click)="showDetails(currContactMenu.value, data, false)">
+        <div class="flex-none flex    align-items-center p-2">
+          <p-avatar (onImageError)="imageErr($event)"
+                    [image]="currContactMenu?.value == 'contact'? data?.picture : data?.logo"
+                    size="large"
+                    shape="circle">
+          </p-avatar>
+        </div>
+        <div class="flex-grow-1 flex align-items-center p-2">
+
+          <!-- Contact Template -->
+          <div class="flex flex-column" *ngIf="currContactMenu.value == 'contact'">
+            <div class="text-info">
+              <ng-container *ngIf="data?.category?.name">
+                <span [innerHtml]="data.category.name"></span>
+                <span class="mx-1">/</span>
+              </ng-container>
+              <ng-container *ngIf="data?.country"> <!-- TODO: migrate countries data -->
+                <span [innerHtml]="data?.country"></span>
+                <span class="mx-1">/</span>
+              </ng-container>
+              <a class="underline" (click)="showDetails('org', data?.company, false); $event.stopPropagation()" [innerHtml]="data?.company?.name"></a>
+            </div>
+
+            <div class="text-xl my-1 font-medium">
+              <span *ngIf="data?.name != null" [innerHTML]="data?.name" class="mr-2"></span>
+
+            </div>
+
+            <div class="my-2">
+              <a [href]="'mailto:'+data?.email" class="border-circle text-center p-2 bg-gray-faded mr-2" (click)="$event.stopPropagation()">
+                <i class="fa-solid fa-envelope text-warn"></i>
+              </a>
+              <a [href]="'tel:'+data?.phone" class="border-circle text-center p-2 bg-gray-faded mr-2" (click)="$event.stopPropagation()">
+                <i class="fa-solid fa-phone text-gray-contrast"></i>
+              </a>
+              <a *ngIf="data?.isBirthday" [pTooltip]="'Birthday'" class="border-circle text-center p-2 bg-gray-faded mr-2" (click)="$event.stopPropagation()">
+                <i class="fa-solid fa-gifts text-success"></i>
+              </a>
+            </div>
+
+          </div>
+
+          <!-- Org Template -->
+          <div class="flex flex-column" *ngIf="currContactMenu.value == 'org'">
+            <div class="text-info">
+              <span [innerHtml]="data?.category?.name"></span>
+
+            </div>
+            <div class="text-xl my-1 font-medium">
+              <span *ngIf="data?.name != null" [innerHTML]="data?.name" class="mr-2"></span>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer" let-options="options">
+      <p-blockUI [target]="vs" [blocked]="itemLoading">
+        <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+      </p-blockUI>
+      <div class="p-2 text-center">
+        <span [hidden]="!itemLoading && !cc.isLoading">loading new data</span>
+      </div>
+    </ng-template>
+
+  </p-virtualScroller>
+</ng-template>
+
+<ng-template #notification>
+  <eg-lib-notification></eg-lib-notification>
+</ng-template>
+
+<!-- Dialog for short details -->
+<p-dialog *ngIf="currContactMenu && currContactMenu.value"
+
+          [(visible)]="viewDetail"
+          styleClass="w-4"
+          [draggable]="false"
+          [modal]="true"
+          [position]="'top'" >
+  <ng-template pTemplate="header">
+    <div class="flex flex-row  align-items-center" *ngIf="!loadingDialog">
+      <p-avatar (onImageError)="imageErr($event)"
+                [image]="currContactMenu.value == 'org'? data?.logo : data?.picture"
+                size="xlarge"
+                shape="circle"
+                styleClass="flex-grow-0">
+      </p-avatar>
+      <div class="flex-grow-1 ml-2">
+        <span class="text-2xl font-medium" [innerHTML]="selectedData?.name"></span>
+      </div>
+    </div>
+  </ng-template>
+  <div class=" p-0 px-2 mt-2" *apploading="loadingDialog">
+    <ng-container [ngSwitch]="currContactMenu.value">
+      <ng-container *ngFor="let s of selectedStructure; let isLast = last">
+        <p-divider align="left">
+          <div class="inline-flex align-items-center">
+            <span class="text-xl font-bold"  [innerHTML]="s?.header"></span>
+          </div>
+        </p-divider>
+
+        <div class="flex flex-row py-2" *ngFor="let f of s['fields'] ">
+          <div class="flex-grow-0 w-3 font-semibold" [innerHTML]="f.replace('_', ' ') | titlecase"></div>
+          <div class="flex-grow-1 text-lg " [innerHTML]="setRecord(selectedData?.[f])">
+
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <p-button icon="fa-solid fa-xmark"
+              (click)="viewDetail = false"
+              label="Close"
+              styleClass="p-button p-button-danger p-button-outlined mr-2">
+    </p-button>
+    <p-button icon="fa-solid fa-square-arrow-up-right"
+              (click)="showDetails(currContactMenu.value, selectedData, true)"
+              label="Show Details"
+              styleClass="p-button">
+    </p-button>
+  </ng-template>
+
+</p-dialog>
+

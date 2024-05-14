@@ -1,0 +1,165 @@
+<div class="flex flex-column h-full gap-2" *apploading="isLoading">
+<!--   <div class="flex-grow-0 surface-card p-2 pb-3  border-bottom-1 flex flex-row">
+      <div class="flex-grow-1">
+        <div class="font-bolder text-2xl" [innerHTML]="title"></div>
+        <div class="text-lg mt-1" [innerHTML]="subTitle"></div>
+      </div>
+      <div class="flex-grow-0">
+        <p-button icon="fa-solid fa-times"
+                  (click)="close()"
+                  styleClass="p-button-rounded text-xl p-button-danger p-button-text">
+        </p-button>
+      </div>
+  </div> -->
+  <div class="h-full w-full flex flex-row gap-2 flex-grow-1">
+    <div class="flex flex-column h-full gap-2">
+      <!-- Process Header -->
+      <div  class="flex flex-row flex-grow-0 w-18rem border-round surface-card p-2 pl-0">
+        <span class="font-bolder text-2xl" [innerHTML]="'Steps'"></span>
+      </div>
+      <!-- Process Menu -->
+      <div class="flex-grow-1 flex flex-column gap-2 border-round surface-card p-2 pl-0">
+        <ng-container [ngSwitch]="detailsConfig && detailsConfig?.objArray| isNotEmpty">
+          <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="skeletonLoader"></ng-container>
+          <ng-container *ngSwitchCase="true">
+            <div  class="flex flex-row " *ngFor="let p of process; let isLast = last"
+
+            [class.disabled]="data == null"> <!-- (click)="goToIndex(p.index)" -->
+              <div class="process-block flex flex-grow-1"
+                  [class.active]="activeIndex == p.index"
+                  [class.error]="p.isError"
+                  [class.complete]="p.isComplete"
+                  [class.pending]="p.isWip" [pTooltip]="p.err || ''">
+                <div class="index flex justify-content-center align-items-center border-circle border-1 w-3rem h-3rem">
+                  <span *ngIf="!p.isComplete && !p.isWip && !p.isError" class="font-bold text-lg" [innerHTML]="p.index"></span>
+                  <i *ngIf="p.isComplete" class="font-bold text-lg fa-solid fa-check" ></i>
+                  <i *ngIf="p.isWip"      class="font-bold text-lg fa-solid fa-warning" ></i>
+                  <i *ngIf="p.isError"    class="font-bold text-lg fa-solid fa-warning" ></i>
+                </div>
+                <div class="ml-2 flex flex-column justify-content-center flex-grow-1">
+                  <span class="name font-bold text-lg" [innerHTML]="p.name"></span>
+                  <div>
+                    <span class="description" [innerHTML]="p.description"></span>
+                  </div>
+                </div>
+                <div class="ml-2 flex flex-column flex-grow-0">
+                    <i  class="fa-solid fa-circle"
+                        pTooltip="Active Section"
+                        [class.hidden]="activeIndex != p.index"
+                        [class.text-primary]="activeIndex == p.index"></i>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+
+      </div>
+    </div>
+
+    <div class="flex flex-column h-full flex-nowrap flex-grow-1 gap-2">
+      <!-- Content Header -->
+   <!--    <div  class="flex-grow-0 surface-card border-round p-2 ">
+        <span class="font-bolder text-2xl" [innerHTML]="process[activeIndex]['name']"></span>
+      </div> -->
+      <!-- Content Items -->
+      <div class="flex-grow-1 surface-card border-round p-2 overflow-hidden">
+        <p-scrollPanel styleClass="h-full" *ngIf="detailsConfig && detailsConfig?.objArray| isNotEmpty">
+          <ng-container [ngSwitch]="detailsConfig && detailsConfig?.objArray| isNotEmpty">
+            <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="skeletonLoader"></ng-container>
+            <ng-container *ngSwitchCase="true">
+              <ng-container [ngSwitch]="process[activeIndex]['hasForm']">
+                <!-- Form Content -->
+                <ng-container *ngSwitchCase="true">
+                  <div class="w-full" *ngFor="let a of process[activeIndex]['fields']; let idxP = index; let isLast=last">
+                      <ng-container [ngTemplateOutlet]="crudForm"
+                                    [ngTemplateOutletContext]="{attr:a, index:idxP, isLast:isLast}">
+                      </ng-container>
+                  </div>
+                </ng-container>
+                <!-- Component Content -->
+                <ng-container *ngSwitchCase="false" >
+                  <ng-container *ngComponentOutlet="getComponent(process[activeIndex]['component']['component']);
+                                                    inputs:myInputs">
+                  </ng-container>
+                </ng-container>
+
+            </ng-container>
+          </ng-container>
+        </ng-container>
+        </p-scrollPanel>
+
+      </div>
+      <div class="flex-grow-0 surface-card border-round p-2 pr-0">
+        <ng-container [ngSwitch]="detailsConfig && detailsConfig?.objArray| isNotEmpty">
+          <ng-container *ngSwitchCase="false" [ngTemplateOutlet]="skeletonLoader"></ng-container>
+          <ng-container *ngSwitchCase="true">
+            <div class="flex flex-row justify-content-between">
+              <!-- Previous Button -->
+              <div class="">
+                <p-button *ngIf="!previousButton?.disabled"
+                          (click)="step('previous', activeIndex)"
+                          [icon]="'fa-solid fa-angles-left'"
+                          iconPos="left"
+                          [disabled]="previousButton?.disabled"
+                          [label]="previousButton?.label">
+                </p-button>
+              </div>
+              <!-- Next and Submit Button -->
+              <div class="">
+                <!-- <p-button [label]="'Save & Close'" *ngIf="activeIndex != 0">
+
+                </p-button>
+                <p-button [label]="'Skip & Do Later'"
+                          (click)="step('skip', activeIndex)">
+
+                </p-button> -->
+                <!-- {{nextButton | json}} -->
+                <p-button *ngIf="!nextButton?.disabled"
+                          (click)="step('next', activeIndex)"
+                          class="ml-2"
+                          [icon]="'fa-solid fa-angles-right'"
+                          iconPos="right"
+                          [disabled]="nextButton?.disabled"
+                          [label]="nextButton?.label">
+                </p-button>
+
+              </div>
+
+            </div>
+
+          </ng-container>
+        </ng-container>
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+<ng-template #skeletonLoader>
+  <p-skeleton styleClass="h-full w-full border-round"></p-skeleton>
+</ng-template>
+
+<ng-template #crudForm let-attr="attr" let-index="index" let-isLast="isLast">
+  <ng-container *ngIf="detailsConfig && detailsConfig?.objArray | isNotEmpty">
+    <eg-template
+                  [title]="detailsConfig?.objArray[attr]?.['title']"
+                  [detailsConfig]="detailsConfig"
+                  [mode]="mode"
+                  [field]="attr"
+                  [hasTitle]="(attr == 'files')?false:true"
+                  [isTwoLine]="false"
+                  [layout]="'table'"
+                  [rendererType]="'name'"
+                  [isLast]="isLast"
+                  [titleClass]="'h-4rem'"
+                  [attr_class]="'w-3 text-lg'"
+                  [value_class]="'w-10 p-2'"
+                  [isRequired]="detailsConfig?.objArray[attr]?.required == true"
+                  (isChangedChange)="afterSaved($event)">
+    </eg-template>
+  </ng-container>
+</ng-template>
+
+

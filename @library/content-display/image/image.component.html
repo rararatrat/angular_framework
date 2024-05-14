@@ -1,0 +1,48 @@
+<p-image  #imageContent
+          id="imageContent"
+          [preview]="preview"
+          [src]="src"
+          [styleClass]="styleClass"
+          [imageClass]="imageClass"
+          [width]="width"
+          [height]="height"
+          [alt]="alt"
+          (onImageError)="imageErr($event)"
+          >
+  <ng-template pTemplate="indicator">
+    <div class="flex flex-row flex-wrap ">
+      <div class="flex align-items-center justify-content-center m-1" *ngIf="isEditable">
+        <button pButton pRipple type="button" (click)="editImage($event);$event.stopPropagation();"
+          icon="pi pi-pencil" class="p-button-rounded" pTooltip="Edit Image"></button>
+      </div>
+      <div class="flex align-items-center justify-content-center m-1" >
+        <button pButton pRipple type="button" (click)="imgPreview($event); $event.stopPropagation();" [disabled]="!imageContent.src || imageContent.src==env.noImagUrl"
+          icon="pi pi-image" class="p-button-rounded p-button-info" pTooltip="Preview Image"></button>
+      </div>
+      <div *ngIf="isDeletable==true" class="flex align-items-center justify-content-center m-1">
+        <button pButton pRipple type="button" (click)="clearImage($event);" [disabled]="!imageContent.src || imageContent.src==env.noImagUrl"
+          icon="pi pi-trash" class="p-button-rounded p-button-info" pTooltip="Clear Image"></button>
+      </div>
+    </div>
+  </ng-template>
+</p-image>
+
+
+<p-dialog header="Upload Image" [(visible)]="overlay" [position]="'top'" [modal]="true" [style]="{width: '30vw'}"
+    [draggable]="false" [resizable]="false">
+    <eag-uploader class="w-full" #fileUploader
+                  [filesArr]="filesArr"
+                  [config]="config"
+                  [isFile]="false"
+                  [label]="formControlName"
+                  [formGroup]="config?.formGroup"
+                  [multiple]="false"
+                  (imgApiCallback)="update($event, 'uploadApiCallback')"
+                  (callback)="update($event, 'uploadApiCallback')"
+                  (ngModelChange)="update($event, 'ngModelChange')"
+    ></eag-uploader>
+
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="overlay=false" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,231 @@
+<div class="h-full flex flex-row w-full gap-2 surface-ground" *apploading="!data || !settings">
+
+    <div class="flex flex-column h-full w-25rem surface-card border-round ">
+        <div class="flex-grow-1 overflow-hidden ">
+            <!-- <div class="full-width pl-2 py-4">
+                Upload Logo
+            </div> -->
+            <p-scrollPanel styleClass="h-full " class="h-full">
+                <div class="pl-3 py-4 border-bottom-2">
+
+                    <div class="flex-1 font-bold">Template Colors</div>
+                    <!-- {{settings.template | json}} -->
+                    <div class="flex flex-row">
+                        <div class="flex-1">
+                            Titles
+                            <p-colorPicker [(ngModel)]="settings.template.titleColor" [appendTo]="'body'"></p-colorPicker>
+                        </div>
+                        <div class="flex-1">
+                            Lines
+                            <p-colorPicker [(ngModel)]="settings.template.lineColor" [appendTo]="'body'"></p-colorPicker>
+                        </div>
+                        <div class="flex-1">
+                            Text
+                            <p-colorPicker [(ngModel)]="settings.template.textColor" [appendTo]="'body'"></p-colorPicker>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="full-width pl-2 py-2">
+                    <p-accordion [activeIndex]="0">
+                        <p-accordionTab header="Template Elements">
+                            <div><p-checkbox [binary]="true" [(ngModel)]="settings.templateEl.showCompanyAddress" inputId="ad"></p-checkbox>
+                                <label for="ad">Show Company Address</label></div>
+                            <div><p-checkbox [binary]="true" [(ngModel)]="settings.templateEl.showCompanyLogo" inputId="lo"></p-checkbox>
+                                <label for="lo">Show Company Logo</label></div>
+                            <div><p-checkbox [binary]="true" [(ngModel)]="settings.templateEl.showLines" inputId="li"></p-checkbox>
+                                <label for="li">Show lines between documents</label></div>
+                            <div><p-checkbox [binary]="true" [(ngModel)]="settings.templateEl.showPageNumbers" inputId="pn"></p-checkbox>
+                                <label for="pn">Show Page Number</label></div>
+                            <div><p-checkbox [binary]="true" [(ngModel)]="settings.templateEl.noPagebreak" inputId="np"></p-checkbox>
+                                <label for="np">No Page break before Sum</label></div>
+                            <!-- <div><p-checkbox [(ngModel)]="settings.templateEl.columnHeadings" inputId="he"></p-checkbox>
+                                <label for="ge">Show Column Headings</label></div> -->
+                        </p-accordionTab>
+                        <p-accordionTab header="Fonts">
+                            <div class="grid border-none">
+                                <div class="col-6" >
+                                    <span>Font Size
+                                        <p-inputNumber  #posWrapBtn id="posWrapBtn"
+                                                        incrementButtonClass="p-button-info"
+                                                        decrementButtonClass="p-button-info"
+                                                        inputStyleClass="w-full"
+                                                        [(ngModel)]="settings.font.size"
+                                                        mode="decimal"
+                                                        [showButtons]="true"
+                                                        inputId="minmax-buttons"
+                                                        [min]="1"
+                                                        [max]="36">
+                                        </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.font.size" class="w-full" [min]="1" [max]="36"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6 ">
+                                    <span>Headings Font Size
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" inputStyleClass="w-full"   decrementButtonClass="p-button-info"  [(ngModel)]="settings.font.heading" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="36"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.font.heading" class="w-full" [min]="1" [max]="36"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span>Recipient Font Size
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" inputStyleClass="w-full"   decrementButtonClass="p-button-info"  [(ngModel)]="settings.font.recipient" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="36"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.font.recipient" class="w-full" [min]="1" [max]="36"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span>Company Font Size
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" inputStyleClass="w-full"    decrementButtonClass="p-button-info"   [(ngModel)]="settings.font.company" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="1" [max]="36"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.font.company" class="w-full" [min]="1" [max]="36"></p-slider>
+                                    </span>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab header="Distances">
+                            <!-- {{settings.distance | json}} -->
+                            <div class="grid border-none">
+                                <div class="col-6" >
+                                    <span>Top Margin
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [inputStyle]="{'width': '100px'}" [(ngModel)]="settings.distance.topMargin" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.distance.topMargin" class="w-full" [max]="100" [min]="0"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span>Bottom Margin
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [inputStyle]="{'width': '100px'}" [(ngModel)]="settings.distance.bottomMargin" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.distance.bottomMargin" class="w-full" [max]="100" [min]="0"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span>Left Margin
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [inputStyle]="{'width': '100px'}" [(ngModel)]="settings.distance.leftMargin" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.distance.leftMargin" class="w-full" [max]="100" [min]="0"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span>Right Margin
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn" incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [inputStyle]="{'width': '100px'}" [(ngModel)]="settings.distance.rightMargin" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="0" [max]="100"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.distance.rightMargin" class="w-full" [max]="100" [min]="0"></p-slider>
+                                    </span>
+                                </div>
+                                <!-- <div class="col-5 mx-2 my-2">
+                                    <span>Other distance checkbox
+
+                                    </span>
+                                </div> -->
+                                <div class="col-12 mx-2 my-2">
+                                    <span>Distance to the Header Line
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn"  incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [(ngModel)]="settings.distance.headerLine" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="-120" [max]="120"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.distance.headerLine" class="w-full" [max]="120" [min]="-120"></p-slider>
+                                    </span>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                        <p-accordionTab header="Recipient address">
+                            <div class="my-4">Show the document recipient</div>
+                            <div class="flex flex-wrap gap-3">
+                                <div class="flex align-items-center">
+                                    <p-radioButton name="alignLeft" value="left" [(ngModel)]="settings.recipient.align" inputId="rl"></p-radioButton>
+                                    <label for="rl" class="ml-2">On the left</label>
+                                </div>
+                                <div class="flex align-items-center">
+                                    <p-radioButton name="alignRight" value="right" [(ngModel)]="settings.recipient.align" inputId="rr"></p-radioButton>
+                                    <label for="rr" class="ml-2">On the right</label>
+                                </div>
+                            </div>
+
+                            <div class="my-4">Adjust address placement:</div>
+                            <div class="grid border-none">
+                                <div class="col-6" >
+                                    <span>left and right
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn"  incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [inputStyle]="{'width': '100px'}" [(ngModel)]="settings.recipient.leftRight" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="-150" [max]="150"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.recipient.leftRight" class="w-full" [max]="150" [min]="-150"></p-slider>
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span>up and down
+                                        <p-inputNumber #posWrapBtn id="posWrapBtn"  incrementButtonClass="p-button-info" decrementButtonClass="p-button-info"  [inputStyle]="{'width': '100px'}" [(ngModel)]="settings.recipient.upDown" mode="decimal" [showButtons]="true" inputId="minmax-buttons" [min]="-150" [max]="150"> </p-inputNumber>
+                                        <p-slider [(ngModel)]="settings.recipient.upDown" class="w-full" [max]="150" [min]="-150"></p-slider>
+                                    </span>
+                                </div>
+                            </div>
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+                <div class="full-width pl-3 py-2 font-bold">
+                    Setup for {{ (('translations.'+ (label_from_type || '').toLowerCase().replace(' ', '_')) | translate : {count : 2}) }}
+                </div>
+
+                <p-accordion [activeIndex]="0" *ngIf="settings.setup">
+                    <p-accordionTab header="Header Options" *ngIf="settings.setup?.headerOptions">
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.headerOptions.showDate" inputId="sd"></p-checkbox>
+                            <label for="sd">Show Date</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.headerOptions.showValidUntil" inputId="svu"></p-checkbox>
+                            <label for="svu">Show Valid Until</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.headerOptions.showCompanyContact" inputId="scc"></p-checkbox>
+                            <label for="scc">Show Company Contact</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.headerOptions.showCustomerNumber" inputId="scn"></p-checkbox>
+                            <label for="scn">Show Customer Number</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.headerOptions.showProjectName" inputId="spn"></p-checkbox>
+                            <label for="spn">Show Project Name</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.headerOptions.showVATNumber" inputId="svn"></p-checkbox>
+                            <label for="svn">Show VAT Number</label></div>
+                    </p-accordionTab>
+
+                    <p-accordionTab header="Column Options" *ngIf="settings.setup?.columnOptions">
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.columnOptions.showPositionNumber" inputId="scpn"></p-checkbox>
+                            <label for="scpn">Show position number</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.columnOptions.showAmount" inputId="scam"></p-checkbox>
+                            <label for="scam">Show amount</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.columnOptions.showUnitPrice" inputId="scup"></p-checkbox>
+                            <label for="scup">Show unit price</label></div>
+                    </p-accordionTab>
+
+                    <p-accordionTab header="Footer" *ngIf="settings.setup?.columnOptions">
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.companyNameAndAddress" inputId="sfcn"></p-checkbox>
+                            <label for="sfcn">Company name and address</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.companyEmailAddress" inputId="sfce"></p-checkbox>
+                            <label for="sfce">Company e-mail address</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.companyPhone" inputId="sfcp"></p-checkbox>
+                            <label for="sfcp">Company phone</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.bankAccountInfo" inputId="sfba"></p-checkbox>
+                            <label for="sfba">Bank account info</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.vatNumber" inputId="sfv"></p-checkbox>
+                            <label for="sfv">VAT number</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.euVATNumber" inputId="sfev"></p-checkbox>
+                            <label for="sfev">EU VAT number</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.mobile" inputId="sfm"></p-checkbox>
+                            <label for="sfm">Mobile</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.fax" inputId="sff"></p-checkbox>
+                            <label for="sff">Fax</label></div>
+                        <div><p-checkbox [binary]="true" [(ngModel)]="settings.setup?.footer.website" inputId="sfw"></p-checkbox>
+                            <label for="sfw">Website</label></div>
+
+                    </p-accordionTab>
+                </p-accordion>
+                <div *ngIf="settings.setup" class="pl-3 mb-4"><p-checkbox [binary]="true" [(ngModel)]="settings.setup.appendPDF" inputId="scpdf"></p-checkbox>
+                    <label for="scpdf">Append a PDF after every {{label_from_type}}</label>
+                </div>
+            </p-scrollPanel>
+        </div>
+        <div class="flex-grow-0 text-align-right">
+            <button pButton pRipple type="button"
+                    [icon]="'pi pi-trash'" [label]="'Reset'"
+                    class="p-button-danger mx-2"
+                    [style]="'font-size: 11px'"
+                    (click)="resetSettings()">
+            </button>
+            <button pButton pRipple type="button"
+                    [icon]="'pi pi-save'" [label]="'Save Settings for ' + label_from_type"
+                    class="p-button-primary"
+                    [style]="'font-size: 11px'"
+                    (click)="onSave()">
+            </button>
+        </div>
+    </div>
+    <div class="flex flex-column h-full flex-grow-1 overflow-hidden">
+        <p-scrollPanel styleClass="h-full" class="h-full">
+            <eg-position-preview #egPreview [data]="data" [settings]="settings" [template_type]="template_type" [isMockData]="true"></eg-position-preview>
+        </p-scrollPanel>
+    </div>
+
+</div>

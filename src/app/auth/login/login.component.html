@@ -1,0 +1,64 @@
+<div class="grid h-full">
+  <div class="col-12 m-auto">
+    <div class="flex flex-grow-0 align-items-center mb-4">
+      <img src="" alt="">
+      <div class="text-6xl font-bold flex-grow-1" [innerHTML]="'translations.login' | translate"></div>
+      <div class="flex-grow-0 text-right">
+        <span [innerHTML]="'translations.dontHaveAccount' | translate"></span> &nbsp;
+        <a class="font-medium no-underline cursor-pointer text-primary" [routerLink]="'/auth/register'"
+          [innerHTML]="'translations.signUpHere' | translate"></a>
+      </div>
+    </div>
+    <div class="flex flex-column  flex-grow-1">
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+        <div class="flex flex-column gap-2 my-5">
+          <label htmlFor="username" class="font-semibold" [innerHTML]="'translations.username' | translate"></label>
+          <input class="p-inputtext-lg py-3" formControlName="username" pInputText id="username"
+            aria-describedby="username-help" />
+          <!-- <small id="username-help">Enter your username.</small> -->
+        </div>
+
+        <div class="flex flex-column gap-2 my-5">
+          <div class="flex flex-row w-full">
+            <div class="flex-grow-1 text-left">
+              <label htmlFor="password" class="font-semibold" [innerHTML]="'translations.password' | translate"></label>
+            </div>
+          </div>
+
+
+          <input class="p-inputtext-lg py-3" formControlName="password" pInputText type="password" id="password"
+            aria-describedby="password-help" />
+
+            <div class="flex flex-row w-full">
+              <div class="flex-grow-1 text-right">
+                <a class="font-medium no-underline cursor-pointer text-primary" [routerLink]="['/auth/forgotPassword']"
+                  [innerHTML]="'translations.forgotPassword' | translate"></a>
+              </div>
+            </div>
+          <!-- <small id="password-help">Enter your your password.</small> -->
+        </div>
+
+        <div class="flex flex-column my-5 w-full ">
+          <p-button [type]="'submit'"
+                    [disabled]="!loginForm.valid"
+                    [label]="'translations.signIn' | translate"
+                    styleClass="p-button-lg w-full py-3" >
+          </p-button>
+
+
+        </div>
+      </form>
+      <p-divider align="center" class="mb-5 mt-1">
+        <b class="text-black-alpha-60" [innerHTML]="'translations.or' | translate"></b>
+      </p-divider>
+
+      <ng-container [ngTemplateOutlet]="socialLgn"></ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-template #socialLgn>
+</ng-template>
+
+

@@ -1,0 +1,53 @@
+<div class="w-full flex flex-row gap-2 p-2">
+  <div class="srch-category">
+    Category 1
+  </div>
+  <div class="srch-category">
+    Category 2
+  </div>
+  <div class="srch-category">
+    Category 3
+  </div>
+  <div class="srch-category">
+    Category 4
+  </div>
+  <div class="srch-category">
+    Category 5
+  </div>
+
+</div>
+
+<div class="w-full h-full flex flex-row gap-2 p-2" *apploading="isLoading">
+
+
+  <div class="flex-grow-0 flex flex-column" *ngIf="data != null">
+    <div class="flex-grow-0 flex flex-column mb-3">
+      <span [innerHTML]="'Displaying '+ (data?.page?.page_size * data?.page?.page) + ' of ' + data?.page?.total + ' results'"></span>
+    </div>
+    <div class="flex-grow-1">
+
+      <div class="srch-result" *ngFor="let d of data?.results">
+        <div class="text-sm link">
+          <span [innerHTML]="d.name"></span>
+        </div>
+        <div class="title"><span [innerHTML]="d.name"></span></div>
+        <div class="text-sm"><span [innerHTML]="d.name"></span></div>
+        <div class="text-sm bg-gray-faded p-2 border-round-3xl w-10rem">
+          <span [innerHTML]="d.name"></span>
+        </div>
+      </div>
+
+    </div>
+    <div class="flex-grow-0 bg-gray-faded">
+pagination comes here
+    </div>
+
+
+  </div>
+  <div  class="flex-grow-1">
+    metadata comesher
+      <router-outlet></router-outlet>
+  </div>
+</div>
+
+

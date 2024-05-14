@@ -1,0 +1,108 @@
+<div class="flex h-full flex-grow-1  p-2 overflow-hidden"
+    [class.align-items-center]="isLoading"
+    [class.justify-content-center]="isLoading">
+
+
+
+
+      <p-organizationChart  #orgChart id="orgChart"
+                            *apploading="isLoading"
+
+                            [value]="data"
+                            [selectionMode]="'single'"
+                            [(selection)]="selectedNode">
+
+    <ng-container [ngSwitch]="options">
+      <ng-container *ngSwitchCase="'organization'" [ngTemplateOutlet]="orgHierarchy"></ng-container>
+      <ng-container *ngSwitchCase="'dept_structure'" [ngTemplateOutlet]="orgStructure"></ng-container>
+      <ng-container *ngSwitchCase="'users'" [ngTemplateOutlet]="users"></ng-container>
+    </ng-container>
+
+    <ng-template #orgHierarchy let-node pTemplate="organization">
+      <div class="flex overflow-hidden" (click)="nodeSelected(node?.data)">
+        <div class="flex-none flex align-items-center justify-content-center p-2">
+          <p-avatar (onImageError)="imageErr($event)" [image]="node?.data?.__data__?.logo" size="large"
+            shape="circle"></p-avatar>
+        </div>
+
+        <div class="flex-grow-1 flex align-items-center p-2">
+          <span class="fw-500 text-lg" [innerText]="node?.data?.__data__?.name | titlecase"></span>
+          <!-- {{node?.data?.curr_role}} -->
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #orgStructure let-node pTemplate="dept_structure">
+
+      <div class="flex overflow-hidden" (click)="nodeSelected(node?.data)">
+        <div class="flex-none flex align-items-center justify-content-center p-2">
+          <p-avatar (onImageError)="imageErr($event)" [image]="node?.data?.__data__?.logo" size="large"
+            shape="circle"></p-avatar>
+        </div>
+        <div class="flex-grow-1 flex align-items-center p-2" [class.flex-column]="node?.isTeams">
+          <span class="fw-500 text-lg" *ngIf="!node?.isTeams" [innerText]="node?.data?.__data__?.name | titlecase"></span>
+          <!-- {{node?.data?.curr_role}} -->
+          <div class="flex align-items-center" *ngIf="node?.isTeams">
+            <span class="fw-500 text-lg" [innerText]="node?.data?.__data__?.name | titlecase"></span>
+          </div>
+          <div class="flex align-items-center p-2" *ngIf="node?.isTeams">
+            <span class="fw-400 text-md" [innerText]="node?.data?.__data__?.__data__?.type?.name | titlecase"></span>
+          </div>
+        </div>
+
+      </div>
+    </ng-template>
+
+    <ng-template #users let-node pTemplate="users">
+      <div #nodings id="nodings" class="flex flex-column p-1" (click)="nodeSelected(node.data)">
+        <div class="flex overflow-hidden ">
+          <div  #user_node class="flex-none flex align-items-center justify-content-center p-1">
+            <p-avatar (onImageError)="imageErr($event)" [image]="node?.data?.selected_user?.picture" size="large"
+              shape="circle"></p-avatar>
+          </div>
+          <div class="flex-grow-1 flex align-items-center p-1">
+            <div class="flex align-items-center">
+              <span class="fw-500 text-lg mr-1" [innerText]="node?.data?.selected_user?.['name'] | titlecase "></span>
+              <span class="fw-500 text-lg mr-1" [innerText]="node?.data?.selected_user?.['job'] | titlecase "></span>
+              <span class="fw-500 text-lg mr-1" [innerText]="node?.data?.selected_user?.role"></span>
+              <!-- <span class="fw-500 text-lg" [innerText]="node?.label?.name || node?.label[0]?.name"></span> -->
+            </div>
+          </div>
+        </div>
+        <div class="flex align-items-center justify-content-center p-1">
+          <div class="px-2 pb-2">
+            <span class="fw-400 text-md" [innerHTML]="node?.data?.name"></span>
+          </div>
+        </div>
+
+      </div>
+
+
+    </ng-template>
+
+  </p-organizationChart>
+
+</div>
+
+
+
+<p-sidebar  #orgchartSidebar
+            [showCloseIcon]="true"
+            [modal]="true"
+            [(visible)]="showDetails"
+            position="right"
+            styleClass="w-5 border-round-left">
+  <ng-template pTemplate="header">
+    <ng-content select="[header]"></ng-content>
+  </ng-template>
+  <div class="h-full w-full">
+    <ng-container [ngTemplateOutlet]="formTemplateRef"
+                  [ngTemplateOutletContext]="{$implicit:{data:selectedNode}}">
+    </ng-container>
+  </div>
+</p-sidebar>
+
+
+
+
+<!-- <p-button (click)="op.toggle($event)" icon="pi pi-image" label="Show"></p-button> -->

@@ -1,0 +1,19 @@
+
+
+<ng-container [ngSwitch]="mapType">
+  <ng-container *ngSwitchCase="'leaflet'" [ngTemplateOutlet]="leaflet"></ng-container>
+  <ng-container *ngSwitchCase="'google'" [ngTemplateOutlet]="google"></ng-container>
+</ng-container>
+
+
+<ng-template #google>
+  <!-- <p-gmap #gMap id="gMap" [options]="options" [overlays]="overlays" (onOverlayClick)="handleOverlay($event)" styleClass="w-full h-full"></p-gmap> -->
+</ng-template>
+<ng-template #leaflet>
+  <div class="map-container">
+    <div class="map-frame">
+      <div id="map"></div>
+
+    </div>
+  </div>
+</ng-template>

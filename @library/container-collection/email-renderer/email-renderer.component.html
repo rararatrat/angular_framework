@@ -1,0 +1,86 @@
+
+<div class="h-full flex flex-column p-1" *apploading="loading">
+    <div class="flex-grow-1 overflow-y-auto pr-2" *ngIf="detailsConfig?.formGroup">
+        <ng-container [formGroup]="detailsConfig.formGroup" *ngFor="let fs of fp.formStructure; trackBy: trackByFn; let i = index; let odd = odd;">
+            <div class="flex flex-column" [class.form-field-header]="odd">
+                <div class="grid grid-nogutter p-2" [ngClass]="{'border-bottom-1 ': fs['collapsed']}">
+                  <div class="col-12">
+                    <div *ngIf="fs['header']">
+                      <p [innerHTML]="fs['header']" class="font-medium text-xl"></p>
+
+                      <div (click)="toggle(i)" class="text-gray">
+                        [<span class="font-bold text-primary cursor-pointer">{{ 'translations.' + (fs['collapsed']? 'show':'hide') | translate }}</span>]
+                      </div>
+
+                      <div  class="text-lg" [innerHTML]="(!fs['subheader']) ? '' : '-' + fs['subheader']"> </div>
+
+                    </div>
+                  </div>
+                  <div [class]="'col-12'" >
+                    <div class="grid grid-nogutter " *ngIf="!fs['collapsed']">
+                      <div  [class.col-12]="fs['isTwoLine']==undefined || !fs['isTwoLine']"
+                            [class.col]="fs['isTwoLine']"
+                            *ngFor="let temp of fs['fields']">
+                            <ng-container [ngTemplateOutlet]="egFormTemplate" [ngTemplateOutletContext]="{data: {key:temp, value: detailsConfig.objArray[temp] }, isTwoLine:fs['isTwoLine'], index: i}"></ng-container>
+                      </div>
+                    </div>
+                    <div *ngIf="fs['collapsed']">
+                      <span [innerHTML]="(fs['fields'].length + ' ' + ('translations.field' | translate : {count: fs['fields'].length}) + ' ' + ('translations.in_this_section' | translate))"></span><br/>
+                      <small class="font-normal" *ngFor="let _f of fs['fields']; let last=last" [innerHTML]="(_f | translateField) + (!last ? ', ' : '')"></small>
+                      <!-- <small class="font-normal" *ngFor="let _f of fs['fields']; let last=last"><span *ngIf="('translations.' + _f | translate : {count: 1}) as _trans" 
+                        [innerHTML]="(_trans == '{translations.'+ _f +'}' ? (_f | capitalizeFirst) : _trans) + (!last ? ', ' : '')"></span></small> -->
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </ng-container>
+    </div>
+    <div class="flex-grow-0 text-right my-2 " >
+        <button pButton pRipple type="button"
+            [icon]="'pi pi-times'" [label]="'translations.cancel' | translate"
+            class="p-button-outlined  p-button-danger  mr-2"
+            (click)="ref?.close()">
+        </button>
+        <button pButton pRipple type="button"
+            [icon]="'pi pi-save'" [label]="'translations.send' | translate"
+            class="p-button-primary "
+            (click)="onSend()" [disabled]="detailsConfig?.formGroup?.invalid">
+        </button>
+    </div>
+</div>
+
+<ng-template #egFormTemplate let-i="data" let-isTwoLine="isTwoLine" let-index="index" let-key="key">
+  <!-- <pre>
+    <p>validator {{detailsConfig?.formGroup?.get(i.key)?.validator | json}}</p>
+    <p>errors {{detailsConfig?.formGroup?.get(i.key)?.errors | json}}</p>
+  </pre> -->
+  <!-- {{i.key}} {{key}} -->
+    <eg-template *ngIf="i?.value" [title]="i?.value?.['title']"
+        [detailsConfig]="detailsConfig"
+        [mode]="'add'"
+        [field]="i.key"
+        [hasTitle]="(i.key == 'files')?false:true"
+        [isTwoLine]="fp.formStructure[index]['isTwoLine']"
+        [layout]="'grid'"
+        [rendererType]="'name'"
+        [isRequired]="i.value?.required == true"
+        (frmCtrlUpdated)="frmCtrlUpdated($event)"
+        >
+        <!-- [options]="i.value?.data" (isChangedChange)="afterSaved($event)" -->
+        <!-- <div gridForm *ngIf="i.key=='placeholders'" style="float: right; width: 25rem">
+          <ng-container *ngIf="detailsConfig?.objArray['template'] as iTemplate">
+            <eg-template  [title]="iTemplate?.title"
+              [detailsConfig]="detailsConfig"
+              [mode]="'add'"
+              [field]="'template'"
+              [hasTitle]="true"
+              [isTwoLine]="false"
+              [layout]="'grid'"
+              [rendererType]="'name'"
+              [isRequired]="iTemplate?.required == true"
+              (frmCtrlUpdated)="frmCtrlUpdated($event)"
+              ></eg-template>
+          </ng-container>
+        </div> -->
+    </eg-template>
+</ng-template>
